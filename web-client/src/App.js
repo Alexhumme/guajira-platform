@@ -1,23 +1,23 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar />
+      
+      <main className="main-content">
+        {/* Aquí irán las secciones: Hero, Mapa, Productos, Galería, Contacto */}
+        <section id="inicio" style={{ minHeight: '100vh', paddingTop: '80px' }}>
+          <h1 style={{ textAlign: 'center', paddingTop: '100px', color: '#E34234' }}>
+            Sección Hero - En construcción
+          </h1>
+        </section>
+      </main>
+
+      <Footer />
     </div>
   );
 }

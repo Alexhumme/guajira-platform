@@ -1,38 +1,43 @@
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  background: linear-gradient(135deg, #FFFDF7 0%, #FFF8ED 50%, #FFF5E6 100%);
+  position: relative;
+  overflow-x: hidden;
 }
 
-.App-link {
-  color: #61dafb;
+/* Patrón geométrico de fondo sutil - inspirado en diseños Wayúú */
+.App::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    repeating-linear-gradient(45deg, transparent, transparent 30px, rgba(227, 66, 52, 0.015) 30px, rgba(227, 66, 52, 0.015) 60px),
+    repeating-linear-gradient(-45deg, transparent, transparent 30px, rgba(255, 87, 51, 0.015) 30px, rgba(255, 87, 51, 0.015) 60px),
+    repeating-linear-gradient(90deg, transparent, transparent 25px, rgba(30, 58, 138, 0.01) 25px, rgba(30, 58, 138, 0.01) 50px);
+  pointer-events: none;
+  z-index: 0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Patrón de triángulos y diamantes muy sutiles */
+.App::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(45deg, transparent 48%, rgba(227, 66, 52, 0.01) 48%, rgba(227, 66, 52, 0.01) 52%, transparent 52%),
+    linear-gradient(-45deg, transparent 48%, rgba(255, 87, 51, 0.01) 48%, rgba(255, 87, 51, 0.01) 52%, transparent 52%);
+  background-size: 50px 50px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.main-content {
+  position: relative;
+  z-index: 1;
 }
