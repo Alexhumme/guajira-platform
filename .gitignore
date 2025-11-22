@@ -1,0 +1,92 @@
+# Global patterns for the entire project
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Logs (global)
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files (global)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Documentation build outputs
+docs/_build/
+docs/.build/
+
+# Package managers
+.npm/
+.yarn-integrity
+
+# Coverage reports
+coverage/
+*.lcov
+
+# Backup files
+*.backup
+*.bak
+*.orig
+
+# Security keys (if any)
+*.pem
+*.key
+*.cert
+
+# Cache directories
+.cache/
+.parcel-cache/
+
+# Build artifacts (general)
+build/
+dist/
+
+# Local development files
+local/
+.local/
+
+# Database files
+*.sqlite
+*.sqlite3
+*.db
+
+# Docker
+.dockerignore
+docker-compose.override.yml

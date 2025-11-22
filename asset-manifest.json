@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/guajira-platform/static/css/main.191b6e61.css",
+    "main.js": "/guajira-platform/static/js/main.a0ce50e4.js",
+    "static/js/453.fd88d84e.chunk.js": "/guajira-platform/static/js/453.fd88d84e.chunk.js",
+    "index.html": "/guajira-platform/index.html",
+    "main.191b6e61.css.map": "/guajira-platform/static/css/main.191b6e61.css.map",
+    "main.a0ce50e4.js.map": "/guajira-platform/static/js/main.a0ce50e4.js.map",
+    "453.fd88d84e.chunk.js.map": "/guajira-platform/static/js/453.fd88d84e.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.191b6e61.css",
+    "static/js/main.a0ce50e4.js"
+  ]
+}
