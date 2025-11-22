@@ -1,6 +1,11 @@
 import React from 'react';
 import './App.css';
 import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import Communities from './components/Communities';
+import Products from './components/Products';
+import Gallery from './components/Gallery';
+import Contact from './components/Contact';
 import Footer from './components/Footer';
 
 function App() {
@@ -9,12 +14,11 @@ function App() {
       <Navbar />
       
       <main className="main-content">
-        {/* Aquí irán las secciones: Hero, Mapa, Productos, Galería, Contacto */}
-        <section id="inicio" style={{ minHeight: '100vh', paddingTop: '80px' }}>
-          <h1 style={{ textAlign: 'center', paddingTop: '100px', color: '#E34234' }}>
-            Sección Hero - En construcción
-          </h1>
-        </section>
+        <Hero />
+        <Communities />
+        <Products />
+        <Gallery />
+        <Contact />
       </main>
 
       <Footer />

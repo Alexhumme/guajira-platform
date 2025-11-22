@@ -1,0 +1,174 @@
+.products {
+  position: relative;
+  padding: 6rem 2rem;
+  background: linear-gradient(135deg, #FFF8ED 0%, #FFFDF7 100%);
+  overflow: hidden;
+}
+
+/* Patrón decorativo */
+.products-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(45deg, transparent 48%, rgba(255, 87, 51, 0.015) 48%, rgba(255, 87, 51, 0.015) 52%, transparent 52%),
+    linear-gradient(-45deg, transparent 48%, rgba(227, 66, 52, 0.015) 48%, rgba(227, 66, 52, 0.015) 52%, transparent 52%);
+  background-size: 45px 45px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.products-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Header */
+.products-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+/* Grid de productos */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 2.5rem;
+}
+
+/* Tarjeta de producto */
+.product-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(227, 66, 52, 0.1);
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 30px rgba(227, 66, 52, 0.15);
+}
+
+/* Imagen del producto */
+.product-image {
+  width: 100%;
+  height: 220px;
+  background: linear-gradient(135deg, rgba(227, 66, 52, 0.1), rgba(255, 87, 51, 0.1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.product-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(227, 66, 52, 0.03) 10px, rgba(227, 66, 52, 0.03) 20px);
+  pointer-events: none;
+}
+
+.product-image p {
+  color: #E34234;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+  padding: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Contenido de la tarjeta */
+.product-content {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.product-content h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #E34234;
+  margin: 0;
+}
+
+.product-content p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #5A5A5A;
+  margin: 0;
+  flex-grow: 1;
+}
+
+/* Botón */
+.product-btn {
+  align-self: flex-start;
+  padding: 0.7rem 1.8rem;
+  background: transparent;
+  color: #E34234;
+  border: 2px solid #E34234;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.product-btn:hover {
+  background: #E34234;
+  color: #FFFDF7;
+  transform: translateX(5px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .products {
+    padding: 4rem 1.5rem;
+  }
+
+  .products-header {
+    margin-bottom: 3rem;
+  }
+
+  .products-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .product-content {
+    padding: 1.5rem;
+  }
+
+  .product-image {
+    height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-content h3 {
+    font-size: 1.3rem;
+  }
+
+  .product-content p {
+    font-size: 0.95rem;
+  }
+
+  .product-btn {
+    width: 100%;
+    text-align: center;
+  }
+}

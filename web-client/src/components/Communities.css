@@ -1,0 +1,259 @@
+.communities {
+  position: relative;
+  padding: 6rem 2rem;
+  background: linear-gradient(135deg, #FFFDF7 0%, #FFF5E6 100%);
+  overflow: hidden;
+}
+
+/* Patrón decorativo de fondo */
+.communities-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(227, 66, 52, 0.02) 35px, rgba(227, 66, 52, 0.02) 70px),
+    repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255, 87, 51, 0.02) 35px, rgba(255, 87, 51, 0.02) 70px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.communities-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Encabezado */
+.communities-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.section-title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #E34234;
+  margin: 0 0 1rem 0;
+}
+
+.section-subtitle {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: #5A5A5A;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.section-subtitle strong {
+  color: #E34234;
+  font-weight: 600;
+}
+
+/* Contenido principal */
+.communities-content {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+/* Mapa */
+.communities-map {
+  position: relative;
+}
+
+.map-placeholder {
+  background: linear-gradient(135deg, rgba(30, 58, 138, 0.08), rgba(227, 66, 52, 0.08));
+  border-radius: 20px;
+  padding: 4rem 2rem;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed rgba(227, 66, 52, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.map-placeholder::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(45deg, transparent 48%, rgba(227, 66, 52, 0.02) 48%, rgba(227, 66, 52, 0.02) 52%, transparent 52%),
+    linear-gradient(-45deg, transparent 48%, rgba(30, 58, 138, 0.02) 48%, rgba(30, 58, 138, 0.02) 52%, transparent 52%);
+  background-size: 30px 30px;
+  pointer-events: none;
+}
+
+.map-placeholder p {
+  text-align: center;
+  color: #1E3A8A;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Misión y Visión */
+.communities-mission {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.mission-card,
+.vision-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 2rem;
+  border-left: 4px solid #E34234;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mission-card:hover,
+.vision-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 25px rgba(227, 66, 52, 0.15);
+}
+
+.vision-card {
+  border-left-color: #1E3A8A;
+}
+
+.mission-card h3,
+.vision-card h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #E34234;
+  margin: 0 0 1rem 0;
+}
+
+.vision-card h3 {
+  color: #1E3A8A;
+}
+
+.mission-card p,
+.vision-card p {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #5A5A5A;
+  margin: 0;
+}
+
+/* Estadísticas */
+.communities-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.stat-item {
+  background: linear-gradient(135deg, rgba(227, 66, 52, 0.1), rgba(255, 87, 51, 0.1));
+  border-radius: 12px;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  border: 1px solid rgba(227, 66, 52, 0.2);
+  transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(227, 66, 52, 0.2);
+}
+
+.stat-number {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #E34234;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.9rem;
+  color: #5A5A5A;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .communities-content {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .map-placeholder {
+    min-height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .communities {
+    padding: 4rem 1.5rem;
+  }
+
+  .section-title {
+    font-size: 2.2rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .communities-header {
+    margin-bottom: 3rem;
+  }
+
+  .map-placeholder {
+    min-height: 350px;
+    padding: 3rem 1.5rem;
+  }
+
+  .mission-card,
+  .vision-card {
+    padding: 1.5rem;
+  }
+
+  .communities-stats {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  .section-subtitle {
+    font-size: 1rem;
+  }
+
+  .mission-card h3,
+  .vision-card h3 {
+    font-size: 1.3rem;
+  }
+
+  .stat-number {
+    font-size: 2rem;
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+  }
+}
