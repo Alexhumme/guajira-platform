@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -26,16 +27,18 @@ const Navbar = () => {
 
         {/* Navigation Links */}
         <ul className={`navbar-menu ${menuOpen ? 'active' : ''}`}>
-          <li><a href="#inicio">Inicio</a></li>
-          <li><a href="#comunidades">Comunidades</a></li>
-          <li><a href="#productos">Productos</a></li>
+          <li><Link to="/">Inicio</Link></li>
+          <li><Link to="/communities">Comunidades</Link></li>
+          <li><Link to="/shop">Tienda</Link></li>
           <li><a href="#galeria">Galería</a></li>
           <li><a href="#contacto">Contacto</a></li>
         </ul>
 
         {/* CTA Button */}
         <div className="navbar-cta">
-          <button className="cta-button">Explorar</button>
+          <Link to="/shop">
+            <button className="cta-button">Explorar Tienda</button>
+          </Link>
         </div>
       </div>
     </nav>

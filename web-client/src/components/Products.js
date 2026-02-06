@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Products.css';
 
 const Products = () => {
@@ -55,7 +56,9 @@ const Products = () => {
               <div className="product-content">
                 <h3>{category.title}</h3>
                 <p>{category.description}</p>
-                <button className="product-btn">Ver más</button>
+                <Link to="/shop">
+                  <button className="product-btn">Ver más</button>
+                </Link>
               </div>
             </div>
           ))}

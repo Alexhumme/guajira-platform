@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Hero.css';
 
 const Hero = () => {
@@ -17,8 +18,12 @@ const Hero = () => {
             y el espíritu ancestral del pueblo Wayúu.
           </p>
           <div className="hero-buttons">
-            <button className="btn-primary">Explorar Productos</button>
-            <button className="btn-secondary">Conocer Comunidades</button>
+            <Link to="/shop">
+              <button className="btn-primary">Explorar Productos</button>
+            </Link>
+            <a href="#comunidades">
+              <button className="btn-secondary">Conocer Comunidades</button>
+            </a>
           </div>
         </div>
 

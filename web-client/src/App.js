@@ -1,28 +1,33 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Communities from './components/Communities';
-import Products from './components/Products';
-import Gallery from './components/Gallery';
-import Contact from './components/Contact';
 import Footer from './components/Footer';
+import Home from './pages/Home';
+import Shop from './pages/Shop';
+import ProductDetail from './pages/ProductDetail';
+import Communities from './pages/Communities';
+import CommunityDetail from './pages/CommunityDetail';
 
 function App() {
   return (
-    <div className="App">
-      <Navbar />
-      
-      <main className="main-content">
-        <Hero />
-        <Communities />
-        <Products />
-        <Gallery />
-        <Contact />
-      </main>
+    <Router>
+      <div className="App">
+        <Navbar />
+        
+        <main className="main-content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/communities" element={<Communities />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/community/:id" element={<CommunityDetail />} />
+          </Routes>
+        </main>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 

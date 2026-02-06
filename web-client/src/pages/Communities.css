@@ -1,0 +1,351 @@
+.communities-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #FFFDF7 0%, #FFF8ED 100%);
+}
+
+/* Header */
+.communities-page-header {
+  background: linear-gradient(135deg, #FFE8CC 0%, #FFF5E6 100%);
+  padding: 6rem 2rem 4rem;
+  margin-top: 72px;
+  text-align: center;
+  border-bottom: 3px solid rgba(227, 66, 52, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.communities-page-header::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 25px, rgba(227, 66, 52, 0.02) 25px, rgba(227, 66, 52, 0.02) 50px);
+  pointer-events: none;
+}
+
+.communities-page-header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.communities-page-header h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #E34234;
+  margin: 0 0 1.5rem 0;
+}
+
+.communities-page-header p {
+  font-size: 1.3rem;
+  line-height: 1.8;
+  color: #5A5A5A;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Container */
+.communities-page-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+/* Estadísticas globales */
+.global-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  margin-bottom: 5rem;
+}
+
+.global-stat-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  border: 2px solid rgba(227, 66, 52, 0.15);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.global-stat-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 25px rgba(227, 66, 52, 0.2);
+  border-color: #E34234;
+}
+
+.global-stat-number {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #E34234;
+  line-height: 1;
+  margin-bottom: 0.8rem;
+}
+
+.global-stat-label {
+  font-size: 1.2rem;
+  color: #5A5A5A;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Grid de comunidades */
+.communities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 3rem;
+}
+
+/* Tarjeta de comunidad */
+.community-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  overflow: hidden;
+  border: 2px solid rgba(227, 66, 52, 0.1);
+  transition: all 0.4s ease;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  position: relative;
+}
+
+.community-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 35px rgba(227, 66, 52, 0.2);
+  border-color: #E34234;
+}
+
+/* Imagen de portada */
+.community-card-cover {
+  width: 100%;
+  height: 220px;
+  background: linear-gradient(135deg, rgba(227, 66, 52, 0.1), rgba(255, 87, 51, 0.1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.community-card-cover::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(227, 66, 52, 0.03) 12px, rgba(227, 66, 52, 0.03) 24px);
+  pointer-events: none;
+}
+
+.community-card-cover p {
+  color: #E34234;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Logo sobre la portada */
+.community-card-logo {
+  position: absolute;
+  top: 160px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, rgba(30, 58, 138, 0.15), rgba(227, 66, 52, 0.15));
+  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid #FFFDF7;
+  box-shadow: 0 4px 20px rgba(227, 66, 52, 0.25);
+  z-index: 2;
+}
+
+.community-card-logo p {
+  font-size: 0.75rem;
+  color: #E34234;
+  margin: 0;
+  text-align: center;
+  padding: 0.8rem;
+}
+
+/* Contenido de la tarjeta */
+.community-card-content {
+  padding: 3.5rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex-grow: 1;
+}
+
+.community-card-content h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #E34234;
+  margin: 0;
+  text-align: center;
+}
+
+.community-municipality {
+  font-size: 1rem;
+  color: #1E3A8A;
+  font-weight: 500;
+  text-align: center;
+  margin: 0;
+}
+
+.community-description {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #5A5A5A;
+  text-align: center;
+  margin: 0;
+  flex-grow: 1;
+}
+
+/* Badge de actividad */
+.community-activity-badge {
+  display: inline-block;
+  padding: 0.6rem 1.5rem;
+  background: linear-gradient(135deg, rgba(227, 66, 52, 0.15), rgba(255, 87, 51, 0.15));
+  color: #E34234;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 20px;
+  text-align: center;
+  border: 2px solid rgba(227, 66, 52, 0.2);
+  align-self: center;
+}
+
+/* Mini estadísticas */
+.community-mini-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding: 1.5rem 0;
+  border-top: 2px solid rgba(227, 66, 52, 0.1);
+  border-bottom: 2px solid rgba(227, 66, 52, 0.1);
+}
+
+.mini-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.mini-stat-number {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #E34234;
+  line-height: 1;
+}
+
+.mini-stat-label {
+  font-size: 0.8rem;
+  color: #5A5A5A;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Footer de la tarjeta */
+.community-card-footer {
+  text-align: center;
+  padding-top: 0.5rem;
+}
+
+.view-community-link {
+  display: inline-block;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #E34234;
+  transition: all 0.3s ease;
+}
+
+.community-card:hover .view-community-link {
+  transform: translateX(5px);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .global-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .communities-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .communities-page-header {
+    padding: 5rem 1.5rem 3rem;
+  }
+
+  .communities-page-header h1 {
+    font-size: 2.5rem;
+  }
+
+  .communities-page-header p {
+    font-size: 1.1rem;
+  }
+
+  .communities-page-container {
+    padding: 3rem 1.5rem;
+  }
+
+  .global-stats {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .communities-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .community-card-content h2 {
+    font-size: 1.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .communities-page-header h1 {
+    font-size: 2rem;
+  }
+
+  .communities-page-header p {
+    font-size: 1rem;
+  }
+
+  .global-stat-number {
+    font-size: 3rem;
+  }
+
+  .community-card-logo {
+    width: 80px;
+    height: 80px;
+    top: 170px;
+  }
+
+  .community-card-content {
+    padding: 3rem 1.5rem 1.5rem;
+  }
+
+  .mini-stat-number {
+    font-size: 1.5rem;
+  }
+}
