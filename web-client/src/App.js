@@ -18,6 +18,7 @@ function App() {
         <main className="main-content">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/guajira-platform" element={<Home />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/communities" element={<Communities />} />
             <Route path="/product/:id" element={<ProductDetail />} />
