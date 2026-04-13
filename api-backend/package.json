@@ -26,7 +26,10 @@
     "express-rate-limit": "^8.1.0",
     "helmet": "^8.1.0",
     "morgan": "^1.10.1",
-    "mysql2": "^3.19.1"
+    "mysql2": "^3.19.1",
+    "express-session": "^1.18.2",
+    "bcryptjs": "^2.4.3",
+    "connect-mysql2": "^2.2.6"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

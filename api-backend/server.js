@@ -1,9 +1,11 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
+const session = require('express-session');
+const MySQLStore = require('connect-mysql2')(session);
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -34,13 +36,37 @@ app.use(express.urlencoded({ extended: true }));
 // Logging middleware
 app.use(morgan('combined'));
 
-// MongoDB connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/guajira-platform', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-    .then(() => console.log('📦 Connected to MongoDB'))
-    .catch(err => console.error('❌ MongoDB connection error:', err));
+// Session setup (MySQL store)
+const sessionStore = new MySQLStore({
+    config: {
+        host: process.env.DB_HOST || 'localhost',
+        port: Number(process.env.DB_PORT || 3306),
+        user: process.env.DB_USER || 'root',
+        password: process.env.DB_PASSWORD || '',
+        database: process.env.DB_NAME || 'guajira_platform',
+    },
+    pool: true,
+});
+
+app.use(session({
+    key: 'guajira.sid',
+    secret: process.env.SESSION_SECRET || 'dev_secret_change_me',
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 1000 * 60 * 60 * 8
+    }
+}));
+
+// Static admin dashboard
+app.use('/admin', express.static(path.join(__dirname, 'public', 'admin')));
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin', 'login.html'));
+});
 
 // Routes
 app.get('/', (req, res) => {
@@ -51,10 +77,13 @@ app.get('/', (req, res) => {
     });
 });
 
-// API routes will be added here
-// app.use('/api/products', require('./routes/products'));
-// app.use('/api/users', require('./routes/users'));
-// app.use('/api/communities', require('./routes/communities'));
+// Admin auth & core entities
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/roles', require('./routes/roles'));
+app.use('/api/tipos-producto', require('./routes/tipoProducto'));
+app.use('/api/departamentos', require('./routes/departamentos'));
+app.use('/api/municipios', require('./routes/municipios'));
+app.use('/api/comunidades', require('./routes/comunidades'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {
