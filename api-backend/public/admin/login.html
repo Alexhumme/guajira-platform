@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin - Login</title>
+  <link rel="stylesheet" href="/admin/assets/admin.css" />
+</head>
+<body>
+  <div class="card auth-card">
+    <h1>Panel Admin</h1>
+    <p class="notice">Ingresa con tu usuario y contrasena.</p>
+    <form id="loginForm">
+      <div class="form-row">
+        <input type="text" id="username" placeholder="Usuario" required />
+      </div>
+      <div class="form-row">
+        <input type="password" id="password" placeholder="Contrasena" required />
+      </div>
+      <button type="submit">Entrar</button>
+      <div id="error" class="error"></div>
+    </form>
+  </div>
+  <script src="/admin/assets/login.js"></script>
+</body>
+</html>

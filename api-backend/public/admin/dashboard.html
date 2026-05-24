@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin - Dashboard</title>
+  <link rel="stylesheet" href="/admin/assets/admin.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">G</div>
+        <div class="brand-name">Guajira</div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-title">Panel</div>
+        <button class="nav-item active" data-tab="roles">
+          <span class="nav-dot"></span> Roles
+        </button>
+        <button class="nav-item" data-tab="tipos">
+          <span class="nav-dot"></span> Tipos de Producto
+        </button>
+        <button class="nav-item" data-tab="departamentos">
+          <span class="nav-dot"></span> Departamentos
+        </button>
+        <button class="nav-item" data-tab="municipios">
+          <span class="nav-dot"></span> Municipios
+        </button>
+        <button class="nav-item" data-tab="comunidades">
+          <span class="nav-dot"></span> Comunidades
+        </button>
+      </div>
+      <div class="nav-spacer"></div>
+      <div class="user-box">
+        <div class="user-avatar">A</div>
+        <div class="user-meta">
+          <div class="user-name">Admin</div>
+          <div class="user-role">Administrador</div>
+        </div>
+      </div>
+      <button id="logoutBtn" class="ghost">Cerrar sesion</button>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1>Dashboard</h1>
+          <div class="subtitle">Administracion general</div>
+        </div>
+        <div class="topbar-actions">
+          <button class="secondary">Exportar</button>
+        </div>
+      </header>
+
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total roles</div>
+          <div class="stat-value" id="statRoles">0</div>
+          <div class="stat-trend up">+2 esta semana</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Tipos de producto</div>
+          <div class="stat-value" id="statTipos">0</div>
+          <div class="stat-trend up">+1 esta semana</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Departamentos</div>
+          <div class="stat-value" id="statDeps">0</div>
+          <div class="stat-trend flat">Sin cambios</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Municipios</div>
+          <div class="stat-value" id="statMuns">0</div>
+          <div class="stat-trend up">+3 este mes</div>
+        </div>
+      </section>
+
+      <section class="content-panel">
+        <div id="content" class="panel-body"></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="modalOverlay" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modalTitle">Editar comunidad</h2>
+        <button id="modalClose" class="ghost">Cerrar</button>
+      </div>
+      <div class="modal-body">
+        <div id="modalError" class="error"></div>
+        <div class="form-row">
+          <input id="editComName" placeholder="Nombre" />
+          <select id="editComMun"></select>
+        </div>
+        <div class="form-row">
+          <input id="editComLogo" placeholder="logo_dir" />
+          <input id="editComDireccion" placeholder="Direccion" />
+        </div>
+        <div class="form-row">
+          <input id="editComCoords" placeholder="Coordenadas" />
+          <input id="editComContacto" placeholder="Numero contacto" />
+        </div>
+        <div class="form-row">
+          <input id="editComFundacion" type="date" />
+          <input id="editComRegistro" type="date" />
+          <label class="notice"><input id="editComVisible" type="checkbox" /> Visible</label>
+        </div>
+        <div class="form-row">
+          <input id="editComDesc" placeholder="Descripcion" style="min-width: 420px;" />
+        </div>
+        <div class="form-row">
+          <button id="modalSave">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="detailsOverlay" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Detalle comunidad</h2>
+        <button id="detailsClose" class="ghost">Cerrar</button>
+      </div>
+      <div class="modal-body">
+        <div id="detailsBody" class="details-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/admin/assets/dashboard.js"></script>
+</body>
+</html>
