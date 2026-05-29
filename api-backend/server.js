@@ -1,18 +1,18 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const helmet = require('helmet');
+//const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
-const session = require('express-session');
-const MySQLStore = require('connect-mysql2')(session);
 const path = require('path');
-require('dotenv').config();
+const db = require('./config/db');
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middlewares de seguridad
-app.use(helmet());
+//app.use(helmet());
 
 // Rate limiting
 const limiter = rateLimit({
@@ -36,7 +36,28 @@ app.use(express.urlencoded({ extended: true }));
 // Logging middleware
 app.use(morgan('combined'));
 
+async function testDatabaseConnection() {
+
+    try {
+
+        const connection = await db.getConnection();
+
+        console.log('📦 Connected to MySQL');
+
+        connection.release();
+
+    } catch (error) {
+
+        console.error('❌ MySQL connection error:', error);
+
+    }
+
+}
+
+testDatabaseConnection();
+
 // Session setup (MySQL store)
+/*
 const sessionStore = new MySQLStore({
     config: {
         host: process.env.DB_HOST || 'localhost',
@@ -61,7 +82,7 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 8
     }
 }));
-
+*/
 // Static admin dashboard
 app.use('/admin', express.static(path.join(__dirname, 'public', 'admin')));
 app.get('/admin', (req, res) => {
