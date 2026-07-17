@@ -49,7 +49,7 @@ router.get('/me', (req, res) => {
   return res.status(401).json({ message: 'No autenticado' });
 });
 
-router.post('/bootstrap', async (req, res, next) => {
+async function bootstrapAdmin(req, res, next) {
   try {
     const bootstrapUser = process.env.ADMIN_BOOTSTRAP_USER;
     const bootstrapPass = process.env.ADMIN_BOOTSTRAP_PASSWORD;
@@ -72,6 +72,10 @@ router.post('/bootstrap', async (req, res, next) => {
   } catch (err) {
     return next(err);
   }
-});
+}
+
+router.route('/bootstrap')
+  .get(bootstrapAdmin)
+  .post(bootstrapAdmin);
 
 module.exports = router;
