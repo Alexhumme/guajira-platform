@@ -3,7 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
-import { Calendar, Facebook, Instagram, Mail, MapPin, MessageCircle, Phone, Users } from "lucide-react"
+import { Calendar, Mail, MapPin, MessageCircle, Phone, Users } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ProductCard } from "@/components/product-card"
@@ -186,12 +186,12 @@ export function CommunityDetail({ comunidad }: { comunidad: Comunidad }) {
                 <div className="flex gap-3 pt-2">
                   {comunidad.redes.instagram && (
                     <Badge variant="outline">
-                      <Instagram className="size-3.5" /> {comunidad.redes.instagram}
+                      <svg width={30} height={30} href="/icons/instagram.svg"><use href="" /></svg> {comunidad.redes.instagram}
                     </Badge>
                   )}
                   {comunidad.redes.facebook && (
                     <Badge variant="outline">
-                      <Facebook className="size-3.5" /> {comunidad.redes.facebook}
+                      <svg><use href="/icons/facebook.svg" /></svg> {comunidad.redes.facebook}
                     </Badge>
                   )}
                 </div>
