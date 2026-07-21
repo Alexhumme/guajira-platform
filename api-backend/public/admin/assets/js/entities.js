@@ -419,6 +419,76 @@ async function renderProductos(context) {
   });
 }
 
+async function renderRutas(context) {
+  const [rutas, comunidades] = await Promise.all([
+    requestJson('/api/rutas'), requestJson('/api/comunidades'),
+  ]);
+  const rows = rutas || [];
+  const coms = comunidades || [];
+  setStat('statRutas', rows.length);
+  const reload = () => renderRutas(context);
+  const mediaManager = createMediaManager({ endpoint: '/api/rutas', record: null, idKey: 'id_ruta', listKey: 'id_ruta_media', entityLabel: 'ruta' });
+  const fields = [
+    { key: 'nombre', label: 'Nombre', type: 'text', required: true },
+    { key: 'id_comunidad', label: 'Comunidad', type: 'select', numeric: true, required: true, options: optionsFrom(coms, 'id_comunidad', (com) => com.nombre) },
+    { key: 'descripcion', label: 'Descripcion', type: 'textarea' },
+    { key: 'duracion', label: 'Duracion', type: 'text' },
+    { key: 'distancia', label: 'Distancia', type: 'text' },
+    { key: 'dificultad', label: 'Dificultad', type: 'select', required: true, defaultValue: 'Media', options: [
+      { value: 'Baja', label: 'Baja' },
+      { value: 'Media', label: 'Media' },
+      { value: 'Alta', label: 'Alta' },
+    ] },
+    { key: 'tipo_experiencia', label: 'Tipo de experiencia', type: 'text' },
+    { key: 'portada_dir', label: 'Portada', type: 'text', placeholder: 'URL externa o ruta del servidor /uploads/rutas/...' },
+    { key: 'visibilidad', label: 'Visible', type: 'checkbox', defaultValue: true },
+    { key: 'fecha_registro', label: 'Fecha de registro', type: 'date' },
+  ];
+
+  renderCrudView({
+    content: context.content,
+    title: 'Rutas',
+    createLabel: 'Nueva ruta',
+    rows,
+    columns: [
+      { key: 'id_ruta', label: 'ID' },
+      { key: 'nombre', label: 'Nombre' },
+      { key: 'comunidad', label: 'Comunidad' },
+      { key: 'duracion', label: 'Duracion' },
+      { key: 'distancia', label: 'Distancia' },
+      { key: 'dificultad', label: 'Dificultad' },
+      { key: 'visibilidad', label: 'Visible', format: (row) => row.visibilidad ? 'Si' : 'No' },
+    ],
+    searchFields: ['nombre', 'comunidad', 'descripcion', 'tipo_experiencia'],
+    filters: [
+      { key: 'comunidad', label: 'Todas las comunidades', options: optionsFrom(coms, 'id_comunidad', (com) => com.nombre), matches: (row, value) => String(row.id_comunidad) === value },
+      { key: 'dificultad', label: 'Dificultad', options: [
+        { value: 'Baja', label: 'Baja' },
+        { value: 'Media', label: 'Media' },
+        { value: 'Alta', label: 'Alta' },
+      ], matches: (row, value) => row.dificultad === value },
+    ],
+    onCreate: () => openEntityForm({ title: 'Nueva ruta', fields, endpoint: '/api/rutas', idKey: 'id_ruta', reload, extraContent: mediaManager.container, afterSave: async (result) => { await mediaManager.commit(result?.id_ruta); } }),
+    onEdit: (record) => {
+      const editingMediaManager = createMediaManager({ endpoint: '/api/rutas', record, idKey: 'id_ruta', listKey: 'id_ruta_media', entityLabel: 'ruta' });
+      return openEntityForm({ title: 'Editar ruta', fields, record, endpoint: '/api/rutas', idKey: 'id_ruta', reload, extraContent: editingMediaManager.container, afterSave: async (result) => { await editingMediaManager.commit(result?.id_ruta || record.id_ruta); } });
+    },
+    onDelete: async (record) => {
+      await requestJson(`/api/rutas/${record.id_ruta}`, { method: 'DELETE' });
+      await reload();
+    },
+    onView: async (record) => {
+      const media = await requestJson(`/api/rutas/${record.id_ruta}/media`) || [];
+      openDetails('Detalle ruta', [
+        ['Nombre', record.nombre], ['Comunidad', record.comunidad], ['Duracion', record.duracion],
+        ['Distancia', record.distancia], ['Dificultad', record.dificultad], ['Tipo de experiencia', record.tipo_experiencia],
+        ['Portada', record.portada_dir], ['Descripcion', record.descripcion], ['Visible', record.visibilidad ? 'Si' : 'No'],
+        ['Registro', toDateInput(record.fecha_registro)],
+      ], { mediaItems: media.map((item) => item.media_dir).filter(Boolean) });
+    },
+  });
+}
+
 async function renderCategoriasTuristicas(context) {
   const [categorias, serverIcons] = await Promise.all([
     requestJson('/api/categorias-turisticas'), requestJson('/api/categorias-turisticas/icons'),
@@ -538,6 +608,7 @@ export function createRenderers(context) {
     comunidades: () => renderComunidades(context),
     miembros: () => renderMiembros(context),
     productos: () => renderProductos(context),
+    rutas: () => renderRutas(context),
     categoriasTuristicas: () => renderCategoriasTuristicas(context),
     posts: () => renderPosts(context),
   };
@@ -548,7 +619,7 @@ export async function refreshStats() {
     ['/api/roles', 'statRoles'], ['/api/tipos-producto', 'statTipos'],
     ['/api/departamentos', 'statDeps'], ['/api/municipios', 'statMuns'],
     ['/api/miembros', 'statMiembros'], ['/api/productos', 'statProductos'],
-    ['/api/categorias-turisticas', 'statCategoriasTuristicas'], ['/api/posts', 'statPosts'],
+    ['/api/rutas', 'statRutas'], ['/api/categorias-turisticas', 'statCategoriasTuristicas'], ['/api/posts', 'statPosts'],
   ];
   await Promise.all(endpoints.map(async ([endpoint, stat]) => {
     const rows = await requestJson(endpoint);

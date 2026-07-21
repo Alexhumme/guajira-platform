@@ -96,6 +96,7 @@ app.use('/api/comunidades', require('./routes/comunidades'));
 app.use('/api/miembros', require('./routes/miembro'));
 app.use('/api/productos', require('./routes/productos'));
 app.use('/api/posts', require('./routes/post'));
+app.use('/api/rutas', require('./routes/ruta'));
 app.use('/api/categorias-turisticas', require('./routes/categoriaTuristica'));
 
 // Error handling middleware
