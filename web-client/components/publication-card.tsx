@@ -80,9 +80,6 @@ export function PublicationCard({ publicacion }: { publicacion: Publicacion }) {
         >
           <Heart className={cn('size-4', liked && 'fill-current')} /> {likes}
         </button>
-        <span className="flex items-center gap-1.5">
-          <MessageCircle className="size-4" /> {publicacion.comentarios}
-        </span>
         <button type="button" className="ml-auto flex items-center gap-1.5 transition-colors hover:text-primary">
           <Share2 className="size-4" /> Compartir
         </button>

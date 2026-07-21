@@ -81,7 +81,7 @@ export function CommunityDetail({ comunidad }: { comunidad: Comunidad }) {
           <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr]">
             <div>
               <h2 className="font-serif text-2xl font-bold">Historia de la comunidad</h2>
-              <p className="mt-4 leading-relaxed text-pretty text-muted-foreground">{comunidad.historia}</p>
+              <p className="mt-4 leading-relaxed text-pretty text-muted-foreground">{comunidad.descripcion}</p>
             </div>
             <div className="grid grid-cols-2 gap-3">
               {comunidad.galeria.map((img) => (
@@ -96,7 +96,7 @@ export function CommunityDetail({ comunidad }: { comunidad: Comunidad }) {
         {tab === "Cultura" && (
           <div className="max-w-3xl">
             <h2 className="font-serif text-2xl font-bold">Cultura y saberes</h2>
-            <p className="mt-4 leading-relaxed text-pretty text-muted-foreground">{comunidad.cultura}</p>
+            <p className="mt-4 leading-relaxed text-pretty text-muted-foreground">{comunidad.descripcion}</p>
           </div>
         )}
 
@@ -182,20 +182,22 @@ export function CommunityDetail({ comunidad }: { comunidad: Comunidad }) {
                 <MessageCircle className="size-5 text-primary" />
                 <span>WhatsApp</span>
               </a>
-              {(comunidad.redes.facebook || comunidad.redes.instagram) && (
-                <div className="flex gap-3 pt-2">
-                  {comunidad.redes.instagram && (
-                    <Badge variant="outline" className="py-2">
-                      <Image alt="logo_instagram" width={20} height={20} src={"/icons/instagram.svg"}></Image>
-                      {comunidad.redes.instagram}
-                    </Badge>
-                  )}
-                  {comunidad.redes.facebook && (
-                    <Badge variant="outline"  className="py-2">
-                      <Image alt="logo_facebook" width={20} height={20} src={"/icons/facebook.svg"}></Image>
-                      {comunidad.redes.facebook}
-                    </Badge>
-                  )}
+              {comunidad.redes.length > 0 && (
+                <div className="flex flex-wrap gap-3 pt-2">
+                  {comunidad.redes.map((red) => {
+                    const icon = red.red_social === 'instagram'
+                      ? '/icons/instagram.svg'
+                      : red.red_social === 'facebook'
+                        ? '/icons/facebook.svg'
+                        : '/icons/globe.svg'
+
+                    return (
+                      <Badge key={`${red.red_social}-${red.usuario ?? 'link'}`} variant="outline" className="py-2">
+                        <Image alt={red.red_social} width={20} height={20} src={icon} className="mr-2" />
+                        {red.usuario || red.red_social}
+                      </Badge>
+                    )
+                  })}
                 </div>
               )}
             </div>

@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
-import { Clock, MessageCircle, Package, Users } from 'lucide-react'
+import { MessageCircle, Package, Users } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -62,33 +62,15 @@ export function ProductDetail({ producto }: { producto: Producto }) {
 
         <p className="mt-5 leading-relaxed text-pretty text-muted-foreground">{producto.descripcion}</p>
 
-        <div className="mt-6 grid grid-cols-2 gap-3 text-sm">
+        <div className="mt-6 grid gap-3 text-sm">
           <div className="flex items-center gap-2 rounded-lg border border-border p-3">
             <Package className="size-4 text-primary" />
-            <span>Tipo: {producto.tipo}</span>
+            <span>Categoría: {producto.categoria}</span>
           </div>
           <div className="flex items-center gap-2 rounded-lg border border-border p-3">
-            <Clock className="size-4 text-primary" />
-            <span>{producto.tiempoFabricacion}</span>
-          </div>
-          <div className="col-span-2 flex items-center gap-2 rounded-lg border border-border p-3">
             <Users className="size-4 text-primary" />
             <span>Artesano/a: {producto.artesano}</span>
           </div>
-        </div>
-
-        <div className="mt-6">
-          <h3 className="font-serif text-base font-semibold">Materiales</h3>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {producto.materiales.map((m) => (
-              <Badge key={m} variant="outline">{m}</Badge>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-6">
-          <h3 className="font-serif text-base font-semibold">Proceso de elaboración</h3>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{producto.proceso}</p>
         </div>
 
         <div className="mt-8 flex flex-wrap gap-3">

@@ -7,22 +7,27 @@ export type Municipio = {
   departamento: string
 }
 
+export type RedSocial = {
+  red_social: 'facebook' | 'instagram' | 'tiktok' | 'linkedin' | 'whatsapp' | 'otros'
+  usuario?: string
+  link?: string
+}
+
 export type Comunidad = {
   id: string
   slug: string
   nombre: string
   municipioId: string
   descripcion: string
-  historia: string
-  cultura: string
-  latitud: number
-  longitud: number
+  logo?: string
   portada: string
   galeria: string[]
   contacto: { telefono: string; correo: string; whatsapp: string }
-  redes: { facebook?: string; instagram?: string }
+  redes: RedSocial[]
   fundacion: string
   habitantes: number
+  direccion?: string
+  coordenadas?: string
 }
 
 export type Categoria =
@@ -39,14 +44,10 @@ export type Producto = {
   nombre: string
   descripcion: string
   categoria: Categoria
-  tipo: string
   precio: number
   comunidadId: string
   artesano: string
   imagenes: string[]
-  materiales: string[]
-  proceso: string
-  tiempoFabricacion: string
 }
 
 export type Publicacion = {
@@ -59,7 +60,6 @@ export type Publicacion = {
   imagenes: string[]
   productosRelacionados: string[]
   likes: number
-  comentarios: number
 }
 
 export type PuntoInteres = {
@@ -86,17 +86,13 @@ export type RutaTuristica = {
   descripcion: string
   duracion: string
   distancia: string
-  dificultad: 'Baja' | 'Media' | 'Alta'
   municipioId: string
   comunidadPrincipalId: string
   comunidadesIds: string[]
-  tipoExperiencia: string
   portada: string
   galeria: string[]
   puntos: PuntoInteres[]
-  cronograma: { hora: string; actividad: string }[]
   serviciosIds: string[]
-  recomendaciones: string[]
 }
 
 export type Rol = 'Administrador' | 'Gestor' | 'Líder comunitario' | 'Artesano' | 'Publicador'
@@ -126,16 +122,11 @@ export const comunidades: Comunidad[] = [
     municipioId: 'm1',
     descripcion:
       'Comunidad artesanal de Uribia reconocida por sus mochilas y chinchorros tejidos a mano.',
-    historia:
-      'Fundada por familias del clan Epieyu, la comunidad ha preservado por generaciones el arte del tejido, transmitido de madres a hijas como forma de memoria y sustento.',
-    cultura:
-      'El tejido Wayuu no es solo un oficio: cada patrón (kanás) representa elementos de la naturaleza y de la cosmovisión del pueblo Wayuu.',
-    latitud: 11.71,
-    longitud: -72.26,
+    logo: '/images/artisan-1.png',
     portada: '/images/community-1.png',
     galeria: ['/images/gallery-1.png', '/images/gallery-2.png', '/images/gallery-4.png'],
     contacto: { telefono: '+57 300 000 0001', correo: 'wotkasainru@iapguajira.co', whatsapp: '573000000001' },
-    redes: { instagram: '@wotkasainru' },
+    redes: [{ red_social: 'instagram', usuario: '@wotkasainru', link: 'https://instagram.com/wotkasainru' }],
     fundacion: '1978',
     habitantes: 42,
   },
@@ -146,16 +137,11 @@ export const comunidades: Comunidad[] = [
     municipioId: 'm2',
     descripcion:
       'Comunidad dedicada a la extracción artesanal de sal marina en las charcas de Manaure.',
-    historia:
-      'Las salinas de Manaure han sido trabajadas por el pueblo Wayuu desde tiempos ancestrales, siendo una de las fuentes de sal más importantes del país.',
-    cultura:
-      'La recolección de sal se organiza de forma comunitaria y respeta los ciclos del sol y el viento del Caribe.',
-    latitud: 11.77,
-    longitud: -72.44,
+    logo: '/images/community-2.png',
     portada: '/images/community-2.png',
     galeria: ['/images/community-2.png', '/images/product-sal.png', '/images/gallery-3.png'],
     contacto: { telefono: '+57 300 000 0002', correo: 'shipia@iapguajira.co', whatsapp: '573000000002' },
-    redes: { facebook: 'Salinas Shipia' },
+    redes: [{ red_social: 'facebook', usuario: 'Salinas Shipia', link: 'https://facebook.com/salinasshipia' }],
     fundacion: '1965',
     habitantes: 68,
   },
@@ -166,16 +152,11 @@ export const comunidades: Comunidad[] = [
     municipioId: 'm1',
     descripcion:
       'Comunidad costera en Cabo de la Vela dedicada a la pesca artesanal y el turismo comunitario.',
-    historia:
-      'Cabo de la Vela, o "Jepira", es considerado un lugar sagrado para el pueblo Wayuu, la morada de los espíritus de los muertos.',
-    cultura:
-      'La pesca, el kitesurf y la hospitalidad hacen de esta comunidad un destino de turismo consciente.',
-    latitud: 12.22,
-    longitud: -72.15,
+    logo: '/images/community-3.png',
     portada: '/images/community-3.png',
     galeria: ['/images/community-3.png', '/images/tourism-2.png', '/images/product-pescado.png'],
     contacto: { telefono: '+57 300 000 0003', correo: 'jepira@iapguajira.co', whatsapp: '573000000003' },
-    redes: { instagram: '@jepira.cabo' },
+    redes: [{ red_social: 'instagram', usuario: '@jepira.cabo', link: 'https://instagram.com/jepira.cabo' }],
     fundacion: '1990',
     habitantes: 35,
   },
@@ -186,16 +167,11 @@ export const comunidades: Comunidad[] = [
     municipioId: 'm1',
     descripcion:
       'Comunidad del oasis de la Macuira que combina agricultura, pastoreo y ecoturismo.',
-    historia:
-      'En medio del desierto se levanta un bosque de niebla único: la Serranía de la Macuira, hogar de comunidades que viven en armonía con este ecosistema.',
-    cultura:
-      'El pastoreo de chivos y el cultivo tradicional conviven con la protección del parque natural.',
-    latitud: 12.14,
-    longitud: -71.33,
+    logo: '/images/community-4.png',
     portada: '/images/community-4.png',
     galeria: ['/images/community-4.png', '/images/gallery-3.png', '/images/product-friche.png'],
     contacto: { telefono: '+57 300 000 0004', correo: 'macuira@iapguajira.co', whatsapp: '573000000004' },
-    redes: {},
+    redes: [],
     fundacion: '1982',
     habitantes: 27,
   },
@@ -209,15 +185,10 @@ export const productos: Producto[] = [
     descripcion:
       'Mochila tejida a una hebra con patrones geométricos kanás en tonos tierra. Pieza única.',
     categoria: 'Artesanías',
-    tipo: 'Mochilas',
     precio: 180000,
     comunidadId: 'c1',
     artesano: 'María Epieyu',
     imagenes: ['/images/product-mochila.png', '/images/gallery-4.png'],
-    materiales: ['Hilo acrílico', 'Algodón'],
-    proceso:
-      'Cada mochila se teje a mano combinando técnicas de crochet. El cuerpo puede tardar entre 15 y 20 días.',
-    tiempoFabricacion: '15-20 días',
   },
   {
     id: 'p2',
@@ -226,15 +197,10 @@ export const productos: Producto[] = [
     descripcion:
       'Hamaca tradicional tejida con flecos elaborados. Ideal para descanso y decoración.',
     categoria: 'Artesanías',
-    tipo: 'Chinchorros',
     precio: 950000,
     comunidadId: 'c1',
     artesano: 'Rosa Uriana',
     imagenes: ['/images/product-chinchorro.png'],
-    materiales: ['Hilo de algodón', 'Fibra natural'],
-    proceso:
-      'El chinchorro requiere el trabajo coordinado de varias tejedoras y puede tomar hasta dos meses.',
-    tiempoFabricacion: '45-60 días',
   },
   {
     id: 'p3',
@@ -242,14 +208,10 @@ export const productos: Producto[] = [
     nombre: 'Set de Manillas Wayuu',
     descripcion: 'Conjunto de pulseras tejidas con mostacilla y patrones tradicionales.',
     categoria: 'Artesanías',
-    tipo: 'Manillas',
     precio: 35000,
     comunidadId: 'c1',
     artesano: 'Luz Pushaina',
     imagenes: ['/images/product-manilla.png'],
-    materiales: ['Mostacilla', 'Hilo encerado'],
-    proceso: 'Tejidas a mano con mostacilla checa, cada manilla toma cerca de un día.',
-    tiempoFabricacion: '1-2 días',
   },
   {
     id: 'p4',
@@ -257,14 +219,10 @@ export const productos: Producto[] = [
     nombre: 'Pescado Fresco del Caribe',
     descripcion: 'Pesca artesanal diaria: pargo, sierra y langosta según temporada.',
     categoria: 'Pesca',
-    tipo: 'Pescado fresco',
     precio: 28000,
     comunidadId: 'c3',
     artesano: 'José Ipuana',
     imagenes: ['/images/product-pescado.png'],
-    materiales: ['Producto fresco'],
-    proceso: 'Capturado de forma sostenible con métodos tradicionales de pesca costera.',
-    tiempoFabricacion: 'Diario',
   },
   {
     id: 'p5',
@@ -272,14 +230,10 @@ export const productos: Producto[] = [
     nombre: 'Friche Guajiro (plato típico)',
     descripcion: 'Plato tradicional de chivo, símbolo de la gastronomía Wayuu.',
     categoria: 'Gastronomía',
-    tipo: 'Platos típicos',
     precio: 22000,
     comunidadId: 'c4',
     artesano: 'Cocina comunitaria Macuira',
     imagenes: ['/images/product-friche.png'],
-    materiales: ['Carne de chivo', 'Especias locales'],
-    proceso: 'Preparado según receta tradicional, cocido lentamente con vísceras y sal marina.',
-    tiempoFabricacion: 'Por encargo',
   },
   {
     id: 'p6',
@@ -287,14 +241,10 @@ export const productos: Producto[] = [
     nombre: 'Sal Marina Artesanal',
     descripcion: 'Sal recolectada a mano en las charcas de Manaure, sin aditivos.',
     categoria: 'Agricultura',
-    tipo: 'Sal',
     precio: 12000,
     comunidadId: 'c2',
     artesano: 'Cooperativa Shipia',
     imagenes: ['/images/product-sal.png'],
-    materiales: ['Sal marina 100% natural'],
-    proceso: 'Evaporación natural del agua de mar por acción del sol y el viento.',
-    tiempoFabricacion: 'Según temporada',
   },
 ]
 
@@ -310,7 +260,6 @@ export const publicaciones: Publicacion[] = [
     imagenes: ['/images/product-mochila.png', '/images/gallery-1.png'],
     productosRelacionados: ['p1'],
     likes: 128,
-    comentarios: 24,
   },
   {
     id: 'pub2',
@@ -323,7 +272,6 @@ export const publicaciones: Publicacion[] = [
     imagenes: ['/images/tourism-2.png'],
     productosRelacionados: ['p4'],
     likes: 96,
-    comentarios: 12,
   },
   {
     id: 'pub3',
@@ -336,7 +284,6 @@ export const publicaciones: Publicacion[] = [
     imagenes: ['/images/community-2.png', '/images/product-sal.png'],
     productosRelacionados: ['p6'],
     likes: 74,
-    comentarios: 8,
   },
 ]
 
@@ -357,11 +304,9 @@ export const rutas: RutaTuristica[] = [
       'Una ruta de tres días por el sagrado Cabo de la Vela: playas turquesa, kitesurf, atardeceres en el Pilón de Azúcar y convivencia con la comunidad Jepira.',
     duracion: '3 días / 2 noches',
     distancia: '180 km',
-    dificultad: 'Media',
     municipioId: 'm1',
     comunidadPrincipalId: 'c3',
     comunidadesIds: ['c3', 'c1'],
-    tipoExperiencia: 'Cultural y naturaleza',
     portada: '/images/tourism-2.png',
     galeria: ['/images/community-3.png', '/images/tourism-2.png', '/images/tourism-1.png'],
     puntos: [
@@ -369,14 +314,7 @@ export const rutas: RutaTuristica[] = [
       { nombre: 'Playa del Faro', descripcion: 'Atardecer y kitesurf.', latitud: 12.22, longitud: -72.15, imagen: '/images/tourism-2.png' },
       { nombre: 'Ranchería Jepira', descripcion: 'Convivencia y gastronomía local.', latitud: 12.21, longitud: -72.15, imagen: '/images/community-3.png' },
     ],
-    cronograma: [
-      { hora: 'Día 1 · 08:00', actividad: 'Salida desde Riohacha' },
-      { hora: 'Día 1 · 14:00', actividad: 'Llegada y almuerzo en la comunidad' },
-      { hora: 'Día 2 · 06:00', actividad: 'Amanecer en el Pilón de Azúcar' },
-      { hora: 'Día 3 · 10:00', actividad: 'Taller de tejido y regreso' },
-    ],
     serviciosIds: ['s1', 's2', 's4'],
-    recomendaciones: ['Llevar protector solar', 'Hidratación abundante', 'Efectivo (no hay cajeros)'],
   },
   {
     id: 'r2',
@@ -386,25 +324,17 @@ export const rutas: RutaTuristica[] = [
       'Descubre el bosque de niebla en medio del desierto, camina entre cerros verdes y comparte con comunidades pastoras.',
     duracion: '2 días / 1 noche',
     distancia: '95 km',
-    dificultad: 'Alta',
     municipioId: 'm1',
     comunidadPrincipalId: 'c4',
     comunidadesIds: ['c4'],
-    tipoExperiencia: 'Ecoturismo',
     portada: '/images/community-4.png',
     galeria: ['/images/community-4.png', '/images/gallery-3.png'],
     puntos: [
       { nombre: 'Cerro Palúa', descripcion: 'Senderismo con vistas panorámicas.', latitud: 12.15, longitud: -71.34, imagen: '/images/community-4.png' },
       { nombre: 'Oasis interior', descripcion: 'Bosque de niebla único.', latitud: 12.14, longitud: -71.33, imagen: '/images/gallery-3.png' },
     ],
-    cronograma: [
-      { hora: 'Día 1 · 07:00', actividad: 'Ingreso al parque natural' },
-      { hora: 'Día 1 · 16:00', actividad: 'Convivencia con comunidad pastora' },
-      { hora: 'Día 2 · 06:00', actividad: 'Caminata al oasis y regreso' },
-    ],
     serviciosIds: ['s3', 's2'],
-    recomendaciones: ['Calzado de senderismo', 'Guía comunitario obligatorio', 'Respetar el parque natural'],
-  },
+},
   {
     id: 'r3',
     slug: 'punta-gallinas',
@@ -413,26 +343,17 @@ export const rutas: RutaTuristica[] = [
       'Llega al punto más al norte de Suramérica: dunas rojas que caen al mar, flamencos y hospitalidad Wayuu.',
     duracion: '4 días / 3 noches',
     distancia: '260 km',
-    dificultad: 'Alta',
     municipioId: 'm1',
     comunidadPrincipalId: 'c3',
     comunidadesIds: ['c3', 'c2'],
-    tipoExperiencia: 'Aventura',
     portada: '/images/tourism-1.png',
     galeria: ['/images/tourism-1.png', '/images/community-2.png', '/images/tourism-3.png'],
     puntos: [
       { nombre: 'Dunas de Taroa', descripcion: 'Dunas que caen al mar Caribe.', latitud: 12.45, longitud: -71.7, imagen: '/images/tourism-1.png' },
       { nombre: 'Bahía Hondita', descripcion: 'Avistamiento de flamencos.', latitud: 12.43, longitud: -71.73, imagen: '/images/tourism-3.png' },
     ],
-    cronograma: [
-      { hora: 'Día 1', actividad: 'Riohacha - Cabo de la Vela' },
-      { hora: 'Día 2', actividad: 'Cabo - Punta Gallinas' },
-      { hora: 'Día 3', actividad: 'Dunas de Taroa y bahía' },
-      { hora: 'Día 4', actividad: 'Regreso a Riohacha' },
-    ],
     serviciosIds: ['s1', 's2', 's4'],
-    recomendaciones: ['Viaje solo con operadores comunitarios', 'Llevar efectivo', 'Preparación física media-alta'],
-  },
+},
 ]
 
 export const usuarios: Usuario[] = [
