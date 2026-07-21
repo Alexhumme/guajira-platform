@@ -22,7 +22,7 @@ export type Comunidad = {
   contacto: { telefono: string; correo: string; whatsapp: string }
   redes: { facebook?: string; instagram?: string }
   fundacion: string
-  familias: number
+  habitantes: number
 }
 
 export type Categoria =
@@ -41,7 +41,6 @@ export type Producto = {
   categoria: Categoria
   tipo: string
   precio: number
-  disponibilidad: 'Disponible' | 'Bajo pedido' | 'Agotado'
   comunidadId: string
   artesano: string
   imagenes: string[]
@@ -138,7 +137,7 @@ export const comunidades: Comunidad[] = [
     contacto: { telefono: '+57 300 000 0001', correo: 'wotkasainru@iapguajira.co', whatsapp: '573000000001' },
     redes: { instagram: '@wotkasainru' },
     fundacion: '1978',
-    familias: 42,
+    habitantes: 42,
   },
   {
     id: 'c2',
@@ -158,7 +157,7 @@ export const comunidades: Comunidad[] = [
     contacto: { telefono: '+57 300 000 0002', correo: 'shipia@iapguajira.co', whatsapp: '573000000002' },
     redes: { facebook: 'Salinas Shipia' },
     fundacion: '1965',
-    familias: 68,
+    habitantes: 68,
   },
   {
     id: 'c3',
@@ -178,7 +177,7 @@ export const comunidades: Comunidad[] = [
     contacto: { telefono: '+57 300 000 0003', correo: 'jepira@iapguajira.co', whatsapp: '573000000003' },
     redes: { instagram: '@jepira.cabo' },
     fundacion: '1990',
-    familias: 35,
+    habitantes: 35,
   },
   {
     id: 'c4',
@@ -198,7 +197,7 @@ export const comunidades: Comunidad[] = [
     contacto: { telefono: '+57 300 000 0004', correo: 'macuira@iapguajira.co', whatsapp: '573000000004' },
     redes: {},
     fundacion: '1982',
-    familias: 27,
+    habitantes: 27,
   },
 ]
 
@@ -212,7 +211,6 @@ export const productos: Producto[] = [
     categoria: 'Artesanías',
     tipo: 'Mochilas',
     precio: 180000,
-    disponibilidad: 'Disponible',
     comunidadId: 'c1',
     artesano: 'María Epieyu',
     imagenes: ['/images/product-mochila.png', '/images/gallery-4.png'],
@@ -230,7 +228,6 @@ export const productos: Producto[] = [
     categoria: 'Artesanías',
     tipo: 'Chinchorros',
     precio: 950000,
-    disponibilidad: 'Bajo pedido',
     comunidadId: 'c1',
     artesano: 'Rosa Uriana',
     imagenes: ['/images/product-chinchorro.png'],
@@ -247,7 +244,6 @@ export const productos: Producto[] = [
     categoria: 'Artesanías',
     tipo: 'Manillas',
     precio: 35000,
-    disponibilidad: 'Disponible',
     comunidadId: 'c1',
     artesano: 'Luz Pushaina',
     imagenes: ['/images/product-manilla.png'],
@@ -263,7 +259,6 @@ export const productos: Producto[] = [
     categoria: 'Pesca',
     tipo: 'Pescado fresco',
     precio: 28000,
-    disponibilidad: 'Disponible',
     comunidadId: 'c3',
     artesano: 'José Ipuana',
     imagenes: ['/images/product-pescado.png'],
@@ -279,7 +274,6 @@ export const productos: Producto[] = [
     categoria: 'Gastronomía',
     tipo: 'Platos típicos',
     precio: 22000,
-    disponibilidad: 'Disponible',
     comunidadId: 'c4',
     artesano: 'Cocina comunitaria Macuira',
     imagenes: ['/images/product-friche.png'],
@@ -295,7 +289,6 @@ export const productos: Producto[] = [
     categoria: 'Agricultura',
     tipo: 'Sal',
     precio: 12000,
-    disponibilidad: 'Disponible',
     comunidadId: 'c2',
     artesano: 'Cooperativa Shipia',
     imagenes: ['/images/product-sal.png'],
@@ -456,7 +449,7 @@ export const roles: Rol[] = ['Administrador', 'Gestor', 'Líder comunitario', 'A
 
 export const indicadores = [
   { label: 'Comunidades participantes', valor: comunidades.length, sufijo: '' },
-  { label: 'Familias beneficiadas', valor: 172, sufijo: '+' },
+  { label: 'Habitantes beneficiados', valor: 172, sufijo: '+' },
   { label: 'Productos en el marketplace', valor: productos.length, sufijo: '' },
   { label: 'Rutas de turismo comunitario', valor: rutas.length, sufijo: '' },
   { label: 'Municipios cubiertos', valor: municipios.length, sufijo: '' },

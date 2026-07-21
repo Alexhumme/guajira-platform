@@ -49,7 +49,7 @@ export function CommunityDetail({ comunidad }: { comunidad: Comunidad }) {
           <p className="mt-3 max-w-2xl text-pretty text-background/90">{comunidad.descripcion}</p>
           <div className="mt-4 flex flex-wrap gap-3">
             <Badge variant="onDark">
-              <Users className="size-3.5" /> {comunidad.familias} familias
+              <Users className="size-3.5" /> {comunidad.habitantes} habitantes
             </Badge>
             <Badge variant="onDark">
               <Calendar className="size-3.5" /> Desde {comunidad.fundacion}

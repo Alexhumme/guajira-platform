@@ -29,12 +29,6 @@ export function ProductCard({ producto }: { producto: Producto }) {
         <p className="text-xs text-muted-foreground">{comunidad?.nombre}</p>
         <div className="mt-auto flex items-center justify-between pt-3">
           <span className="font-semibold text-primary">{formatCOP(producto.precio)}</span>
-          <Badge
-            variant={producto.disponibilidad === 'Disponible' ? 'success' : 'muted'}
-            className="text-[10px]"
-          >
-            {producto.disponibilidad}
-          </Badge>
         </div>
       </div>
     </Link>

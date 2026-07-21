@@ -57,9 +57,7 @@ export function ProductDetail({ producto }: { producto: Producto }) {
         )}
         <p className="mt-4 text-2xl font-bold text-primary">{formatCOP(producto.precio)}</p>
         <div className="mt-2">
-          <Badge variant={producto.disponibilidad === 'Disponible' ? 'success' : 'muted'}>
-            {producto.disponibilidad}
-          </Badge>
+
         </div>
 
         <p className="mt-5 leading-relaxed text-pretty text-muted-foreground">{producto.descripcion}</p>

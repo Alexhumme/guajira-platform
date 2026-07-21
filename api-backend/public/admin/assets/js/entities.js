@@ -302,6 +302,131 @@ async function renderMunicipios(context) {
   });
 }
 
+function createRedesManager({ endpoint, record, idKey }) {
+  const container = document.createElement('div');
+  container.className = 'form-field form-field-wide';
+  const title = document.createElement('div');
+  title.textContent = 'Redes sociales';
+  title.style.fontWeight = '600';
+  title.style.marginBottom = '8px';
+
+  const list = document.createElement('div');
+  list.style.display = 'grid';
+  list.style.gap = '8px';
+
+  const controls = document.createElement('div');
+  controls.style.display = 'flex';
+  controls.style.gap = '8px';
+  controls.style.flexWrap = 'wrap';
+
+  const select = document.createElement('select');
+  select.style.minWidth = '140px';
+  ['facebook', 'instagram', 'linkedin', 'tiktok', 'otras'].forEach((value) => {
+    const option = document.createElement('option');
+    option.value = value;
+    option.textContent = value;
+    select.appendChild(option);
+  });
+
+  const usuarioInput = document.createElement('input');
+  usuarioInput.type = 'text';
+  usuarioInput.placeholder = 'Usuario';
+  usuarioInput.style.flex = '1';
+
+  const linkInput = document.createElement('input');
+  linkInput.type = 'text';
+  linkInput.placeholder = 'Link';
+  linkInput.style.flex = '1';
+
+  const addButton = document.createElement('button');
+  addButton.type = 'button';
+  addButton.textContent = 'Agregar';
+
+  controls.append(select, usuarioInput, linkInput, addButton);
+  container.append(title, controls, list);
+
+  const state = { items: [], pending: [], removed: [] };
+
+  const renderItems = () => {
+    list.innerHTML = '';
+    if (!state.items.length) {
+      const empty = document.createElement('div');
+      empty.textContent = 'Sin redes sociales registradas.';
+      empty.style.color = '#6b7280';
+      list.appendChild(empty);
+      return;
+    }
+
+    state.items.forEach((item) => {
+      const entry = document.createElement('div');
+      entry.style.display = 'flex';
+      entry.style.justifyContent = 'space-between';
+      entry.style.alignItems = 'center';
+      entry.style.padding = '8px 10px';
+      entry.style.border = '1px solid #e5e7eb';
+      entry.style.borderRadius = '6px';
+      const label = document.createElement('span');
+      label.textContent = `${item.red_social}: ${item.usuario || item.link || '-'}`;
+      label.style.wordBreak = 'break-all';
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.textContent = 'Eliminar';
+      remove.className = 'danger';
+      remove.addEventListener('click', () => {
+        if (item.isLocal) {
+          state.pending = state.pending.filter((pending) => pending.id !== item.id);
+        } else {
+          state.removed.push(item);
+        }
+        state.items = state.items.filter((current) => current.id !== item.id);
+        renderItems();
+      });
+      entry.append(label, remove);
+      list.appendChild(entry);
+    });
+  };
+
+  addButton.addEventListener('click', () => {
+    const redSocial = select.value.trim();
+    const usuario = usuarioInput.value.trim();
+    const link = linkInput.value.trim();
+    if (!redSocial) return;
+    const item = { id: `local-${Date.now()}`, red_social: redSocial, usuario, link, isLocal: true };
+    state.pending.push(item);
+    state.items.push(item);
+    renderItems();
+    usuarioInput.value = '';
+    linkInput.value = '';
+    select.value = 'facebook';
+  });
+
+  const loadExisting = async () => {
+    if (!record?.[idKey]) return;
+    const rows = await requestJson(`${endpoint}/${record[idKey]}/redes`) || [];
+    state.items = rows.map((row) => ({ ...row, id: row.id_red_comunidad, isLocal: false }));
+    renderItems();
+  };
+
+  loadExisting();
+
+  return {
+    container,
+    commit: async (entityId) => {
+      if (!entityId) return;
+      for (const pending of state.pending) {
+        await requestJson(`${endpoint}/${entityId}/redes`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ red_social: pending.red_social, usuario: pending.usuario, link: pending.link }),
+        });
+      }
+      for (const item of state.removed) {
+        await requestJson(`${endpoint}/${entityId}/redes/${item.id_red_comunidad || item.id}`, { method: 'DELETE' });
+      }
+    },
+  };
+}
+
 async function renderComunidades(context) {
   const [comunidades, municipios] = await Promise.all([
     requestJson('/api/comunidades'),
@@ -310,10 +435,17 @@ async function renderComunidades(context) {
   const rows = comunidades || [];
   const muns = municipios || [];
   const reload = () => renderComunidades(context);
+  const toBase64 = (file) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error('No se pudo leer la imagen.'));
+    reader.readAsDataURL(file);
+  });
   const fields = [
     { key: 'nombre', label: 'Nombre', type: 'text', required: true },
     { key: 'id_municipio', label: 'Municipio', type: 'select', numeric: true, required: true, options: optionsFrom(muns, 'id_municipio', (mun) => mun.nombre) },
-    { key: 'logo_dir', label: 'Ruta de logo', type: 'text' },
+    { key: 'logo_dir', label: 'Logo', type: 'image', placeholder: 'URL externa o ruta del servidor', onUpload: async (file) => { const result = await requestJson('/api/comunidades/upload', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fileData: await toBase64(file), fileName: file.name }) }); return result?.path || ''; } },
+    { key: 'portada_dir', label: 'Portada', type: 'image', placeholder: 'URL externa o ruta del servidor', onUpload: async (file) => { const result = await requestJson('/api/comunidades/upload', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fileData: await toBase64(file), fileName: file.name }) }); return result?.path || ''; } },
     { key: 'direccion', label: 'Direccion', type: 'text' },
     { key: 'coordenadas', label: 'Coordenadas', type: 'text' },
     { key: 'numero_contacto', label: 'Numero de contacto', type: 'text' },
@@ -330,6 +462,7 @@ async function renderComunidades(context) {
     columns: [
       { key: 'id_comunidad', label: 'ID' },
       { key: 'nombre', label: 'Nombre' },
+      { key: 'logo_dir', label: 'Logo', type: 'image' },
       { key: 'municipio', label: 'Municipio' },
       { key: 'visibilidad', label: 'Visible', format: (row) => row.visibilidad ? 'Si' : 'No' },
     ],
@@ -339,18 +472,39 @@ async function renderComunidades(context) {
       options: optionsFrom(muns, 'id_municipio', (mun) => mun.nombre),
       matches: (row, value) => String(row.id_municipio) === value,
     }],
-    onCreate: () => openEntityForm({ title: 'Nueva comunidad', fields, endpoint: '/api/comunidades', idKey: 'id_comunidad', reload }),
-    onEdit: (record) => openEntityForm({ title: 'Editar comunidad', fields, record, endpoint: '/api/comunidades', idKey: 'id_comunidad', reload }),
+    onCreate: () => {
+      const mediaManager = createMediaManager({ endpoint: '/api/comunidades', record: null, idKey: 'id_comunidad', listKey: 'id_comunidad_media', entityLabel: 'comunidad' });
+      const redesManager = createRedesManager({ endpoint: '/api/comunidades', record: null, idKey: 'id_comunidad' });
+      const extraContent = document.createElement('div');
+      extraContent.className = 'form-field form-field-wide';
+      extraContent.append(mediaManager.container, redesManager.container);
+      return openEntityForm({ title: 'Nueva comunidad', fields, endpoint: '/api/comunidades', idKey: 'id_comunidad', reload, extraContent, afterSave: async (result) => { await mediaManager.commit(result?.id_comunidad); await redesManager.commit(result?.id_comunidad); } });
+    },
+    onEdit: (record) => {
+      const mediaManager = createMediaManager({ endpoint: '/api/comunidades', record, idKey: 'id_comunidad', listKey: 'id_comunidad_media', entityLabel: 'comunidad' });
+      const redesManager = createRedesManager({ endpoint: '/api/comunidades', record, idKey: 'id_comunidad' });
+      const extraContent = document.createElement('div');
+      extraContent.className = 'form-field form-field-wide';
+      extraContent.append(mediaManager.container, redesManager.container);
+      return openEntityForm({ title: 'Editar comunidad', fields, record, endpoint: '/api/comunidades', idKey: 'id_comunidad', reload, extraContent, afterSave: async (result) => { await mediaManager.commit(result?.id_comunidad || record.id_comunidad); await redesManager.commit(result?.id_comunidad || record.id_comunidad); } });
+    },
     onDelete: async (record) => {
       await requestJson(`/api/comunidades/${record.id_comunidad}`, { method: 'DELETE' });
       await reload();
     },
-    onView: (record) => openDetails('Detalle comunidad', [
-      ['Nombre', record.nombre], ['Municipio', record.municipio], ['Logo', record.logo_dir],
-      ['Descripcion', record.descripcion], ['Direccion', record.direccion], ['Coordenadas', record.coordenadas],
-      ['Contacto', record.numero_contacto], ['Visible', record.visibilidad ? 'Si' : 'No'],
-      ['Fundacion', toDateInput(record.fecha_fundacion)], ['Registro', toDateInput(record.fecha_registro)],
-    ]),
+    onView: async (record) => {
+      const [media, redes] = await Promise.all([
+        requestJson(`/api/comunidades/${record.id_comunidad}/media`) || [],
+        requestJson(`/api/comunidades/${record.id_comunidad}/redes`) || [],
+      ]);
+      openDetails('Detalle comunidad', [
+        ['Nombre', record.nombre], ['Municipio', record.municipio], ['Logo', record.logo_dir], ['Portada', record.portada_dir],
+        ['Descripcion', record.descripcion], ['Direccion', record.direccion], ['Coordenadas', record.coordenadas],
+        ['Contacto', record.numero_contacto], ['Visible', record.visibilidad ? 'Si' : 'No'],
+        ['Redes', redes.map((item) => `${item.red_social}${item.usuario ? ` (${item.usuario})` : ''}${item.link ? ` - ${item.link}` : ''}`).join(' • ') || '-'],
+        ['Fundacion', toDateInput(record.fecha_fundacion)], ['Registro', toDateInput(record.fecha_registro)],
+      ], { mediaItems: [record.logo_dir, record.portada_dir, ...media.map((item) => item.media_dir)].filter(Boolean) });
+    },
   });
 }
 

@@ -13,6 +13,8 @@ const exportTables = [
   { name: 'departamentos', query: 'SELECT * FROM departamento ORDER BY id_departamento' },
   { name: 'municipios', query: 'SELECT * FROM municipio ORDER BY id_municipio' },
   { name: 'comunidades', query: 'SELECT * FROM comunidad ORDER BY id_comunidad' },
+  { name: 'redes_comunidad', query: 'SELECT * FROM red_comunidad ORDER BY id_red_comunidad' },
+  { name: 'comunidad_media', query: 'SELECT * FROM comunidad_media ORDER BY id_comunidad_media' },
   { name: 'miembros', query: 'SELECT * FROM miembro ORDER BY id_miembro' },
   { name: 'productos', query: 'SELECT * FROM producto ORDER BY id_producto' },
   { name: 'categorias_turisticas', query: 'SELECT * FROM categoria_turistica ORDER BY id_categoria_turistica' },

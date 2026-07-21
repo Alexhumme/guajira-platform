@@ -35,7 +35,7 @@ export function CommunityCard({ comunidad }: { comunidad: Comunidad }) {
         <p className="line-clamp-2 text-sm text-muted-foreground">{comunidad.descripcion}</p>
         <div className="mt-4 flex items-center gap-4 text-xs text-muted-foreground">
           <span className="flex items-center gap-1"><Package className="size-3.5 text-primary" /> {totalProductos} productos</span>
-          <span className="flex items-center gap-1"><Users className="size-3.5 text-primary" /> {comunidad.familias} familias</span>
+          <span className="flex items-center gap-1"><Users className="size-3.5 text-primary" /> {comunidad.habitantes} habitantes</span>
         </div>
       </div>
     </Link>

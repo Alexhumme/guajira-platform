@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS comunidad (
   id_municipio INT NOT NULL,
   nombre TEXT NOT NULL,
   logo_dir TEXT NULL,
+  portada_dir TEXT NULL,
   descripcion TEXT NULL,
   direccion TEXT NULL,
   coordenadas TEXT NULL,
@@ -60,6 +61,31 @@ CREATE TABLE IF NOT EXISTS comunidad (
   CONSTRAINT fk_comunidad_municipio
     FOREIGN KEY (id_municipio) REFERENCES municipio(id_municipio)
     ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS red_comunidad (
+  id_red_comunidad CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+  id_comunidad INT NOT NULL,
+  red_social TEXT NOT NULL,
+  usuario TEXT NULL,
+  link TEXT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_red_comunidad_comunidad
+    FOREIGN KEY (id_comunidad) REFERENCES comunidad(id_comunidad)
+    ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS comunidad_media (
+  id_comunidad_media CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+  id_comunidad INT NOT NULL,
+  media_dir TEXT NOT NULL,
+  `index` INT NOT NULL DEFAULT 0,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_comunidad_media_comunidad
+    FOREIGN KEY (id_comunidad) REFERENCES comunidad(id_comunidad)
+    ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS miembro (
