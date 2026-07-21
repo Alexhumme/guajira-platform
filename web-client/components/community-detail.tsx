@@ -185,13 +185,15 @@ export function CommunityDetail({ comunidad }: { comunidad: Comunidad }) {
               {(comunidad.redes.facebook || comunidad.redes.instagram) && (
                 <div className="flex gap-3 pt-2">
                   {comunidad.redes.instagram && (
-                    <Badge variant="outline">
-                      <svg width={30} height={30} href="/icons/instagram.svg"><use href="" /></svg> {comunidad.redes.instagram}
+                    <Badge variant="outline" className="py-2">
+                      <Image alt="logo_instagram" width={20} height={20} src={"/icons/instagram.svg"}></Image>
+                      {comunidad.redes.instagram}
                     </Badge>
                   )}
                   {comunidad.redes.facebook && (
-                    <Badge variant="outline">
-                      <svg><use href="/icons/facebook.svg" /></svg> {comunidad.redes.facebook}
+                    <Badge variant="outline"  className="py-2">
+                      <Image alt="logo_facebook" width={20} height={20} src={"/icons/facebook.svg"}></Image>
+                      {comunidad.redes.facebook}
                     </Badge>
                   )}
                 </div>

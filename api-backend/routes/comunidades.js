@@ -57,13 +57,12 @@ router.put('/:id', async (req, res, next) => {
       numero_contacto = null,
       visibilidad = true,
       fecha_fundacion = null,
-      fecha_registro = null,
     } = req.body || {};
     if (!nombre || !id_municipio) return res.status(400).json({ message: 'nombre e id_municipio requeridos' });
 
     const [result] = await pool.query(
-      'UPDATE comunidad SET nombre = ?, id_municipio = ?, logo_dir = ?, descripcion = ?, direccion = ?, coordenadas = ?, numero_contacto = ?, visibilidad = ?, fecha_fundacion = ?, fecha_registro = ?, updated_at = NOW() WHERE id_comunidad = ?',
-      [nombre, id_municipio, logo_dir, descripcion, direccion, coordenadas, numero_contacto, visibilidad ? 1 : 0, fecha_fundacion, fecha_registro, req.params.id]
+      'UPDATE comunidad SET nombre = ?, id_municipio = ?, logo_dir = ?, descripcion = ?, direccion = ?, coordenadas = ?, numero_contacto = ?, visibilidad = ?, fecha_fundacion = ?, updated_at = NOW() WHERE id_comunidad = ?',
+      [nombre, id_municipio, logo_dir, descripcion, direccion, coordenadas, numero_contacto, visibilidad ? 1 : 0, fecha_fundacion, req.params.id]
     );
     if (!result.affectedRows) return res.status(404).json({ message: 'No encontrado' });
     res.json({ id_comunidad: req.params.id, nombre, id_municipio });

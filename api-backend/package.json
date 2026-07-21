@@ -20,16 +20,16 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "connect-mysql2": "^2.2.6",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "express-rate-limit": "^8.1.0",
+    "express-session": "^1.19.0",
     "helmet": "^8.1.0",
     "morgan": "^1.10.1",
-    "mysql2": "^3.19.1",
-    "express-session": "^1.18.2",
-    "bcryptjs": "^2.4.3",
-    "connect-mysql2": "^2.2.6"
+    "mysql2": "^3.19.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

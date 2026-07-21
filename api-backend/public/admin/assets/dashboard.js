@@ -7,13 +7,28 @@ const modalClose = document.getElementById('modalClose');
 const modalSave = document.getElementById('modalSave');
 const modalTitle = document.getElementById('modalTitle');
 const modalError = document.getElementById('modalError');
+const munModalOverlay = document.getElementById('munModalOverlay');
+const munModalClose = document.getElementById('munModalClose');
+const munModalSave = document.getElementById('munModalSave');
+const munModalTitle = document.getElementById('munModalTitle');
+const munModalError = document.getElementById('munModalError');
+const memModalOverlay = document.getElementById('memModalOverlay');
+const memModalClose = document.getElementById('memModalClose');
+const memModalSave = document.getElementById('memModalSave');
+const memModalTitle = document.getElementById('memModalTitle');
+const memModalError = document.getElementById('memModalError');
 const detailsOverlay = document.getElementById('detailsOverlay');
 const detailsClose = document.getElementById('detailsClose');
 const detailsBody = document.getElementById('detailsBody');
 
 let currentEditId = null;
 let currentMunicipios = [];
+let currentDepartamentos = [];
+let currentComunidades = [];
+let currentRoles = [];
 let modalMode = 'edit';
+let munModalMode = 'edit';
+let memModalMode = 'edit';
 
 async function apiFetch(path, options = {}) {
   const res = await fetch(path, { credentials: 'include', ...options });
@@ -38,6 +53,16 @@ logoutBtn.addEventListener('click', async () => {
 
 modalClose.addEventListener('click', () => {
   modalOverlay.classList.add('hidden');
+  currentEditId = null;
+});
+
+munModalClose.addEventListener('click', () => {
+  munModalOverlay.classList.add('hidden');
+  currentEditId = null;
+});
+
+memModalClose.addEventListener('click', () => {
+  memModalOverlay.classList.add('hidden');
   currentEditId = null;
 });
 
@@ -320,6 +345,7 @@ async function renderMunicipios() {
   if (!munRes || !depRes) return;
   const municipios = await munRes.json();
   const departamentos = await depRes.json();
+  currentDepartamentos = departamentos;
   updateStats({ muns: municipios.length, deps: departamentos.length });
   const pageSize = 8;
   let page = 1;
@@ -357,16 +383,7 @@ async function renderMunicipios() {
       ],
       (row) => [
         actionButton('Editar', async () => {
-          const nombre = prompt('Nuevo nombre', row.nombre);
-          if (!nombre) return;
-          const depId = prompt('ID Departamento', row.id_departamento);
-          if (!depId) return;
-          await apiFetch(`/api/municipios/${row.id_municipio}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nombre, id_departamento: Number(depId) })
-          });
-          renderMunicipios();
+          openEditMunModal(row);
         }),
         actionButton('Eliminar', async () => {
           if (!confirm('Eliminar municipio?')) return;
@@ -381,18 +398,36 @@ async function renderMunicipios() {
 
   renderPage();
 
-  document.getElementById('addMun').addEventListener('click', async () => {
-    const nombre = document.getElementById('munName').value.trim();
-    const id_departamento = Number(document.getElementById('munDep').value);
-    if (!nombre || !id_departamento) return;
-    await apiFetch('/api/municipios', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nombre, id_departamento })
-    });
-    document.getElementById('munName').value = '';
-    renderMunicipios();
+  document.getElementById('addMun').addEventListener('click', () => {
+    openCreateMunModal();
   });
+}
+
+function openEditMunModal(row) {
+  munModalMode = 'edit';
+  currentEditId = row.id_municipio;
+  munModalOverlay.classList.remove('hidden');
+  munModalTitle.textContent = 'Editar municipio';
+  munModalError.textContent = '';
+
+  const depSelect = document.getElementById('editMunDep');
+  depSelect.innerHTML = currentDepartamentos.map(d => `<option value="${d.id_departamento}">${d.nombre}</option>`).join('');
+  depSelect.value = row.id_departamento;
+
+  document.getElementById('editMunName').value = row.nombre || '';
+}
+
+function openCreateMunModal() {
+  munModalMode = 'create';
+  currentEditId = null;
+  munModalOverlay.classList.remove('hidden');
+  munModalTitle.textContent = 'Nuevo municipio';
+  munModalError.textContent = '';
+
+  const depSelect = document.getElementById('editMunDep');
+  depSelect.innerHTML = currentDepartamentos.map(d => `<option value="${d.id_departamento}">${d.nombre}</option>`).join('');
+
+  document.getElementById('editMunName').value = '';
 }
 
 async function renderComunidades() {
@@ -469,12 +504,124 @@ function actionButton(label, onClick, variant) {
   return btn;
 }
 
+async function renderMiembros() {
+  const [memRes, comRes, rolRes] = await Promise.all([
+    apiFetch('/api/miembros'),
+    apiFetch('/api/comunidades'),
+    apiFetch('/api/roles')
+  ]);
+  if (!memRes || !comRes || !rolRes) return;
+  const miembros = await memRes.json();
+  const comunidades = await comRes.json();
+  const roles = await rolRes.json();
+  currentComunidades = comunidades;
+  currentRoles = roles;
+  updateStats({ miembros: miembros.length });
+  const pageSize = 8;
+  let page = 1;
+
+  content.innerHTML = '';
+  const card = document.createElement('div');
+  card.className = 'card';
+
+  card.innerHTML = `
+    <h2>Miembros</h2>
+    <div class="form-row">
+      <button id="openCreateMem">Nuevo miembro</button>
+    </div>
+  `;
+  content.appendChild(card);
+
+  const tableHost = document.createElement('div');
+  card.appendChild(tableHost);
+
+  const renderPage = () => {
+    tableHost.innerHTML = '';
+    const start = (page - 1) * pageSize;
+    const pageRows = miembros.slice(start, start + pageSize);
+    const table = createTable(
+      pageRows,
+      [
+        { key: 'id_miembro', label: 'ID' },
+        { key: 'nombres', label: 'Nombres' },
+        { key: 'cedula', label: 'Cédula' },
+        { key: 'comunidad', label: 'Comunidad' },
+        { key: 'rol', label: 'Rol' },
+        { key: 'status', label: 'Estado' }
+      ],
+      (row) => [
+        actionButton('Editar', async () => {
+          openEditMemModal(row);
+        }),
+        actionButton('Eliminar', async () => {
+          if (!confirm('Eliminar miembro?')) return;
+          await apiFetch(`/api/miembros/${row.id_miembro}`, { method: 'DELETE' });
+          renderMiembros();
+        }, 'danger')
+      ]
+    );
+    tableHost.appendChild(table);
+    tableHost.appendChild(createPager(miembros.length, pageSize, page, (p) => { page = p; renderPage(); }));
+  };
+
+  renderPage();
+
+  document.getElementById('openCreateMem').addEventListener('click', () => {
+    openCreateMemModal();
+  });
+}
+
+function openEditMemModal(row) {
+  memModalMode = 'edit';
+  currentEditId = row.id_miembro;
+  memModalOverlay.classList.remove('hidden');
+  memModalTitle.textContent = 'Editar miembro';
+  memModalError.textContent = '';
+
+  const comSelect = document.getElementById('editMemComunidad');
+  comSelect.innerHTML = currentComunidades.map(c => `<option value="${c.id_comunidad}">${c.nombre}</option>`).join('');
+  comSelect.value = row.id_comunidad;
+
+  const rolSelect = document.getElementById('editMemRol');
+  rolSelect.innerHTML = currentRoles.map(r => `<option value="${r.id_rol}">${r.nombre}</option>`).join('');
+  rolSelect.value = row.rol_id;
+
+  document.getElementById('editMemNombres').value = row.nombres || '';
+  document.getElementById('editMemCedula').value = row.cedula || '';
+  document.getElementById('editMemFechaNacimiento').value = row.fecha_nacimiento || '';
+  document.getElementById('editMemContacto').value = row.numero_contacto || '';
+  document.getElementById('editMemGenero').value = row.genero || '';
+  document.getElementById('editMemStatus').value = row.status || 'activo';
+}
+
+function openCreateMemModal() {
+  memModalMode = 'create';
+  currentEditId = null;
+  memModalOverlay.classList.remove('hidden');
+  memModalTitle.textContent = 'Nuevo miembro';
+  memModalError.textContent = '';
+
+  const comSelect = document.getElementById('editMemComunidad');
+  comSelect.innerHTML = currentComunidades.map(c => `<option value="${c.id_comunidad}">${c.nombre}</option>`).join('');
+
+  const rolSelect = document.getElementById('editMemRol');
+  rolSelect.innerHTML = currentRoles.map(r => `<option value="${r.id_rol}">${r.nombre}</option>`).join('');
+
+  document.getElementById('editMemNombres').value = '';
+  document.getElementById('editMemCedula').value = '';
+  document.getElementById('editMemFechaNacimiento').value = '';
+  document.getElementById('editMemContacto').value = '';
+  document.getElementById('editMemGenero').value = '';
+  document.getElementById('editMemStatus').value = 'activo';
+}
+
 const tabRenderers = {
   roles: renderRoles,
   tipos: renderTipos,
   departamentos: renderDepartamentos,
   municipios: renderMunicipios,
   comunidades: renderComunidades,
+  miembros: renderMiembros,
 };
 
 for (const tab of tabs) {
@@ -493,11 +640,12 @@ for (const nav of navItems) {
   });
 }
 
-function updateStats({ roles, tipos, deps, muns }) {
+function updateStats({ roles, tipos, deps, muns, miembros }) {
   if (typeof roles === 'number') document.getElementById('statRoles').textContent = roles;
   if (typeof tipos === 'number') document.getElementById('statTipos').textContent = tipos;
   if (typeof deps === 'number') document.getElementById('statDeps').textContent = deps;
   if (typeof muns === 'number') document.getElementById('statMuns').textContent = muns;
+  if (typeof miembros === 'number') document.getElementById('statMiembros').textContent = miembros;
 }
 
 function openEditModal(row) {
@@ -517,7 +665,6 @@ function openEditModal(row) {
   document.getElementById('editComCoords').value = row.coordenadas || '';
   document.getElementById('editComContacto').value = row.numero_contacto || '';
   document.getElementById('editComFundacion').value = row.fecha_fundacion || '';
-  document.getElementById('editComRegistro').value = row.fecha_registro || '';
   document.getElementById('editComVisible').checked = Boolean(row.visibilidad);
   document.getElementById('editComDesc').value = row.descripcion || '';
 }
@@ -538,7 +685,6 @@ function openCreateModal() {
   document.getElementById('editComCoords').value = '';
   document.getElementById('editComContacto').value = '';
   document.getElementById('editComFundacion').value = '';
-  document.getElementById('editComRegistro').value = '';
   document.getElementById('editComVisible').checked = true;
   document.getElementById('editComDesc').value = '';
 }
@@ -575,7 +721,6 @@ modalSave.addEventListener('click', async () => {
     coordenadas: document.getElementById('editComCoords').value.trim() || null,
     numero_contacto: document.getElementById('editComContacto').value.trim() || null,
     fecha_fundacion: document.getElementById('editComFundacion').value || null,
-    fecha_registro: document.getElementById('editComRegistro').value || null,
     visibilidad: document.getElementById('editComVisible').checked,
     descripcion: document.getElementById('editComDesc').value.trim() || null,
   };
@@ -603,6 +748,74 @@ modalSave.addEventListener('click', async () => {
   modalOverlay.classList.add('hidden');
   currentEditId = null;
   renderComunidades();
+});
+
+munModalSave.addEventListener('click', async () => {
+  const payload = {
+    nombre: document.getElementById('editMunName').value.trim(),
+    id_departamento: Number(document.getElementById('editMunDep').value),
+  };
+
+  if (!payload.nombre || !payload.id_departamento) {
+    munModalError.textContent = 'Nombre y departamento son obligatorios.';
+    return;
+  }
+
+  if (munModalMode === 'create') {
+    await apiFetch('/api/municipios', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } else {
+    if (!currentEditId) return;
+    await apiFetch(`/api/municipios/${currentEditId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  }
+
+  munModalOverlay.classList.add('hidden');
+  currentEditId = null;
+  renderMunicipios();
+});
+
+memModalSave.addEventListener('click', async () => {
+  const payload = {
+    nombres: document.getElementById('editMemNombres').value.trim(),
+    cedula: Number(document.getElementById('editMemCedula').value),
+    id_comunidad: Number(document.getElementById('editMemComunidad').value),
+    rol_id: Number(document.getElementById('editMemRol').value),
+    fecha_nacimiento: document.getElementById('editMemFechaNacimiento').value || null,
+    numero_contacto: document.getElementById('editMemContacto').value.trim() || null,
+    genero: document.getElementById('editMemGenero').value.trim() || null,
+    status: document.getElementById('editMemStatus').value,
+  };
+
+  if (!payload.nombres || !payload.cedula || !payload.id_comunidad || !payload.rol_id) {
+    memModalError.textContent = 'Nombres, cédula, comunidad y rol son obligatorios.';
+    return;
+  }
+
+  if (memModalMode === 'create') {
+    await apiFetch('/api/miembros', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } else {
+    if (!currentEditId) return;
+    await apiFetch(`/api/miembros/${currentEditId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  }
+
+  memModalOverlay.classList.add('hidden');
+  currentEditId = null;
+  renderMiembros();
 });
 
 (async () => {

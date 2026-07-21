@@ -61,3 +61,43 @@ CREATE TABLE IF NOT EXISTS comunidad (
     FOREIGN KEY (id_municipio) REFERENCES municipio(id_municipio)
     ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS miembro (
+  id_miembro INT AUTO_INCREMENT PRIMARY KEY,
+  id_comunidad INT NOT NULL,
+  rol_id INT NOT NULL,
+  cedula INT NOT NULL UNIQUE,
+  nombres TEXT NOT NULL,
+  fecha_nacimiento DATE NULL,
+  status VARCHAR(50) NOT NULL DEFAULT 'activo',
+  genero VARCHAR(50) NULL,
+  numero_contacto VARCHAR(20) NULL,
+  fecha_registro DATE NOT NULL DEFAULT (CURRENT_DATE),
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_miembro_comunidad
+    FOREIGN KEY (id_comunidad) REFERENCES comunidad(id_comunidad)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT fk_miembro_rol
+    FOREIGN KEY (rol_id) REFERENCES rol(id_rol)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS producto (
+  id_producto INT AUTO_INCREMENT PRIMARY KEY,
+  id_miembro INT NOT NULL,
+  id_tipo_producto INT NOT NULL,
+  nombre TEXT NOT NULL,
+  precio DECIMAL(10,2) NOT NULL,
+  descripcion TEXT NULL,
+  visibilidad TINYINT(1) NOT NULL DEFAULT 1,
+  fecha_registro DATE NOT NULL DEFAULT (CURRENT_DATE),
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_producto_miembro
+    FOREIGN KEY (id_miembro) REFERENCES miembro(id_miembro)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT fk_producto_tipo
+    FOREIGN KEY (id_tipo_producto) REFERENCES tipo_producto(id_tipo_producto)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE=InnoDB;

@@ -30,6 +30,9 @@
         <button class="nav-item" data-tab="comunidades">
           <span class="nav-dot"></span> Comunidades
         </button>
+        <button class="nav-item" data-tab="miembros">
+          <span class="nav-dot"></span> Miembros
+        </button>
       </div>
       <div class="nav-spacer"></div>
       <div class="user-box">
@@ -74,6 +77,11 @@
           <div class="stat-value" id="statMuns">0</div>
           <div class="stat-trend up">+3 este mes</div>
         </div>
+        <div class="stat-card">
+          <div class="stat-label">Miembros</div>
+          <div class="stat-value" id="statMiembros">0</div>
+          <div class="stat-trend up">+5 este mes</div>
+        </div>
       </section>
 
       <section class="content-panel">
@@ -103,8 +111,8 @@
           <input id="editComContacto" placeholder="Numero contacto" />
         </div>
         <div class="form-row">
+          <label>Fecha de fundación</label>
           <input id="editComFundacion" type="date" />
-          <input id="editComRegistro" type="date" />
           <label class="notice"><input id="editComVisible" type="checkbox" /> Visible</label>
         </div>
         <div class="form-row">
@@ -112,6 +120,59 @@
         </div>
         <div class="form-row">
           <button id="modalSave">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="munModalOverlay" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="munModalTitle">Editar municipio</h2>
+        <button id="munModalClose" class="ghost">Cerrar</button>
+      </div>
+      <div class="modal-body">
+        <div id="munModalError" class="error"></div>
+        <div class="form-row">
+          <input id="editMunName" placeholder="Nombre" />
+          <select id="editMunDep"></select>
+        </div>
+        <div class="form-row">
+          <button id="munModalSave">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="memModalOverlay" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="memModalTitle">Editar miembro</h2>
+        <button id="memModalClose" class="ghost">Cerrar</button>
+      </div>
+      <div class="modal-body">
+        <div id="memModalError" class="error"></div>
+        <div class="form-row">
+          <input id="editMemNombres" placeholder="Nombres" />
+          <input id="editMemCedula" type="number" placeholder="Cédula" />
+        </div>
+        <div class="form-row">
+          <select id="editMemComunidad"></select>
+          <select id="editMemRol"></select>
+        </div>
+        <div class="form-row">
+          <input id="editMemFechaNacimiento" type="date" />
+          <input id="editMemContacto" placeholder="Contacto" />
+        </div>
+        <div class="form-row">
+          <input id="editMemGenero" placeholder="Género" />
+          <select id="editMemStatus">
+            <option value="activo">Activo</option>
+            <option value="inactivo">Inactivo</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <button id="memModalSave">Guardar</button>
         </div>
       </div>
     </div>
