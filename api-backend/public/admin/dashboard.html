@@ -14,36 +14,42 @@
         <div class="brand-name">Guajira</div>
       </div>
       <div class="nav-group">
-        <div class="nav-title">Panel</div>
+        <div class="nav-title">Administración</div>
         <button class="nav-item active" data-tab="roles">
-          <span class="nav-dot"></span> Roles
+          <span class="nav-icon">🛡️</span> Roles
         </button>
         <button class="nav-item" data-tab="tipos">
-          <span class="nav-dot"></span> Tipos de Producto
+          <span class="nav-icon">🛍️</span> Tipos de Producto
         </button>
         <button class="nav-item" data-tab="departamentos">
-          <span class="nav-dot"></span> Departamentos
+          <span class="nav-icon">🏞️</span> Departamentos
         </button>
         <button class="nav-item" data-tab="municipios">
-          <span class="nav-dot"></span> Municipios
+          <span class="nav-icon">🌆</span> Municipios
         </button>
         <button class="nav-item" data-tab="comunidades">
-          <span class="nav-dot"></span> Comunidades
-        </button>
-        <button class="nav-item" data-tab="miembros">
-          <span class="nav-dot"></span> Miembros
-        </button>
-        <button class="nav-item" data-tab="productos">
-          <span class="nav-dot"></span> Productos
+          <span class="nav-icon">🏡</span> Comunidades
         </button>
         <button class="nav-item" data-tab="categoriasTuristicas">
-          <span class="nav-dot"></span> Categorias turísticas
+          <span class="nav-icon">🗺️</span> Categorías turísticas
+        </button>
+        <button class="nav-item" data-tab="admins">
+          <span class="nav-icon">👤</span> Administradores
+        </button>
+      </div>
+      <div class="nav-group">
+        <div class="nav-title">Contenido</div>
+        <button class="nav-item" data-tab="miembros">
+          <span class="nav-icon">🧑‍🤝‍🧑</span> Miembros
+        </button>
+        <button class="nav-item" data-tab="productos">
+          <span class="nav-icon">📦</span> Productos
         </button>
         <button class="nav-item" data-tab="rutas">
-          <span class="nav-dot"></span> Rutas
+          <span class="nav-icon">🧭</span> Rutas
         </button>
         <button class="nav-item" data-tab="posts">
-          <span class="nav-dot"></span> Posts
+          <span class="nav-icon">📝</span> Posts
         </button>
       </div>
       <div class="nav-spacer"></div>
@@ -64,7 +70,7 @@
           <div class="subtitle">Administracion general</div>
         </div>
         <div class="topbar-actions">
-          <button class="secondary">Exportar</button>
+          <button id="exportBtn" class="secondary">Exportar Excel</button>
         </div>
       </header>
 
@@ -73,6 +79,11 @@
           <div class="stat-label">Total roles</div>
           <div class="stat-value" id="statRoles">0</div>
           <div class="stat-trend up">+2 esta semana</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Admins</div>
+          <div class="stat-value" id="statAdmins">0</div>
+          <div class="stat-trend flat">Control interno</div>
         </div>
         <div class="stat-card">
           <div class="stat-label">Tipos de producto</div>

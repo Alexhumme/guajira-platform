@@ -88,6 +88,8 @@ app.get('/', (req, res) => {
 
 // Admin auth & core entities
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/admins', require('./routes/admins'));
+app.use('/api/export', require('./routes/export'));
 app.use('/api/roles', require('./routes/roles'));
 app.use('/api/tipos-producto', require('./routes/tipoProducto'));
 app.use('/api/departamentos', require('./routes/departamentos'));

@@ -85,6 +85,18 @@ body {
   font-weight: 600;
 }
 
+.nav-item .nav-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  min-width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: #e6f4f1;
+  font-size: 14px;
+}
+
 .nav-item.active {
   background: #ffffff;
   box-shadow: var(--shadow);

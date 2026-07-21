@@ -222,6 +222,43 @@ async function renderSimpleEntity(context, config) {
   });
 }
 
+async function renderAdmins(context) {
+  const rows = await requestJson('/api/admins') || [];
+  setStat('statAdmins', rows.length);
+  const reload = () => renderAdmins(context);
+  const createFields = [
+    { key: 'username', label: 'Usuario', type: 'text', required: true },
+    { key: 'password', label: 'Contraseña', type: 'password', required: true },
+    { key: 'active', label: 'Activo', type: 'checkbox', defaultValue: true },
+  ];
+  const editFields = [
+    { key: 'username', label: 'Usuario', type: 'text', required: true },
+    { key: 'password', label: 'Contraseña', type: 'password', required: false },
+    { key: 'active', label: 'Activo', type: 'checkbox', defaultValue: true },
+  ];
+
+  renderCrudView({
+    content: context.content,
+    title: 'Administradores',
+    createLabel: 'Nuevo administrador',
+    rows,
+    columns: [
+      { key: 'id_admin', label: 'ID' },
+      { key: 'username', label: 'Usuario' },
+      { key: 'active', label: 'Activo', format: (row) => (row.active ? 'Si' : 'No') },
+      { key: 'created_at', label: 'Creado' },
+      { key: 'updated_at', label: 'Actualizado' },
+    ],
+    searchFields: ['username'],
+    onCreate: () => openEntityForm({ title: 'Nuevo administrador', fields: createFields, endpoint: '/api/admins', idKey: 'id_admin', reload }),
+    onEdit: (record) => openEntityForm({ title: 'Editar administrador', fields: editFields, record, endpoint: '/api/admins', idKey: 'id_admin', reload }),
+    onDelete: async (record) => {
+      await requestJson(`/api/admins/${record.id_admin}`, { method: 'DELETE' });
+      await reload();
+    },
+  });
+}
+
 async function renderMunicipios(context) {
   const [municipios, departamentos] = await Promise.all([
     requestJson('/api/municipios'),
@@ -607,6 +644,13 @@ export function createRenderers(context) {
     municipios: () => renderMunicipios(context),
     comunidades: () => renderComunidades(context),
     miembros: () => renderMiembros(context),
+    admins: () => renderAdmins(context),
+    roles: () => renderSimpleEntity(context, { title: 'Roles', singular: 'rol', endpoint: '/api/roles', idKey: 'id_rol', stat: 'statRoles' }),
+    tipos: () => renderSimpleEntity(context, { title: 'Tipos de Producto', singular: 'tipo de producto', endpoint: '/api/tipos-producto', idKey: 'id_tipo_producto', stat: 'statTipos' }),
+    departamentos: () => renderSimpleEntity(context, { title: 'Departamentos', singular: 'departamento', endpoint: '/api/departamentos', idKey: 'id_departamento', stat: 'statDeps' }),
+    municipios: () => renderMunicipios(context),
+    comunidades: () => renderComunidades(context),
+    miembros: () => renderMiembros(context),
     productos: () => renderProductos(context),
     rutas: () => renderRutas(context),
     categoriasTuristicas: () => renderCategoriasTuristicas(context),
@@ -616,7 +660,7 @@ export function createRenderers(context) {
 
 export async function refreshStats() {
   const endpoints = [
-    ['/api/roles', 'statRoles'], ['/api/tipos-producto', 'statTipos'],
+    ['/api/admins', 'statAdmins'], ['/api/roles', 'statRoles'], ['/api/tipos-producto', 'statTipos'],
     ['/api/departamentos', 'statDeps'], ['/api/municipios', 'statMuns'],
     ['/api/miembros', 'statMiembros'], ['/api/productos', 'statProductos'],
     ['/api/rutas', 'statRutas'], ['/api/categorias-turisticas', 'statCategoriasTuristicas'], ['/api/posts', 'statPosts'],
