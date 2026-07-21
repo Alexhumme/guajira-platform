@@ -17,18 +17,28 @@ const memModalClose = document.getElementById('memModalClose');
 const memModalSave = document.getElementById('memModalSave');
 const memModalTitle = document.getElementById('memModalTitle');
 const memModalError = document.getElementById('memModalError');
+const prodModalOverlay = document.getElementById('prodModalOverlay');
+const prodModalClose = document.getElementById('prodModalClose');
+const prodModalSave = document.getElementById('prodModalSave');
+const prodModalTitle = document.getElementById('prodModalTitle');
+const prodModalError = document.getElementById('prodModalError');
 const detailsOverlay = document.getElementById('detailsOverlay');
 const detailsClose = document.getElementById('detailsClose');
 const detailsBody = document.getElementById('detailsBody');
+const detailsTitle = document.getElementById('detailsTitle');
 
 let currentEditId = null;
 let currentMunicipios = [];
 let currentDepartamentos = [];
 let currentComunidades = [];
 let currentRoles = [];
+let currentMiembros = [];
+let currentTiposProducto = [];
 let modalMode = 'edit';
 let munModalMode = 'edit';
 let memModalMode = 'edit';
+let prodModalMode = 'edit';
+let currentProductEditId = null;
 
 async function apiFetch(path, options = {}) {
   const res = await fetch(path, { credentials: 'include', ...options });
@@ -64,6 +74,11 @@ munModalClose.addEventListener('click', () => {
 memModalClose.addEventListener('click', () => {
   memModalOverlay.classList.add('hidden');
   currentEditId = null;
+});
+
+prodModalClose.addEventListener('click', () => {
+  prodModalOverlay.classList.add('hidden');
+  currentProductEditId = null;
 });
 
 detailsClose.addEventListener('click', () => {
@@ -615,6 +630,132 @@ function openCreateMemModal() {
   document.getElementById('editMemStatus').value = 'activo';
 }
 
+async function renderProductos() {
+  const [prodRes, memRes, tipoRes] = await Promise.all([
+    apiFetch('/api/productos'),
+    apiFetch('/api/miembros'),
+    apiFetch('/api/tipos-producto')
+  ]);
+  if (!prodRes || !memRes || !tipoRes) return;
+
+  const productos = await prodRes.json();
+  currentMiembros = await memRes.json();
+  currentTiposProducto = await tipoRes.json();
+  updateStats({ productos: productos.length });
+
+  const pageSize = 8;
+  let page = 1;
+  content.innerHTML = '';
+
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `
+    <h2>Productos</h2>
+    <div class="form-row">
+      <button id="openCreateProd">Nuevo producto</button>
+    </div>
+  `;
+  content.appendChild(card);
+
+  const tableHost = document.createElement('div');
+  card.appendChild(tableHost);
+
+  const renderPage = () => {
+    tableHost.innerHTML = '';
+    const start = (page - 1) * pageSize;
+    const pageRows = productos.slice(start, start + pageSize).map(producto => ({
+      ...producto,
+      precio_formateado: new Intl.NumberFormat('es-CO', {
+        style: 'currency', currency: 'COP', minimumFractionDigits: 0
+      }).format(producto.precio)
+    }));
+
+    const table = createTable(
+      pageRows,
+      [
+        { key: 'id_producto', label: 'ID' },
+        { key: 'nombre', label: 'Producto' },
+        { key: 'tipo_producto', label: 'Tipo' },
+        { key: 'miembro', label: 'Miembro' },
+        { key: 'precio_formateado', label: 'Precio' },
+        { key: 'visibilidad', label: 'Visible' }
+      ],
+      (row) => [
+        actionButton('Ver', () => openProductDetailsModal(row), 'secondary'),
+        actionButton('Editar', () => openEditProdModal(row)),
+        actionButton('Eliminar', async () => {
+          if (!confirm('Eliminar producto?')) return;
+          await apiFetch(`/api/productos/${row.id_producto}`, { method: 'DELETE' });
+          renderProductos();
+        }, 'danger')
+      ]
+    );
+    tableHost.appendChild(table);
+    tableHost.appendChild(createPager(productos.length, pageSize, page, (p) => { page = p; renderPage(); }));
+  };
+
+  renderPage();
+  document.getElementById('openCreateProd').addEventListener('click', openCreateProdModal);
+}
+
+function fillProductSelects() {
+  const miembroSelect = document.getElementById('editProdMiembro');
+  miembroSelect.innerHTML = currentMiembros.map(m => `<option value="${m.id_miembro}">${m.nombres} - ${m.comunidad}</option>`).join('');
+
+  const tipoSelect = document.getElementById('editProdTipo');
+  tipoSelect.innerHTML = currentTiposProducto.map(t => `<option value="${t.id_tipo_producto}">${t.nombre}</option>`).join('');
+}
+
+function openCreateProdModal() {
+  prodModalMode = 'create';
+  currentProductEditId = null;
+  prodModalTitle.textContent = 'Nuevo producto';
+  prodModalError.textContent = '';
+  fillProductSelects();
+  document.getElementById('editProdName').value = '';
+  document.getElementById('editProdPrecio').value = '';
+  document.getElementById('editProdDescripcion').value = '';
+  document.getElementById('editProdVisible').checked = true;
+  prodModalOverlay.classList.remove('hidden');
+}
+
+function openEditProdModal(row) {
+  prodModalMode = 'edit';
+  currentProductEditId = row.id_producto;
+  prodModalTitle.textContent = 'Editar producto';
+  prodModalError.textContent = '';
+  fillProductSelects();
+  document.getElementById('editProdMiembro').value = row.id_miembro;
+  document.getElementById('editProdTipo').value = row.id_tipo_producto;
+  document.getElementById('editProdName').value = row.nombre || '';
+  document.getElementById('editProdPrecio').value = row.precio || '';
+  document.getElementById('editProdDescripcion').value = row.descripcion || '';
+  document.getElementById('editProdVisible').checked = Boolean(row.visibilidad);
+  prodModalOverlay.classList.remove('hidden');
+}
+
+function openProductDetailsModal(row) {
+  detailsTitle.textContent = 'Detalle producto';
+  detailsBody.innerHTML = '';
+  const entries = [
+    ['Nombre', row.nombre],
+    ['Tipo', row.tipo_producto],
+    ['Miembro', row.miembro],
+    ['Comunidad', row.comunidad],
+    ['Precio', new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(row.precio)],
+    ['Descripcion', row.descripcion || '-'],
+    ['Visible', row.visibilidad ? 'Si' : 'No'],
+    ['Registro', row.fecha_registro || '-']
+  ];
+  entries.forEach(([label, value]) => {
+    const item = document.createElement('div');
+    item.className = 'details-item';
+    item.innerHTML = `<div class="details-label">${label}</div><div class="details-value">${value}</div>`;
+    detailsBody.appendChild(item);
+  });
+  detailsOverlay.classList.remove('hidden');
+}
+
 const tabRenderers = {
   roles: renderRoles,
   tipos: renderTipos,
@@ -622,6 +763,7 @@ const tabRenderers = {
   municipios: renderMunicipios,
   comunidades: renderComunidades,
   miembros: renderMiembros,
+  productos: renderProductos,
 };
 
 for (const tab of tabs) {
@@ -640,12 +782,13 @@ for (const nav of navItems) {
   });
 }
 
-function updateStats({ roles, tipos, deps, muns, miembros }) {
+function updateStats({ roles, tipos, deps, muns, miembros, productos }) {
   if (typeof roles === 'number') document.getElementById('statRoles').textContent = roles;
   if (typeof tipos === 'number') document.getElementById('statTipos').textContent = tipos;
   if (typeof deps === 'number') document.getElementById('statDeps').textContent = deps;
   if (typeof muns === 'number') document.getElementById('statMuns').textContent = muns;
   if (typeof miembros === 'number') document.getElementById('statMiembros').textContent = miembros;
+  if (typeof productos === 'number') document.getElementById('statProductos').textContent = productos;
 }
 
 function openEditModal(row) {
@@ -690,6 +833,7 @@ function openCreateModal() {
 }
 
 function openDetailsModal(row) {
+  detailsTitle.textContent = 'Detalle comunidad';
   detailsBody.innerHTML = '';
   const entries = [
     ['Nombre', row.nombre],
@@ -816,6 +960,41 @@ memModalSave.addEventListener('click', async () => {
   memModalOverlay.classList.add('hidden');
   currentEditId = null;
   renderMiembros();
+});
+
+prodModalSave.addEventListener('click', async () => {
+  const payload = {
+    nombre: document.getElementById('editProdName').value.trim(),
+    precio: Number(document.getElementById('editProdPrecio').value),
+    id_miembro: Number(document.getElementById('editProdMiembro').value),
+    id_tipo_producto: Number(document.getElementById('editProdTipo').value),
+    descripcion: document.getElementById('editProdDescripcion').value.trim() || null,
+    visibilidad: document.getElementById('editProdVisible').checked,
+  };
+
+  if (!payload.nombre || !payload.id_miembro || !payload.id_tipo_producto || !Number.isFinite(payload.precio) || payload.precio < 0) {
+    prodModalError.textContent = 'Nombre, miembro, tipo y un precio valido son obligatorios.';
+    return;
+  }
+
+  if (prodModalMode === 'create') {
+    await apiFetch('/api/productos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } else {
+    if (!currentProductEditId) return;
+    await apiFetch(`/api/productos/${currentProductEditId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  }
+
+  prodModalOverlay.classList.add('hidden');
+  currentProductEditId = null;
+  renderProductos();
 });
 
 (async () => {

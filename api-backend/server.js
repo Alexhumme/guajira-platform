@@ -93,6 +93,7 @@ app.use('/api/departamentos', require('./routes/departamentos'));
 app.use('/api/municipios', require('./routes/municipios'));
 app.use('/api/comunidades', require('./routes/comunidades'));
 app.use('/api/miembros', require('./routes/miembro'));
+app.use('/api/productos', require('./routes/productos'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

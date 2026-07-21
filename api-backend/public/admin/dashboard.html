@@ -33,6 +33,9 @@
         <button class="nav-item" data-tab="miembros">
           <span class="nav-dot"></span> Miembros
         </button>
+        <button class="nav-item" data-tab="productos">
+          <span class="nav-dot"></span> Productos
+        </button>
       </div>
       <div class="nav-spacer"></div>
       <div class="user-box">
@@ -81,6 +84,11 @@
           <div class="stat-label">Miembros</div>
           <div class="stat-value" id="statMiembros">0</div>
           <div class="stat-trend up">+5 este mes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Productos</div>
+          <div class="stat-value" id="statProductos">0</div>
+          <div class="stat-trend up">Catalogo activo</div>
         </div>
       </section>
 
@@ -178,10 +186,39 @@
     </div>
   </div>
 
+  <div id="prodModalOverlay" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="prodModalTitle">Editar producto</h2>
+        <button id="prodModalClose" class="ghost">Cerrar</button>
+      </div>
+      <div class="modal-body">
+        <div id="prodModalError" class="error"></div>
+        <div class="form-row">
+          <input id="editProdName" placeholder="Nombre" />
+          <input id="editProdPrecio" type="number" min="0" step="0.01" placeholder="Precio (COP)" />
+        </div>
+        <div class="form-row">
+          <select id="editProdMiembro"></select>
+          <select id="editProdTipo"></select>
+        </div>
+        <div class="form-row">
+          <textarea id="editProdDescripcion" rows="4" placeholder="Descripcion"></textarea>
+        </div>
+        <div class="form-row">
+          <label class="notice"><input id="editProdVisible" type="checkbox" /> Visible</label>
+        </div>
+        <div class="form-row">
+          <button id="prodModalSave">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="detailsOverlay" class="modal-overlay hidden">
     <div class="modal">
       <div class="modal-header">
-        <h2>Detalle comunidad</h2>
+        <h2 id="detailsTitle">Detalle comunidad</h2>
         <button id="detailsClose" class="ghost">Cerrar</button>
       </div>
       <div class="modal-body">

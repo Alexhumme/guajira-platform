@@ -240,11 +240,17 @@ h1, h2 { margin: 0 0 8px 0; }
   margin-bottom: 8px;
 }
 
-input, select {
+input, select, textarea {
   padding: 8px 10px;
   border: 1px solid var(--border);
   border-radius: 10px;
   min-width: 200px;
+  font: inherit;
+}
+
+textarea {
+  width: 100%;
+  resize: vertical;
 }
 
 button {

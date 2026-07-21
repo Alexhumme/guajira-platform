@@ -73,20 +73,36 @@ JOIN municipio m ON m.nombre = c.municipio
 ON DUPLICATE KEY UPDATE nombre = VALUES(nombre), updated_at = NOW();
 
 -- Miembros de prueba
-INSERT INTO miembro (id_comunidad, rol_id, cedula, nombres, edad, status, genero, numero_contacto, fecha_registro, created_at, updated_at)
-SELECT c.id_comunidad, r.id_rol, m.cedula, m.nombres, m.edad, 'activo', m.genero, m.numero_contacto, CURRENT_DATE, NOW(), NOW()
+INSERT INTO miembro (id_comunidad, rol_id, cedula, nombres, status, genero, numero_contacto, fecha_registro, created_at, updated_at)
+SELECT c.id_comunidad, r.id_rol, m.cedula, m.nombres, 'activo', m.genero, m.numero_contacto, CURRENT_DATE, NOW(), NOW()
 FROM (
-  SELECT 'El Ahumao 2' AS comunidad, 'lider' AS rol, 1001234567 AS cedula, 'Juan Pérez Martínez' AS nombres, 45 AS edad, 'Masculino' AS genero, '3101234567' AS numero_contacto UNION ALL
-  SELECT 'El Ahumao 2', 'miembro', 1001234568, 'María García López', 32, 'Femenino', '3101234568' UNION ALL
-  SELECT 'El Ahumao 2', 'miembro', 1001234569, 'Carlos Rodríguez Silva', 28, 'Masculino', '3101234569' UNION ALL
-  SELECT 'Tocoromana', 'lider', 1001234570, 'Ana Martínez Gutiérrez', 51, 'Femenino', '3101234570' UNION ALL
-  SELECT 'Tocoromana', 'miembro', 1001234571, 'Pedro Díaz Castro', 38, 'Masculino', '3101234571' UNION ALL
-  SELECT 'Tocoromana', 'guia', 1001234572, 'Rosa Sánchez Flores', 29, 'Femenino', '3101234572' UNION ALL
-  SELECT 'Santa Rita de la Sierra', 'lider', 1001234573, 'Jorge López Ramírez', 55, 'Masculino', '3101234573' UNION ALL
-  SELECT 'Santa Rita de la Sierra', 'miembro', 1001234574, 'Luisa Fernández Torres', 35, 'Femenino', '3101234574' UNION ALL
-  SELECT 'Buenos Aires', 'lider', 1001234575, 'Miguel Ángel Vargas', 47, 'Masculino', '3101234575' UNION ALL
-  SELECT 'Buenos Aires', 'miembro', 1001234576, 'Carmen Ruiz Moreno', 33, 'Femenino', '3101234576'
+  SELECT 'El Ahumao 2' AS comunidad, 'lider' AS rol, 1001234567 AS cedula, 'Juan Pérez Martínez' AS nombres, 'Masculino' AS genero, '3101234567' AS numero_contacto UNION ALL
+  SELECT 'El Ahumao 2', 'miembro', 1001234568, 'María García López', 'Femenino', '3101234568' UNION ALL
+  SELECT 'El Ahumao 2', 'miembro', 1001234569, 'Carlos Rodríguez Silva', 'Masculino', '3101234569' UNION ALL
+  SELECT 'Tocoromana', 'lider', 1001234570, 'Ana Martínez Gutiérrez', 'Femenino', '3101234570' UNION ALL
+  SELECT 'Tocoromana', 'miembro', 1001234571, 'Pedro Díaz Castro', 'Masculino', '3101234571' UNION ALL
+  SELECT 'Tocoromana', 'guia', 1001234572, 'Rosa Sánchez Flores', 'Femenino', '3101234572' UNION ALL
+  SELECT 'Santa Rita de la Sierra', 'lider', 1001234573, 'Jorge López Ramírez', 'Masculino', '3101234573' UNION ALL
+  SELECT 'Santa Rita de la Sierra', 'miembro', 1001234574, 'Luisa Fernández Torres', 'Femenino', '3101234574' UNION ALL
+  SELECT 'Buenos Aires', 'lider', 1001234575, 'Miguel Ángel Vargas', 'Masculino', '3101234575' UNION ALL
+  SELECT 'Buenos Aires', 'miembro', 1001234576, 'Carmen Ruiz Moreno', 'Femenino', '3101234576'
 ) m
 JOIN comunidad c ON c.nombre = m.comunidad
 JOIN rol r ON r.nombre = m.rol
-ON DUPLICATE KEY UPDATE nombres = VALUES(nombres), edad = VALUES(edad), status = VALUES(status), genero = VALUES(genero), numero_contacto = VALUES(numero_contacto), updated_at = NOW();
+ON DUPLICATE KEY UPDATE nombres = VALUES(nombres), status = VALUES(status), genero = VALUES(genero), numero_contacto = VALUES(numero_contacto), updated_at = NOW();
+
+-- Productos de prueba. Se asocian a miembros y tipos ya cargados.
+INSERT INTO producto (id_miembro, id_tipo_producto, nombre, precio, descripcion, visibilidad, fecha_registro, created_at, updated_at)
+SELECT m.id_miembro, tp.id_tipo_producto, p.nombre, p.precio, p.descripcion, 1, CURRENT_DATE, NOW(), NOW()
+FROM (
+  SELECT 1001234568 AS cedula, 'Artesania' AS tipo, 'Mochila Wayuu tradicional' AS nombre, 120000.00 AS precio, 'Mochila tejida a mano con motivos tradicionales.' AS descripcion UNION ALL
+  SELECT 1001234569, 'Artesania', 'Aretes artesanales', 35000.00, 'Aretes elaborados a mano.' UNION ALL
+  SELECT 1001234571, 'Pesca', 'Pescado seco artesanal', 28000.00, 'Producto de pesca preparado de forma tradicional.' UNION ALL
+  SELECT 1001234572, 'Turismo', 'Recorrido cultural Wayuu', 180000.00, 'Experiencia guiada por la comunidad.' UNION ALL
+  SELECT 1001234574, 'Gastronomia', 'Dulces tradicionales', 18000.00, 'Preparacion artesanal de la comunidad.' UNION ALL
+  SELECT 1001234576, 'Agronomia', 'Miel de abeja local', 25000.00, 'Miel producida en La Guajira.'
+) p
+JOIN miembro m ON m.cedula = p.cedula
+JOIN tipo_producto tp ON tp.nombre = p.tipo
+LEFT JOIN producto existente ON existente.id_miembro = m.id_miembro AND existente.id_tipo_producto = tp.id_tipo_producto AND existente.nombre = p.nombre
+WHERE existente.id_producto IS NULL;
