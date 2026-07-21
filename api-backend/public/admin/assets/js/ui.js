@@ -25,7 +25,7 @@ export function toDateInput(value) {
   return value ? String(value).slice(0, 10) : '';
 }
 
-export function openDetails(title, entries) {
+export function openDetails(title, entries, options = {}) {
   const overlay = document.getElementById('detailsOverlay');
   const titleElement = document.getElementById('detailsTitle');
   const body = document.getElementById('detailsBody');
@@ -45,6 +45,36 @@ export function openDetails(title, entries) {
     body.appendChild(item);
   });
 
+  const mediaItems = options.mediaItems || [];
+  if (mediaItems.length) {
+    const mediaWrapper = document.createElement('div');
+    mediaWrapper.className = 'details-item';
+    const mediaLabel = document.createElement('div');
+    mediaLabel.className = 'details-label';
+    mediaLabel.textContent = 'Media';
+    const mediaGallery = document.createElement('div');
+    mediaGallery.className = 'details-value';
+    mediaGallery.style.display = 'grid';
+    mediaGallery.style.gridTemplateColumns = 'repeat(auto-fit, minmax(140px, 1fr))';
+    mediaGallery.style.gap = '10px';
+
+    mediaItems.forEach((item) => {
+      const url = typeof item === 'string' ? item : item.media_dir || item.url || '';
+      if (!url) return;
+      const image = document.createElement('img');
+      image.src = url;
+      image.alt = 'Media';
+      image.style.width = '100%';
+      image.style.maxHeight = '160px';
+      image.style.objectFit = 'cover';
+      image.style.borderRadius = '8px';
+      mediaGallery.appendChild(image);
+    });
+
+    mediaWrapper.append(mediaLabel, mediaGallery);
+    body.appendChild(mediaWrapper);
+  }
+
   overlay.classList.remove('hidden');
 }
 
@@ -55,7 +85,7 @@ export function configureDetailsModal() {
   });
 }
 
-export function openFormModal({ title, fields, values = {}, onSubmit }) {
+export function openFormModal({ title, fields, values = {}, onSubmit, extraContent }) {
   const overlay = document.getElementById('formModalOverlay');
   const titleElement = document.getElementById('formModalTitle');
   const errorElement = document.getElementById('formModalError');
@@ -159,6 +189,10 @@ export function openFormModal({ title, fields, values = {}, onSubmit }) {
     }
     fieldsElement.appendChild(wrapper);
   });
+
+  if (extraContent) {
+    fieldsElement.appendChild(extraContent);
+  }
 
   saveButton.onclick = async () => {
     const payload = {};

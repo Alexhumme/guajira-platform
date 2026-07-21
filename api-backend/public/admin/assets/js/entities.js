@@ -12,7 +12,7 @@ const optionsFrom = (rows, valueKey, label) => rows.map((row) => ({
   label: label(row),
 }));
 
-function openEntityForm({ title, fields, record, endpoint, idKey, reload }) {
+function openEntityForm({ title, fields, record, endpoint, idKey, reload, extraContent, afterSave }) {
   const values = record ? {
     ...record,
     fecha_fundacion: toDateInput(record.fecha_fundacion),
@@ -24,12 +24,164 @@ function openEntityForm({ title, fields, record, endpoint, idKey, reload }) {
     title,
     fields,
     values,
+    extraContent,
     onSubmit: async (payload) => {
       const url = record ? `${endpoint}/${record[idKey]}` : endpoint;
-      await requestJson(url, jsonRequest(record ? 'PUT' : 'POST', payload));
+      const result = await requestJson(url, jsonRequest(record ? 'PUT' : 'POST', payload));
+      if (afterSave) await afterSave(result, payload);
       await reload();
     },
   });
+}
+
+function createMediaManager({ endpoint, record, idKey, listKey, entityLabel }) {
+  const container = document.createElement('div');
+  container.className = 'form-field form-field-wide';
+  const title = document.createElement('div');
+  title.textContent = `Medios (${entityLabel})`;
+  title.style.fontWeight = '600';
+  title.style.marginBottom = '8px';
+
+  const list = document.createElement('div');
+  list.className = 'media-list';
+  list.style.display = 'grid';
+  list.style.gap = '8px';
+
+  const controls = document.createElement('div');
+  controls.style.display = 'flex';
+  controls.style.gap = '8px';
+  controls.style.flexWrap = 'wrap';
+
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.placeholder = 'URL externa o ruta del servidor';
+  input.style.flex = '1';
+
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = 'image/*,video/*';
+
+  const addButton = document.createElement('button');
+  addButton.type = 'button';
+  addButton.textContent = 'Agregar';
+
+  controls.append(input, fileInput, addButton);
+  container.append(title, controls, list);
+
+  const state = {
+    items: [],
+    pending: [],
+    removed: [],
+  };
+
+  const renderItems = () => {
+    list.innerHTML = '';
+    if (!state.items.length) {
+      const empty = document.createElement('div');
+      empty.textContent = 'Sin medios todavía.';
+      empty.style.color = '#6b7280';
+      list.appendChild(empty);
+      return;
+    }
+
+    state.items.forEach((item) => {
+      const entry = document.createElement('div');
+      entry.style.display = 'flex';
+      entry.style.justifyContent = 'space-between';
+      entry.style.alignItems = 'center';
+      entry.style.padding = '8px 10px';
+      entry.style.border = '1px solid #e5e7eb';
+      entry.style.borderRadius = '6px';
+      const label = document.createElement('span');
+      label.textContent = item.media_dir || '-';
+      label.style.wordBreak = 'break-all';
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.textContent = 'Eliminar';
+      remove.className = 'danger';
+      remove.addEventListener('click', () => {
+        if (item.isLocal) {
+          state.pending = state.pending.filter((pending) => pending.id !== item.id);
+        } else {
+          state.removed.push(item);
+        }
+        state.items = state.items.filter((current) => current.id !== item.id);
+        renderItems();
+      });
+      entry.append(label, remove);
+      list.appendChild(entry);
+    });
+  };
+
+  const toBase64 = (file) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error('No se pudo leer el archivo.'));
+    reader.readAsDataURL(file);
+  });
+
+  addButton.addEventListener('click', async () => {
+    const mediaDir = input.value.trim();
+    const file = fileInput.files?.[0];
+
+    if (!mediaDir && !file) return;
+
+    let resolvedMediaDir = mediaDir;
+    let fileData = null;
+    let fileName = null;
+
+    if (file) {
+      fileName = file.name;
+      fileData = await toBase64(file);
+    }
+
+    if (!resolvedMediaDir && !fileData) return;
+
+    const item = {
+      id: `local-${Date.now()}`,
+      media_dir: resolvedMediaDir || fileName || 'Archivo listo para subir',
+      index: state.items.length,
+      isLocal: true,
+      fileData,
+      fileName,
+    };
+    state.pending.push(item);
+    state.items.push(item);
+    renderItems();
+    input.value = '';
+    fileInput.value = '';
+  });
+
+  const loadExisting = async () => {
+    if (!record?.[idKey]) return;
+    const rows = await requestJson(`${endpoint}/${record[idKey]}/media`) || [];
+    state.items = rows.map((row) => ({ ...row, id: row[listKey] || row.id, isLocal: false }));
+    renderItems();
+  };
+
+  loadExisting();
+
+  return {
+    container,
+    commit: async (entityId) => {
+      if (!entityId) return;
+      for (const pending of state.pending) {
+        await requestJson(`${endpoint}/${entityId}/media`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            media_dir: pending.media_dir,
+            index: pending.index,
+            fileData: pending.fileData,
+            fileName: pending.fileName,
+          }),
+        });
+      }
+      for (const item of state.removed) {
+        await requestJson(`${endpoint}/${entityId}/media/${item[listKey] || item.id}`, { method: 'DELETE' });
+      }
+    },
+  };
 }
 
 async function renderSimpleEntity(context, config) {
@@ -219,6 +371,7 @@ async function renderProductos(context) {
   const tiposProducto = tipos || [];
   setStat('statProductos', rows.length);
   const reload = () => renderProductos(context);
+  const mediaManager = createMediaManager({ endpoint: '/api/productos', record: null, idKey: 'id_producto', listKey: 'id_producto_media', entityLabel: 'producto' });
   const fields = [
     { key: 'nombre', label: 'Nombre', type: 'text', required: true },
     { key: 'precio', label: 'Precio (COP)', type: 'number', min: 0, step: 0.01, required: true },
@@ -245,18 +398,24 @@ async function renderProductos(context) {
       { key: 'tipo', label: 'Todos los tipos', options: optionsFrom(tiposProducto, 'id_tipo_producto', (tipo) => tipo.nombre), matches: (row, value) => String(row.id_tipo_producto) === value },
       { key: 'visibilidad', label: 'Visibilidad', options: [{ value: '1', label: 'Visibles' }, { value: '0', label: 'Ocultos' }], matches: (row, value) => String(Number(row.visibilidad)) === value },
     ],
-    onCreate: () => openEntityForm({ title: 'Nuevo producto', fields, endpoint: '/api/productos', idKey: 'id_producto', reload }),
-    onEdit: (record) => openEntityForm({ title: 'Editar producto', fields, record, endpoint: '/api/productos', idKey: 'id_producto', reload }),
+    onCreate: () => openEntityForm({ title: 'Nuevo producto', fields, endpoint: '/api/productos', idKey: 'id_producto', reload, extraContent: mediaManager.container, afterSave: async (result) => { await mediaManager.commit(result?.id_producto); } }),
+    onEdit: (record) => {
+      const editingMediaManager = createMediaManager({ endpoint: '/api/productos', record, idKey: 'id_producto', listKey: 'id_producto_media', entityLabel: 'producto' });
+      return openEntityForm({ title: 'Editar producto', fields, record, endpoint: '/api/productos', idKey: 'id_producto', reload, extraContent: editingMediaManager.container, afterSave: async (result) => { await editingMediaManager.commit(result?.id_producto || record.id_producto); } });
+    },
     onDelete: async (record) => {
       await requestJson(`/api/productos/${record.id_producto}`, { method: 'DELETE' });
       await reload();
     },
-    onView: (record) => openDetails('Detalle producto', [
-      ['Nombre', record.nombre], ['Tipo', record.tipo_producto], ['Miembro', record.miembro],
-      ['Comunidad', record.comunidad], ['Precio', formatCurrency(record.precio)],
-      ['Descripcion', record.descripcion], ['Visible', record.visibilidad ? 'Si' : 'No'],
-      ['Registro', toDateInput(record.fecha_registro)],
-    ]),
+    onView: async (record) => {
+      const media = await requestJson(`/api/productos/${record.id_producto}/media`) || [];
+      openDetails('Detalle producto', [
+        ['Nombre', record.nombre], ['Tipo', record.tipo_producto], ['Miembro', record.miembro],
+        ['Comunidad', record.comunidad], ['Precio', formatCurrency(record.precio)],
+        ['Descripcion', record.descripcion], ['Visible', record.visibilidad ? 'Si' : 'No'],
+        ['Registro', toDateInput(record.fecha_registro)],
+      ], { mediaItems: media.map((item) => item.media_dir).filter(Boolean) });
+    },
   });
 }
 
@@ -348,16 +507,25 @@ async function renderPosts(context) {
       { key: 'fecha_registro', label: 'Fecha registro' },
     ],
     searchFields: ['descripcion', 'miembro', 'comunidad'],
-    onCreate: () => openEntityForm({ title: 'Nuevo post', fields, endpoint: '/api/posts', idKey: 'id_post', reload }),
-    onEdit: (record) => openEntityForm({ title: 'Editar post', fields, record, endpoint: '/api/posts', idKey: 'id_post', reload }),
+    onCreate: () => {
+      const mediaManager = createMediaManager({ endpoint: '/api/posts', record: null, idKey: 'id_post', listKey: 'id_post_media', entityLabel: 'post' });
+      return openEntityForm({ title: 'Nuevo post', fields, endpoint: '/api/posts', idKey: 'id_post', reload, extraContent: mediaManager.container, afterSave: async (result) => { await mediaManager.commit(result?.id_post); } });
+    },
+    onEdit: (record) => {
+      const mediaManager = createMediaManager({ endpoint: '/api/posts', record, idKey: 'id_post', listKey: 'id_post_media', entityLabel: 'post' });
+      return openEntityForm({ title: 'Editar post', fields, record, endpoint: '/api/posts', idKey: 'id_post', reload, extraContent: mediaManager.container, afterSave: async (result) => { await mediaManager.commit(result?.id_post || record.id_post); } });
+    },
     onDelete: async (record) => {
       await requestJson(`/api/posts/${record.id_post}`, { method: 'DELETE' });
       await reload();
     },
-    onView: (record) => openDetails('Detalle post', [
-      ['Miembro', record.miembro], ['Comunidad', record.comunidad], ['Descripcion', record.descripcion],
-      ['Visible', record.visibilidad ? 'Si' : 'No'], ['Likes', record.likes], ['Registro', toDateInput(record.fecha_registro)],
-    ]),
+    onView: async (record) => {
+      const media = await requestJson(`/api/posts/${record.id_post}/media`) || [];
+      openDetails('Detalle post', [
+        ['Miembro', record.miembro], ['Comunidad', record.comunidad], ['Descripcion', record.descripcion],
+        ['Visible', record.visibilidad ? 'Si' : 'No'], ['Likes', record.likes], ['Registro', toDateInput(record.fecha_registro)],
+      ], { mediaItems: media.map((item) => item.media_dir).filter(Boolean) });
+    },
   });
 }
 
