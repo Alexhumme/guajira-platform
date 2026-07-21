@@ -85,6 +85,60 @@ export function openFormModal({ title, fields, values = {}, onSubmit }) {
     } else if (field.type === 'textarea') {
       control = document.createElement('textarea');
       control.rows = 4;
+    } else if (field.type === 'image') {
+      const imageField = document.createElement('div');
+      imageField.className = 'image-field';
+      control = document.createElement('input');
+      control.type = 'text';
+      control.dataset.field = field.key;
+      control.value = values[field.key] ?? field.defaultValue ?? '';
+      control.placeholder = field.placeholder || 'URL externa, /uploads/icons/archivo.svg';
+
+      const helpers = document.createElement('div');
+      helpers.className = 'image-field-actions';
+      if (field.options?.length) {
+        const imageSelect = document.createElement('select');
+        imageSelect.className = 'image-field-select';
+        const emptyOption = document.createElement('option');
+        emptyOption.value = '';
+        emptyOption.textContent = 'Seleccionar icono guardado';
+        imageSelect.appendChild(emptyOption);
+        field.options.forEach((option) => {
+          const optionElement = document.createElement('option');
+          optionElement.value = option.value;
+          optionElement.textContent = option.label;
+          imageSelect.appendChild(optionElement);
+        });
+        imageSelect.addEventListener('change', () => {
+          control.value = imageSelect.value;
+        });
+        helpers.appendChild(imageSelect);
+      }
+
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = 'image/*';
+      if (field.onUpload) {
+        fileInput.addEventListener('change', async () => {
+          const file = fileInput.files?.[0];
+          if (!file) return;
+          try {
+            saveButton.disabled = true;
+            const result = await field.onUpload(file);
+            control.value = result?.path || result || '';
+          } catch (error) {
+            errorElement.textContent = error.message;
+          } finally {
+            saveButton.disabled = false;
+          }
+        });
+      }
+      helpers.appendChild(fileInput);
+
+      imageField.append(control, helpers);
+      wrapper.append(label, imageField);
+      fieldsElement.appendChild(wrapper);
+      return;
     } else {
       control = document.createElement('input');
       control.type = field.type || 'text';
@@ -235,7 +289,23 @@ export function renderCrudView({
       const tableRow = document.createElement('tr');
       columns.forEach((column) => {
         const cell = document.createElement('td');
-        cell.textContent = column.format ? column.format(row) : row[column.key] ?? '';
+        if (column.type === 'image') {
+          const value = row[column.key];
+          if (!value) {
+            cell.textContent = '-';
+          } else {
+            const img = document.createElement('img');
+            img.src = value;
+            img.alt = column.label;
+            img.width = 36;
+            img.height = 36;
+            img.style.objectFit = 'cover';
+            img.style.borderRadius = '6px';
+            cell.appendChild(img);
+          }
+        } else {
+          cell.textContent = column.format ? column.format(row) : row[column.key] ?? '';
+        }
         tableRow.appendChild(cell);
       });
       const actions = document.createElement('td');

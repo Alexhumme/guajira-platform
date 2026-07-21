@@ -106,3 +106,20 @@ JOIN miembro m ON m.cedula = p.cedula
 JOIN tipo_producto tp ON tp.nombre = p.tipo
 LEFT JOIN producto existente ON existente.id_miembro = m.id_miembro AND existente.id_tipo_producto = tp.id_tipo_producto AND existente.nombre = p.nombre
 WHERE existente.id_producto IS NULL;
+
+-- Categorias turísticas de prueba.
+INSERT INTO categoria_turistica (id_categoria_turistica, nombre, icono_dir, created_at, updated_at)
+VALUES
+  ('7e8614fa-4f91-47c1-9d18-b0adac6534c1', 'Hotel', '/uploads/icons/hotel.svg', NOW(), NOW()),
+  ('f49f11f4-4861-42ef-b92f-48d5f4934c2e', 'Restaurante', '/uploads/icons/hotel.svg', NOW(), NOW()),
+  ('d95a6042-8513-40d2-a2a4-6851e4a3472f', 'Playa', '/uploads/icons/playa.svg', NOW(), NOW()),
+  ('9a108f4a-b58f-4934-b3de-3f59b3db64da', 'Punto de avistamiento', '/uploads/icons/aves.svg', NOW(), NOW())
+ON DUPLICATE KEY UPDATE nombre = VALUES(nombre), icono_dir = VALUES(icono_dir), updated_at = NOW();
+
+-- Posts de prueba.
+INSERT INTO post (id_post, id_miembro, descripcion, visibilidad, likes, fecha_registro, created_at, updated_at)
+VALUES
+  ('9a9d6e94-6a4b-4c18-9a42-7cbf3b740b3f', (SELECT id_miembro FROM miembro WHERE cedula = 1001234568), 'Lanzamos nuevo producto artesanal en la comunidad.', 1, 12, CURRENT_DATE, NOW(), NOW()),
+  ('d4fbc838-2a35-4e02-93ea-3d60c3a574c2', (SELECT id_miembro FROM miembro WHERE cedula = 1001234569), 'Historias de la artesania wayuu compartidas hoy.', 1, 8, CURRENT_DATE, NOW(), NOW()),
+  ('f2a61b30-379c-45c7-8529-8a3f2f0a1b9e', (SELECT id_miembro FROM miembro WHERE cedula = 1001234571), 'Disponible servicio de pesca tradicional este fin de semana.', 1, 5, CURRENT_DATE, NOW(), NOW())
+ON DUPLICATE KEY UPDATE descripcion = VALUES(descripcion), visibilidad = VALUES(visibilidad), likes = VALUES(likes), updated_at = NOW();

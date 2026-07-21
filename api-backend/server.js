@@ -70,7 +70,8 @@ app.use(session({
     }
 }));
 
-// Static admin dashboard
+// Static assets
+app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
 app.use('/admin', express.static(path.join(__dirname, 'public', 'admin')));
 app.get('/admin', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'admin', 'login.html'));
@@ -94,6 +95,8 @@ app.use('/api/municipios', require('./routes/municipios'));
 app.use('/api/comunidades', require('./routes/comunidades'));
 app.use('/api/miembros', require('./routes/miembro'));
 app.use('/api/productos', require('./routes/productos'));
+app.use('/api/posts', require('./routes/post'));
+app.use('/api/categorias-turisticas', require('./routes/categoriaTuristica'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

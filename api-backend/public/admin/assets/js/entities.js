@@ -260,6 +260,107 @@ async function renderProductos(context) {
   });
 }
 
+async function renderCategoriasTuristicas(context) {
+  const [categorias, serverIcons] = await Promise.all([
+    requestJson('/api/categorias-turisticas'), requestJson('/api/categorias-turisticas/icons'),
+  ]);
+  const rows = categorias || [];
+  const iconOptions = (serverIcons || []).map((value) => ({ value, label: value }));
+  setStat('statCategoriasTuristicas', rows.length);
+  const reload = () => renderCategoriasTuristicas(context);
+
+  const toBase64 = (file) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error('No se pudo leer la imagen.'));
+    reader.readAsDataURL(file);
+  });
+
+  const fields = [
+    { key: 'nombre', label: 'Nombre', type: 'text', required: true },
+    {
+      key: 'icono_dir',
+      label: 'Icono',
+      type: 'image',
+      placeholder: 'URL externa o ruta del servidor',
+      options: iconOptions,
+      onUpload: async (file) => {
+        const dataUrl = await toBase64(file);
+        const result = await requestJson('/api/categorias-turisticas/upload', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fileName: file.name, fileData: dataUrl }),
+        });
+        return result?.path || '';
+      },
+    },
+  ];
+
+  renderCrudView({
+    content: context.content,
+    title: 'Categorías turísticas',
+    createLabel: 'Nueva categoría',
+    rows,
+    columns: [
+      { key: 'id_categoria_turistica', label: 'ID' },
+      { key: 'nombre', label: 'Nombre' },
+      { key: 'icono_dir', label: 'Icono', type: 'image' },
+    ],
+    searchFields: ['nombre'],
+    onCreate: () => openEntityForm({ title: 'Nueva categoría', fields, endpoint: '/api/categorias-turisticas', idKey: 'id_categoria_turistica', reload }),
+    onEdit: (record) => openEntityForm({ title: 'Editar categoría', fields, record, endpoint: '/api/categorias-turisticas', idKey: 'id_categoria_turistica', reload }),
+    onDelete: async (record) => {
+      await requestJson(`/api/categorias-turisticas/${record.id_categoria_turistica}`, { method: 'DELETE' });
+      await reload();
+    },
+    onView: (record) => openDetails('Detalle categoría', [
+      ['Nombre', record.nombre], ['Icono', record.icono_dir || '-'],
+    ]),
+  });
+}
+
+async function renderPosts(context) {
+  const [posts, miembros] = await Promise.all([
+    requestJson('/api/posts'), requestJson('/api/miembros'),
+  ]);
+  const rows = posts || [];
+  const reload = () => renderPosts(context);
+  setStat('statPosts', rows.length);
+  const fields = [
+    { key: 'id_miembro', label: 'Miembro', type: 'select', numeric: true, required: true, options: optionsFrom(miembros, 'id_miembro', (mem) => `${mem.nombres} - ${mem.comunidad}`) },
+    { key: 'descripcion', label: 'Descripcion', type: 'textarea', required: true },
+    { key: 'visibilidad', label: 'Visible', type: 'checkbox', defaultValue: true },
+    { key: 'likes', label: 'Likes', type: 'number', min: 0, defaultValue: 0 },
+  ];
+
+  renderCrudView({
+    content: context.content,
+    title: 'Posts',
+    createLabel: 'Nuevo post',
+    rows,
+    columns: [
+      { key: 'id_post', label: 'ID' },
+      { key: 'miembro', label: 'Miembro' },
+      { key: 'comunidad', label: 'Comunidad' },
+      { key: 'descripcion', label: 'Descripcion' },
+      { key: 'visibilidad', label: 'Visible', format: (row) => row.visibilidad ? 'Si' : 'No' },
+      { key: 'likes', label: 'Likes' },
+      { key: 'fecha_registro', label: 'Fecha registro' },
+    ],
+    searchFields: ['descripcion', 'miembro', 'comunidad'],
+    onCreate: () => openEntityForm({ title: 'Nuevo post', fields, endpoint: '/api/posts', idKey: 'id_post', reload }),
+    onEdit: (record) => openEntityForm({ title: 'Editar post', fields, record, endpoint: '/api/posts', idKey: 'id_post', reload }),
+    onDelete: async (record) => {
+      await requestJson(`/api/posts/${record.id_post}`, { method: 'DELETE' });
+      await reload();
+    },
+    onView: (record) => openDetails('Detalle post', [
+      ['Miembro', record.miembro], ['Comunidad', record.comunidad], ['Descripcion', record.descripcion],
+      ['Visible', record.visibilidad ? 'Si' : 'No'], ['Likes', record.likes], ['Registro', toDateInput(record.fecha_registro)],
+    ]),
+  });
+}
+
 export function createRenderers(context) {
   return {
     roles: () => renderSimpleEntity(context, { title: 'Roles', singular: 'rol', endpoint: '/api/roles', idKey: 'id_rol', stat: 'statRoles' }),
@@ -269,6 +370,8 @@ export function createRenderers(context) {
     comunidades: () => renderComunidades(context),
     miembros: () => renderMiembros(context),
     productos: () => renderProductos(context),
+    categoriasTuristicas: () => renderCategoriasTuristicas(context),
+    posts: () => renderPosts(context),
   };
 }
 
@@ -277,6 +380,7 @@ export async function refreshStats() {
     ['/api/roles', 'statRoles'], ['/api/tipos-producto', 'statTipos'],
     ['/api/departamentos', 'statDeps'], ['/api/municipios', 'statMuns'],
     ['/api/miembros', 'statMiembros'], ['/api/productos', 'statProductos'],
+    ['/api/categorias-turisticas', 'statCategoriasTuristicas'], ['/api/posts', 'statPosts'],
   ];
   await Promise.all(endpoints.map(async ([endpoint, stat]) => {
     const rows = await requestJson(endpoint);
