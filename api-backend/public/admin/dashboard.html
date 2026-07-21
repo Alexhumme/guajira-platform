@@ -98,119 +98,16 @@
     </main>
   </div>
 
-  <div id="modalOverlay" class="modal-overlay hidden">
+  <div id="formModalOverlay" class="modal-overlay hidden">
     <div class="modal">
       <div class="modal-header">
-        <h2 id="modalTitle">Editar comunidad</h2>
-        <button id="modalClose" class="ghost">Cerrar</button>
+        <h2 id="formModalTitle">Formulario</h2>
+        <button id="formModalClose" class="ghost">Cerrar</button>
       </div>
       <div class="modal-body">
-        <div id="modalError" class="error"></div>
-        <div class="form-row">
-          <input id="editComName" placeholder="Nombre" />
-          <select id="editComMun"></select>
-        </div>
-        <div class="form-row">
-          <input id="editComLogo" placeholder="logo_dir" />
-          <input id="editComDireccion" placeholder="Direccion" />
-        </div>
-        <div class="form-row">
-          <input id="editComCoords" placeholder="Coordenadas" />
-          <input id="editComContacto" placeholder="Numero contacto" />
-        </div>
-        <div class="form-row">
-          <label>Fecha de fundación</label>
-          <input id="editComFundacion" type="date" />
-          <label class="notice"><input id="editComVisible" type="checkbox" /> Visible</label>
-        </div>
-        <div class="form-row">
-          <input id="editComDesc" placeholder="Descripcion" style="min-width: 420px;" />
-        </div>
-        <div class="form-row">
-          <button id="modalSave">Guardar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="munModalOverlay" class="modal-overlay hidden">
-    <div class="modal">
-      <div class="modal-header">
-        <h2 id="munModalTitle">Editar municipio</h2>
-        <button id="munModalClose" class="ghost">Cerrar</button>
-      </div>
-      <div class="modal-body">
-        <div id="munModalError" class="error"></div>
-        <div class="form-row">
-          <input id="editMunName" placeholder="Nombre" />
-          <select id="editMunDep"></select>
-        </div>
-        <div class="form-row">
-          <button id="munModalSave">Guardar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="memModalOverlay" class="modal-overlay hidden">
-    <div class="modal">
-      <div class="modal-header">
-        <h2 id="memModalTitle">Editar miembro</h2>
-        <button id="memModalClose" class="ghost">Cerrar</button>
-      </div>
-      <div class="modal-body">
-        <div id="memModalError" class="error"></div>
-        <div class="form-row">
-          <input id="editMemNombres" placeholder="Nombres" />
-          <input id="editMemCedula" type="number" placeholder="Cédula" />
-        </div>
-        <div class="form-row">
-          <select id="editMemComunidad"></select>
-          <select id="editMemRol"></select>
-        </div>
-        <div class="form-row">
-          <input id="editMemFechaNacimiento" type="date" />
-          <input id="editMemContacto" placeholder="Contacto" />
-        </div>
-        <div class="form-row">
-          <input id="editMemGenero" placeholder="Género" />
-          <select id="editMemStatus">
-            <option value="activo">Activo</option>
-            <option value="inactivo">Inactivo</option>
-          </select>
-        </div>
-        <div class="form-row">
-          <button id="memModalSave">Guardar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="prodModalOverlay" class="modal-overlay hidden">
-    <div class="modal">
-      <div class="modal-header">
-        <h2 id="prodModalTitle">Editar producto</h2>
-        <button id="prodModalClose" class="ghost">Cerrar</button>
-      </div>
-      <div class="modal-body">
-        <div id="prodModalError" class="error"></div>
-        <div class="form-row">
-          <input id="editProdName" placeholder="Nombre" />
-          <input id="editProdPrecio" type="number" min="0" step="0.01" placeholder="Precio (COP)" />
-        </div>
-        <div class="form-row">
-          <select id="editProdMiembro"></select>
-          <select id="editProdTipo"></select>
-        </div>
-        <div class="form-row">
-          <textarea id="editProdDescripcion" rows="4" placeholder="Descripcion"></textarea>
-        </div>
-        <div class="form-row">
-          <label class="notice"><input id="editProdVisible" type="checkbox" /> Visible</label>
-        </div>
-        <div class="form-row">
-          <button id="prodModalSave">Guardar</button>
-        </div>
+        <div id="formModalError" class="error"></div>
+        <div id="formModalFields" class="form-grid"></div>
+        <div class="form-row"><button id="formModalSave">Guardar</button></div>
       </div>
     </div>
   </div>
@@ -227,6 +124,6 @@
     </div>
   </div>
 
-  <script src="/admin/assets/dashboard.js"></script>
+  <script type="module" src="/admin/assets/dashboard.js"></script>
 </body>
 </html>
