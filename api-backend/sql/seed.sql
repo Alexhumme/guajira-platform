@@ -67,6 +67,8 @@ FROM (
   SELECT 'La Esperanza', 'Urumita' UNION ALL
   SELECT 'La Esperanza', 'Uribia' UNION ALL
   SELECT 'Fundacion de campesinos', 'Urumita' UNION ALL
+  SELECT 'Grasamana', 'Manaure' UNION ALL
+  SELECT 'Bayabonda', 'Fonseca' UNION ALL
   SELECT 'Yawoulia', 'Maicao'
 ) c
 JOIN municipio m ON m.nombre = c.municipio
