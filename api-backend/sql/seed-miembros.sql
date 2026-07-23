@@ -39,6 +39,20 @@ FROM (
   SELECT 'Guamachito', 'miembro', 1122809697, 'Jean Aviles', 'Masculino', '3137020126', 'avilezjean440@gmail.com' UNION ALL
   SELECT 'Guamachito', 'miembro', 1120757371, 'Naireth Guerra', 'Femenino', '3044971508', 'nairethanez@gmail.com' UNION ALL
 
+  SELECT 'Guamachito', 'miembro', 1121302385, 'Karen Vidal', 'Femenino', '3103491215', 'cesar270779@gmail.com' UNION ALL
+  SELECT 'Guamachito', 'miembro', 80066191, 'Cesar Rodriguez', 'Masculino', '3103491215', 'cesar270779@gmail.com' UNION ALL
+  SELECT 'Guamachito', 'miembro', 1121307984, 'Roselia Ipuana', 'Femenino', '3138167209', 'roseliamontiel22@gmail.com' UNION ALL
+  SELECT 'Guamachito', 'miembro', 1121298456, 'Jose Uriana', 'Masculino', '3006496211', '' UNION ALL
+  SELECT 'Guamachito', 'miembro', 5153805, 'Jesus Pushaina', 'Masculino', '3234166963', '' UNION ALL
+  SELECT 'Guamachito', 'miembro', 84007084, 'David Ipuana', 'Masculino', '3156084082', 'ipuanadavid18@gmail.com' UNION ALL
+  SELECT 'Guamachito', 'miembro', 56053192, 'Yesenia Plaza', 'Femenino', '3219190927', 'plazayesenia131@gmail.com' UNION ALL
+  SELECT 'Guamachito', 'miembro', 56053209, 'Gladis Mejia', 'Femenino', '3205744770', '' UNION ALL
+  SELECT 'Guamachito', 'miembro', 84005023, 'Jose Goriyu', 'Masculino', '3184136634', '' UNION ALL
+  SELECT 'Guamachito', 'miembro', 17990309, 'Antonio Goriyu', 'Masculino', '3147089074', '' UNION ALL
+  SELECT 'Guamachito', 'miembro', 1121300483, 'Lorena Uriana', 'Femenino', '3128037870', '' UNION ALL
+  SELECT 'Guamachito', 'miembro', 1121300755, 'Edgardo Duarte', 'Masculino', '3207308417', '' UNION ALL
+
+
     -- Puerto Caracol
   SELECT 'Puerto Caracol', 'miembro', 1134182628, 'Reina Uriana', 'Femenino', '3118561570', '' UNION ALL
   SELECT 'Puerto Caracol', 'miembro', 1119396860, 'Rosalinda Uriana', 'Femenino', '3128959629', 'rosalindau21@gmail.com' UNION ALL
@@ -58,12 +72,12 @@ FROM (
 
   SELECT 'Puerto Caracol', 'miembro', 1006579287, 'Yudi Epinayu', 'Femenino', '3127930496', 'yudiepinayu@gmail.com' UNION ALL
   SELECT 'Puerto Caracol', 'miembro', 1118800790, 'Senobia Ipuana', 'Femenino', '', '' UNION ALL
-  SELECT 'Puerto Caracol', 'miembro', 66829513, 'Maria R Martinez', 'Femenino', '3118713670', 'luyjei21@gmail.com' UNION ALL
+  SELECT 'Puerto Caracol', 'lider', 66829513, 'Maria Rosalia Martinez', 'Femenino', '3118713670', 'luyjei21@gmail.com' UNION ALL
   SELECT 'Puerto Caracol', 'miembro', 1149446925, 'Maria I Ipuana', 'Femenino', '3145953639', 'rosalindau21@gmail.com' UNION ALL
   SELECT 'Puerto Caracol', 'miembro', 40944681, 'Francia Elena Ipuana', 'Femenino', '3187433635', '' UNION ALL
   SELECT 'Puerto Caracol', 'miembro', 40930651, 'Ana G Epinayu', 'Femenino', '3017891121', 'anaguedelosepinayu@gmail.com' UNION ALL
   SELECT 'Puerto Caracol', 'miembro', 40933130, 'Florentina Epinayu', 'Femenino', 'gladisepinayu41@gmail.com', '' UNION ALL
-  SELECT 'Puerto Caracol', 'miembro', 1119396415, 'Breinis T D', 'Femenino', '3018554889', 'gladisepinayu41@gmail.com' UNION ALL
+  SELECT 'Puerto Caracol', 'miembro', 1119414415, 'Breinis T D', 'Femenino', '3018554889', 'gladisepinayu41@gmail.com' UNION ALL
   SELECT 'Puerto Caracol', 'miembro', 40949720, 'Gladys Epinayu', 'Femenino', '3018554889', 'gladisepinayu41@gmail.com' UNION ALL
   SELECT 'Puerto Caracol', 'miembro', 1119394654, 'Greimis Deluque', 'Femenino', '3018554889', 'epinayudayana62@gmail.com' UNION ALL
   SELECT 'Puerto Caracol', 'miembro', 1119699172, 'Yasuris Uriana', 'Femenino', '3206157746', 'yasurisuriana@gmail.com' UNION ALL
@@ -76,6 +90,11 @@ FROM (
   SELECT 'Puerto Caracol', 'miembro', 40938916, 'Paula C Martinez', 'Femenino', '', '' UNION ALL
   SELECT 'Puerto Caracol', 'miembro', 1192728403, 'Tabedis Epieyu', 'Femenino', '', '' UNION ALL
 
+    -- Tocoromana
+  SELECT 'Tocoromana', 'miembro', 1192728403, 'Yeneris Gouriyu', 'Femenino', '', '' UNION ALL
+
+      
+    
     -- Bayabonda
   SELECT 'Bayabonda', 'lider', 1006713738, 'Erika Solano', 'Femenino', '3019424376', 'erikasolpus92@gmail.com' UNION ALL
 
