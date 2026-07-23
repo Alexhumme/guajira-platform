@@ -2,14 +2,22 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { MapPin, Package, Users } from 'lucide-react'
 import {
+  getComunidadBySlug,
   getMunicipio,
   productosByComunidad,
   type Comunidad,
 } from '@/lib/data'
 
-export function CommunityCard({ comunidad }: { comunidad: Comunidad }) {
-  const municipio = getMunicipio(comunidad.municipioId)
-  const totalProductos = productosByComunidad(comunidad.id).length
+type ComunidadCardProps = {
+  comunidad: Comunidad
+  municipio?: { nombre: string; departamento: string }
+}
+
+export function CommunityCard({ comunidad, municipio }: ComunidadCardProps) {
+  const resolvedMunicipio = municipio ?? getMunicipio(comunidad.municipioId)
+  const localCommunity = getComunidadBySlug(comunidad.slug)
+  const totalProductos = localCommunity ? productosByComunidad(localCommunity.id).length : 0
+
   return (
     <Link
       href={`/comunidades/${comunidad.slug}`}
@@ -27,7 +35,7 @@ export function CommunityCard({ comunidad }: { comunidad: Comunidad }) {
         <div className="absolute bottom-3 left-4 right-4 text-white">
           <h3 className="font-serif text-lg font-bold text-balance">{comunidad.nombre}</h3>
           <p className="flex items-center gap-1 text-xs text-white/85">
-            <MapPin className="size-3.5" /> {municipio?.nombre}, {municipio?.departamento}
+            <MapPin className="size-3.5" /> {resolvedMunicipio?.nombre}, {resolvedMunicipio?.departamento}
           </p>
         </div>
       </div>

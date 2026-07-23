@@ -10,14 +10,9 @@ import { PhotoGallery } from '@/components/photo-gallery'
 import { InteractiveMap } from '@/components/interactive-map'
 import { WayuuDivider } from '@/components/wayuu-divider'
 import { Button } from '@/components/ui/button'
-import {
-  comunidades,
-  productos,
-  rutas,
-  publicaciones,
-  indicadores,
-  galeria,
-} from '@/lib/data'
+import { getIndicadores } from '@/lib/api/indicadores'
+import { getTopComunidades } from '@/lib/api/comunidades'
+import { productos, rutas, publicaciones, galeria } from '@/lib/data'
 
 const pilares = [
   { icon: ShoppingBag, title: 'Comercialización justa', desc: 'Nuevos canales para vender productos comunitarios de forma directa.' },
@@ -26,7 +21,10 @@ const pilares = [
   { icon: Handshake, title: 'Redes de valor', desc: 'Fortalecimiento de vínculos entre comunidades, aliados y visitantes.' },
 ]
 
-export default function HomePage() {
+export default async function HomePage() {
+  const indicadores = await getIndicadores()
+  const topComunidades = await getTopComunidades()
+
   return (
     <>
       <Hero />
@@ -77,8 +75,12 @@ export default function HomePage() {
           href="/comunidades"
         />
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {comunidades.map((c) => (
-            <CommunityCard key={c.id} comunidad={c} />
+          {topComunidades.map((c) => (
+            <CommunityCard
+              key={c.id}
+              comunidad={c}
+              municipio={c.municipio}
+            />
           ))}
         </div>
       </section>

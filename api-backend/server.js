@@ -86,6 +86,9 @@ app.get('/', (req, res) => {
     });
 });
 
+// Public web-client API (no authentication required)
+app.use('/api/web-client', require('./routes/web-client-api'));
+
 // Admin auth & core entities
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/admins', require('./routes/admins'));

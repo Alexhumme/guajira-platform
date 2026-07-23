@@ -50,6 +50,12 @@ export type Producto = {
   imagenes: string[]
 }
 
+export type Indicador = {
+  label: string
+  valor: number | string
+  sufijo?: string
+}
+
 export type Publicacion = {
   id: string
   autor: string

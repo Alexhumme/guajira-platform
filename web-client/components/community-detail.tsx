@@ -13,23 +13,30 @@ import { WayuuDivider } from "@/components/wayuu-divider"
 import { cn } from "@/lib/utils"
 import {
   type Comunidad,
+  getComunidadBySlug,
   getMunicipio,
   productosByComunidad,
   publicacionesByComunidad,
   rutasByComunidad,
   serviciosByComunidad,
-} from "@/lib/data"
+} from '@/lib/data'
 
-const tabs = ["Historia", "Cultura", "Productos", "Turismo", "Publicaciones", "Contacto"] as const
+type CommunityDetailProps = {
+  comunidad: Comunidad
+  municipio?: { nombre: string; departamento: string }
+}
+
+const tabs = ['Historia', 'Cultura', 'Productos', 'Turismo', 'Publicaciones', 'Contacto'] as const
 type Tab = (typeof tabs)[number]
 
-export function CommunityDetail({ comunidad }: { comunidad: Comunidad }) {
-  const [tab, setTab] = useState<Tab>("Historia")
-  const municipio = getMunicipio(comunidad.municipioId)
-  const productos = productosByComunidad(comunidad.id)
-  const rutas = rutasByComunidad(comunidad.id)
-  const publicaciones = publicacionesByComunidad(comunidad.id)
-  const servicios = serviciosByComunidad(comunidad.id)
+export function CommunityDetail({ comunidad, municipio }: CommunityDetailProps) {
+  const [tab, setTab] = useState<Tab>('Historia')
+  const resolvedMunicipio = municipio ?? getMunicipio(comunidad.municipioId)
+  const localCommunity = getComunidadBySlug(comunidad.slug)
+  const productos = localCommunity ? productosByComunidad(localCommunity.id) : []
+  const rutas = localCommunity ? rutasByComunidad(localCommunity.id) : []
+  const publicaciones = localCommunity ? publicacionesByComunidad(localCommunity.id) : []
+  const servicios = localCommunity ? serviciosByComunidad(localCommunity.id) : []
 
   return (
     <>
@@ -40,7 +47,7 @@ export function CommunityDetail({ comunidad }: { comunidad: Comunidad }) {
           <div className="flex flex-wrap items-center gap-2 text-sm text-background/80">
             <MapPin className="size-4" />
             <span>
-              {municipio?.nombre}, {municipio?.departamento}
+              {resolvedMunicipio?.nombre}, {resolvedMunicipio?.departamento}
             </span>
           </div>
           <h1 className="mt-2 font-serif text-3xl font-bold text-background text-balance md:text-5xl">

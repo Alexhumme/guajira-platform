@@ -1,14 +1,14 @@
-import { notFound } from "next/navigation"
-import { comunidades, getComunidadBySlug } from "@/lib/data"
-import { CommunityDetail } from "@/components/community-detail"
-
-export function generateStaticParams() {
-  return comunidades.map((c) => ({ slug: c.slug }))
-}
+import { notFound } from 'next/navigation'
+import { CommunityDetail } from '@/components/community-detail'
+import { getComunidadBySlug } from '@/lib/api/comunidades'
+import { getMunicipios } from '@/lib/api/municipios'
 
 export default async function ComunidadPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const comunidad = getComunidadBySlug(slug)
+  const comunidad = await getComunidadBySlug(slug)
   if (!comunidad) notFound()
-  return <CommunityDetail comunidad={comunidad} />
+
+  const municipio = (await getMunicipios()).find((m) => m.id === comunidad.municipioId)
+
+  return <CommunityDetail comunidad={comunidad} municipio={municipio} />
 }

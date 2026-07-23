@@ -1,15 +1,19 @@
-import type { Metadata } from "next"
-import { comunidades, municipios } from "@/lib/data"
-import { PageHero } from "@/components/page-hero"
-import { CommunityCard } from "@/components/community-card"
-import { WayuuDivider } from "@/components/wayuu-divider"
+import type { Metadata } from 'next'
+import { PageHero } from '@/components/page-hero'
+import { CommunityCard } from '@/components/community-card'
+import { WayuuDivider } from '@/components/wayuu-divider'
+import { getComunidades } from '@/lib/api/comunidades'
+import { getMunicipios } from '@/lib/api/municipios'
 
 export const metadata: Metadata = {
-  title: "Comunidades | IAP La Guajira",
-  description: "Conoce las comunidades Wayuu que hacen parte del proyecto IAP en La Guajira.",
+  title: 'Comunidades | IAP La Guajira',
+  description: 'Conoce las comunidades Wayuu que hacen parte del proyecto IAP en La Guajira.',
 }
 
-export default function ComunidadesPage() {
+export default async function ComunidadesPage() {
+  const comunidades = await getComunidades()
+  const municipios = await getMunicipios()
+
   return (
     <>
       <PageHero
@@ -23,7 +27,7 @@ export default function ComunidadesPage() {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {comunidades.map((c) => {
             const municipio = municipios.find((m) => m.id === c.municipioId)
-            return <CommunityCard key={c.id} comunidad={c} municipio={municipio?.nombre} />
+            return <CommunityCard key={c.id} comunidad={c} municipio={municipio} />
           })}
         </div>
       </section>
