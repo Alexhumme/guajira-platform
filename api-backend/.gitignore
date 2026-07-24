@@ -110,8 +110,8 @@ ehthumbs.db
 Thumbs.db
 
 # Uploads folder (if used for file uploads)
-uploads/
-public/uploads/
+#uploads/
+#public/uploads/
 
 # Database
 *.sqlite

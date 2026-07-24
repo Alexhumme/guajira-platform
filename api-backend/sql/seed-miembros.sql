@@ -85,6 +85,23 @@ FROM (
   SELECT 'Puerto Caracol', 'miembro', 1192728403, 'Tabedis Epieyu', 'Femenino', '', '' UNION ALL
     -- Tocoromana
   SELECT 'Tocoromana', 'miembro', 1192728403, 'Yeneris Gouriyu', 'Femenino', '', '' UNION ALL
+
+    -- El Guajirito
+    SELECT 'El Guajirito', 'miembro', 90929891, 'Eloisa', 'Femenino', '3159691362', '' UNION ALL
+    -- SELECT 'El Guajirito', 'miembro', XXXXXXXX, 'Aurora Jaxaiyú', 'Femenino', '', '' UNION ALL
+    SELECT 'El Guajirito', 'miembro', 1124497782, 'Carmen Ipuana', 'Femenino', '3233380141', '' UNION ALL
+    SELECT 'El Guajirito', 'miembro', 1124497780, 'Deicy Ipuana', 'Femenino', '3011934491', '' UNION ALL
+    SELECT 'El Guajirito', 'miembro', 40950501, 'Laudith Uriana', 'Femenino', '3159033286', '' UNION ALL
+    SELECT 'El Guajirito', 'miembro', 1119393696, 'Sharon Siosi', 'Femenino', '3181272028', '' UNION ALL
+    SELECT 'El Guajirito', 'miembro', 40930387, 'Aurora Uriana', 'Femenino', '3024323552', '' UNION ALL
+    SELECT 'El Guajirito', 'miembro', 40919948, 'Eva Onano', 'Femenino', '3044414434', '' UNION ALL
+    SELECT 'El Guajirito', 'miembro', 1006617115, 'Odelmis Gouriyu', 'Femenino', '3044414434', '' UNION ALL
+    SELECT 'El Guajirito', 'miembro', 26960239, 'Evelina Jayariyú', 'Femenino', '3044414434', '' UNION ALL
+    -- SELECT 'El Guajirito', 'miembro', XXXXXXXX, 'Daicy Ipuana', 'Femenino', '', '' UNION ALL
+    SELECT 'El Guajirito', 'miembro', 1118840635, 'Carmen Pérez', 'Femenino', '3230614532', '' UNION ALL
+    -- SELECT 'El Guajirito', 'miembro', XXXXXXXX, 'Helka Pérez', 'Femenino', '', '' UNION ALL
+    -- SELECT 'El Guajirito', 'miembro', XXXXXXXX, 'Marlene Uriana', 'Femenino', '', ''
+
     -- Bayabonda
   SELECT 'Bayabonda', 'lider', 1006713738, 'Erika Solano', 'Femenino', '3019424376', 'erikasolpus92@gmail.com' UNION ALL
     -- Buenos Aires
