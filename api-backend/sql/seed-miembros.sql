@@ -85,7 +85,6 @@ FROM (
   SELECT 'Puerto Caracol', 'miembro', 1192728403, 'Tabedis Epieyu', 'Femenino', '', '' UNION ALL
     -- Tocoromana
   SELECT 'Tocoromana', 'miembro', 1192728403, 'Yeneris Gouriyu', 'Femenino', '', '' UNION ALL
-
     -- El Guajirito
     SELECT 'El Guajirito', 'miembro', 90929891, 'Eloisa', 'Femenino', '3159691362', '' UNION ALL
     -- SELECT 'El Guajirito', 'miembro', XXXXXXXX, 'Aurora Jaxaiyú', 'Femenino', '', '' UNION ALL
@@ -101,7 +100,6 @@ FROM (
     SELECT 'El Guajirito', 'miembro', 1118840635, 'Carmen Pérez', 'Femenino', '3230614532', '' UNION ALL
     -- SELECT 'El Guajirito', 'miembro', XXXXXXXX, 'Helka Pérez', 'Femenino', '', '' UNION ALL
     -- SELECT 'El Guajirito', 'miembro', XXXXXXXX, 'Marlene Uriana', 'Femenino', '', ''
-
     -- Bayabonda
   SELECT 'Bayabonda', 'lider', 1006713738, 'Erika Solano', 'Femenino', '3019424376', 'erikasolpus92@gmail.com' UNION ALL
     -- Buenos Aires

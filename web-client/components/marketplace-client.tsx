@@ -5,22 +5,26 @@ import { Search, SlidersHorizontal, X } from 'lucide-react'
 import { ProductCard } from '@/components/product-card'
 import { Input, Select } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import {
-  productos,
-  comunidades,
-  municipios,
-  categorias,
-} from '@/lib/data'
-
-const maxPrecio = Math.max(...productos.map((p) => p.precio))
+import { useProductos } from '@/hooks/useProductos'
+import { useComunidades } from '@/hooks/useComunidades'
+import { useMunicipios } from '@/hooks/useMunicipios'
 
 export function MarketplaceClient() {
+  const { productos, isLoading, error } = useProductos()
+  const { comunidades } = useComunidades()
+  const { municipios } = useMunicipios()
   const [query, setQuery] = useState('')
   const [categoria, setCategoria] = useState('')
   const [comunidad, setComunidad] = useState('')
   const [municipio, setMunicipio] = useState('')
-  const [precio, setPrecio] = useState(maxPrecio)
+  const [precio, setPrecio] = useState<number | null>(null)
   const [showFilters, setShowFilters] = useState(false)
+
+  const maxPrecio = useMemo(() => Math.max(0, ...productos.map((producto) => producto.precio)), [productos])
+  const categorias = useMemo(
+    () => Array.from(new Set(productos.map((producto) => producto.categoria))).sort(),
+    [productos],
+  )
 
   const filtrados = useMemo(() => {
     return productos.filter((p) => {
@@ -29,7 +33,7 @@ export function MarketplaceClient() {
       if (categoria && p.categoria !== categoria) return false
       if (comunidad && p.comunidadId !== comunidad) return false
       if (municipio && comu?.municipioId !== municipio) return false
-      if (p.precio > precio) return false
+      if (precio !== null && p.precio > precio) return false
       return true
     })
   }, [query, categoria, comunidad, municipio, precio])
@@ -39,7 +43,7 @@ export function MarketplaceClient() {
     setCategoria('')
     setComunidad('')
     setMunicipio('')
-    setPrecio(maxPrecio)
+    setPrecio(null)
   }
 
   const filters = (
@@ -73,14 +77,14 @@ export function MarketplaceClient() {
       </div>
       <div>
         <label className="mb-1.5 block text-sm font-medium">
-          Precio máximo: {new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(precio)}
+          Precio máximo: {new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(precio ?? maxPrecio)}
         </label>
         <input
           type="range"
           min={0}
           max={maxPrecio}
           step={1000}
-          value={precio}
+          value={precio ?? maxPrecio}
           onChange={(e) => setPrecio(Number(e.target.value))}
           className="w-full accent-[var(--primary)]"
         />
@@ -128,7 +132,15 @@ export function MarketplaceClient() {
           <p className="mb-4 hidden text-sm text-muted-foreground lg:block">
             {filtrados.length} productos encontrados
           </p>
-          {filtrados.length > 0 ? (
+          {isLoading ? (
+            <div className="rounded-xl border border-dashed border-border p-12 text-center text-muted-foreground">
+              Cargando productos...
+            </div>
+          ) : error ? (
+            <div className="rounded-xl border border-dashed border-border p-12 text-center text-muted-foreground">
+              No fue posible cargar los productos.
+            </div>
+          ) : filtrados.length > 0 ? (
             <div className="grid grid-cols-2 gap-5 lg:grid-cols-3 xl:grid-cols-4">
               {filtrados.map((p) => (
                 <ProductCard key={p.id} producto={p} />

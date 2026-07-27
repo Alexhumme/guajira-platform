@@ -1,10 +1,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Badge } from '@/components/ui/badge'
-import { formatCOP, getComunidad, type Producto } from '@/lib/data'
+import { formatCOP, type Producto } from '@/lib/data'
 
 export function ProductCard({ producto }: { producto: Producto }) {
-  const comunidad = getComunidad(producto.comunidadId)
   return (
     <Link
       href={`/marketplace/${producto.slug}`}
@@ -26,7 +25,7 @@ export function ProductCard({ producto }: { producto: Producto }) {
         <h3 className="font-serif text-base font-semibold leading-tight text-balance">
           {producto.nombre}
         </h3>
-        <p className="text-xs text-muted-foreground">{comunidad?.nombre}</p>
+        <p className="text-xs text-muted-foreground">{producto.artesano}</p>
         <div className="mt-auto flex items-center justify-between pt-3">
           <span className="font-semibold text-primary">{formatCOP(producto.precio)}</span>
         </div>

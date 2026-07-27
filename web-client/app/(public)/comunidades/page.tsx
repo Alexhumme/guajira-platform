@@ -4,6 +4,7 @@ import { CommunityCard } from '@/components/community-card'
 import { WayuuDivider } from '@/components/wayuu-divider'
 import { getComunidades } from '@/lib/api/comunidades'
 import { getMunicipios } from '@/lib/api/municipios'
+import { getProductos } from '@/lib/api/productos'
 
 export const metadata: Metadata = {
   title: 'Comunidades | IAP La Guajira',
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
 export default async function ComunidadesPage() {
   const comunidades = await getComunidades()
   const municipios = await getMunicipios()
+  const productos = await getProductos()
 
   return (
     <>
@@ -27,7 +29,8 @@ export default async function ComunidadesPage() {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {comunidades.map((c) => {
             const municipio = municipios.find((m) => m.id === c.municipioId)
-            return <CommunityCard key={c.id} comunidad={c} municipio={municipio} />
+            const totalProductos = productos.filter((producto) => producto.comunidadId === c.id).length
+            return <CommunityCard key={c.id} comunidad={c} municipio={municipio} totalProductos={totalProductos} />
           })}
         </div>
       </section>

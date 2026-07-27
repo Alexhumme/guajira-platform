@@ -4,6 +4,14 @@ const trimTrailingSlash = (value: string) => value.replace(/\/+$|\/+(?=\?)|\/+(?
 
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ? trimTrailingSlash(process.env.NEXT_PUBLIC_API_URL) : ''
 
+export function resolveApiAssetUrl(path: string): string {
+  if (!path || /^(?:[a-z][a-z\d+.-]*:)?\/\//i.test(path)) {
+    return path
+  }
+
+  return API_BASE_URL ? `${API_BASE_URL}/${path.replace(/^\/+/, '')}` : path
+}
+
 export async function fetchApi<T>(path: string): Promise<T> {
   const url = `${API_BASE_URL}${path}`
   const response = await fetch(url, { cache: 'no-store' })

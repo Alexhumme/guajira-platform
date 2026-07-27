@@ -12,7 +12,8 @@ import { WayuuDivider } from '@/components/wayuu-divider'
 import { Button } from '@/components/ui/button'
 import { getIndicadores } from '@/lib/api/indicadores'
 import { getTopComunidades } from '@/lib/api/comunidades'
-import { productos, rutas, publicaciones, galeria } from '@/lib/data'
+import { getProductos } from '@/lib/api/productos'
+import { rutas, publicaciones, galeria } from '@/lib/data'
 
 const pilares = [
   { icon: ShoppingBag, title: 'Comercialización justa', desc: 'Nuevos canales para vender productos comunitarios de forma directa.' },
@@ -24,6 +25,7 @@ const pilares = [
 export default async function HomePage() {
   const indicadores = await getIndicadores()
   const topComunidades = await getTopComunidades()
+  const productos = await getProductos()
 
   return (
     <>
@@ -80,6 +82,7 @@ export default async function HomePage() {
               key={c.id}
               comunidad={c}
               municipio={c.municipio}
+              totalProductos={productos.filter((producto) => producto.comunidadId === c.id).length}
             />
           ))}
         </div>

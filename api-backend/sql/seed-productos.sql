@@ -1,3 +1,7 @@
+/*
+
+*/
+
 USE guajira_platform;
 
 -- Productos de prueba. Requiere que miembros y tipos de producto ya existan.

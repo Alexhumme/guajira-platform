@@ -183,77 +183,6 @@ export const comunidades: Comunidad[] = [
   },
 ]
 
-export const productos: Producto[] = [
-  {
-    id: 'p1',
-    slug: 'mochila-kanas',
-    nombre: 'Mochila Wayuu Kanás',
-    descripcion:
-      'Mochila tejida a una hebra con patrones geométricos kanás en tonos tierra. Pieza única.',
-    categoria: 'Artesanías',
-    precio: 180000,
-    comunidadId: 'c1',
-    artesano: 'María Epieyu',
-    imagenes: ['/images/product-mochila.png', '/images/gallery-4.png'],
-  },
-  {
-    id: 'p2',
-    slug: 'chinchorro-guajiro',
-    nombre: 'Chinchorro Guajiro',
-    descripcion:
-      'Hamaca tradicional tejida con flecos elaborados. Ideal para descanso y decoración.',
-    categoria: 'Artesanías',
-    precio: 950000,
-    comunidadId: 'c1',
-    artesano: 'Rosa Uriana',
-    imagenes: ['/images/product-chinchorro.png'],
-  },
-  {
-    id: 'p3',
-    slug: 'manillas-wayuu',
-    nombre: 'Set de Manillas Wayuu',
-    descripcion: 'Conjunto de pulseras tejidas con mostacilla y patrones tradicionales.',
-    categoria: 'Artesanías',
-    precio: 35000,
-    comunidadId: 'c1',
-    artesano: 'Luz Pushaina',
-    imagenes: ['/images/product-manilla.png'],
-  },
-  {
-    id: 'p4',
-    slug: 'pescado-fresco',
-    nombre: 'Pescado Fresco del Caribe',
-    descripcion: 'Pesca artesanal diaria: pargo, sierra y langosta según temporada.',
-    categoria: 'Pesca',
-    precio: 28000,
-    comunidadId: 'c3',
-    artesano: 'José Ipuana',
-    imagenes: ['/images/product-pescado.png'],
-  },
-  {
-    id: 'p5',
-    slug: 'friche-guajiro',
-    nombre: 'Friche Guajiro (plato típico)',
-    descripcion: 'Plato tradicional de chivo, símbolo de la gastronomía Wayuu.',
-    categoria: 'Gastronomía',
-    precio: 22000,
-    comunidadId: 'c4',
-    artesano: 'Cocina comunitaria Macuira',
-    imagenes: ['/images/product-friche.png'],
-  },
-  {
-    id: 'p6',
-    slug: 'sal-marina-artesanal',
-    nombre: 'Sal Marina Artesanal',
-    descripcion: 'Sal recolectada a mano en las charcas de Manaure, sin aditivos.',
-    categoria: 'Agricultura',
-    precio: 12000,
-    comunidadId: 'c2',
-    artesano: 'Cooperativa Shipia',
-    imagenes: ['/images/product-sal.png'],
-  },
-]
-
 export const publicaciones: Publicacion[] = [
   {
     id: 'pub1',
@@ -370,18 +299,7 @@ export const usuarios: Usuario[] = [
   { id: 'u5', nombre: 'Rosa Uriana', correo: 'rosa@iapguajira.co', rol: 'Publicador', fotografia: '/images/artisan-1.png', comunidadId: 'c1', estado: 'Activo' },
 ]
 
-export const categorias: Categoria[] = ['Artesanías', 'Gastronomía', 'Agricultura', 'Pesca', 'Turismo', 'Otros']
-
 export const roles: Rol[] = ['Administrador', 'Gestor', 'Líder comunitario', 'Artesano', 'Publicador']
-
-export const indicadores = [
-  { label: 'Comunidades participantes', valor: comunidades.length, sufijo: '' },
-  { label: 'Habitantes beneficiados', valor: 172, sufijo: '+' },
-  { label: 'Productos en el marketplace', valor: productos.length, sufijo: '' },
-  { label: 'Rutas de turismo comunitario', valor: rutas.length, sufijo: '' },
-  { label: 'Municipios cubiertos', valor: municipios.length, sufijo: '' },
-  { label: 'Artesanos activos', valor: 58, sufijo: '' },
-]
 
 export const galeria = [
   '/images/gallery-1.png',
@@ -401,11 +319,8 @@ export const formatCOP = (value: number) =>
 export const getComunidad = (id: string) => comunidades.find((c) => c.id === id)
 export const getComunidadBySlug = (slug: string) => comunidades.find((c) => c.slug === slug)
 export const getMunicipio = (id: string) => municipios.find((m) => m.id === id)
-export const getProducto = (slug: string) => productos.find((p) => p.slug === slug)
 export const getRuta = (slug: string) => rutas.find((r) => r.slug === slug)
 export const getServicio = (id: string) => servicios.find((s) => s.id === id)
-export const getProductoById = (id: string) => productos.find((p) => p.id === id)
-export const productosByComunidad = (comunidadId: string) => productos.filter((p) => p.comunidadId === comunidadId)
 export const publicacionesByComunidad = (comunidadId: string) => publicaciones.filter((p) => p.comunidadId === comunidadId)
 export const rutasByComunidad = (comunidadId: string) => rutas.filter((r) => r.comunidadesIds.includes(comunidadId))
 export const serviciosByComunidad = (comunidadId: string) => servicios.filter((s) => s.comunidadId === comunidadId)

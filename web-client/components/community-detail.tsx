@@ -11,11 +11,10 @@ import { RouteCard } from "@/components/route-card"
 import { PublicationCard } from "@/components/publication-card"
 import { WayuuDivider } from "@/components/wayuu-divider"
 import { cn } from "@/lib/utils"
+import { useProductos } from '@/hooks/useProductos'
 import {
   type Comunidad,
-  getComunidadBySlug,
   getMunicipio,
-  productosByComunidad,
   publicacionesByComunidad,
   rutasByComunidad,
   serviciosByComunidad,
@@ -31,12 +30,12 @@ type Tab = (typeof tabs)[number]
 
 export function CommunityDetail({ comunidad, municipio }: CommunityDetailProps) {
   const [tab, setTab] = useState<Tab>('Historia')
+  const { productos } = useProductos()
   const resolvedMunicipio = municipio ?? getMunicipio(comunidad.municipioId)
-  const localCommunity = getComunidadBySlug(comunidad.slug)
-  const productos = localCommunity ? productosByComunidad(localCommunity.id) : []
-  const rutas = localCommunity ? rutasByComunidad(localCommunity.id) : []
-  const publicaciones = localCommunity ? publicacionesByComunidad(localCommunity.id) : []
-  const servicios = localCommunity ? serviciosByComunidad(localCommunity.id) : []
+  const productosComunidad = productos.filter((producto) => producto.comunidadId === comunidad.id)
+  const rutas = rutasByComunidad(comunidad.id)
+  const publicaciones = publicacionesByComunidad(comunidad.id)
+  const servicios = serviciosByComunidad(comunidad.id)
 
   return (
     <>
@@ -110,9 +109,9 @@ export function CommunityDetail({ comunidad, municipio }: CommunityDetailProps) 
         {tab === "Productos" && (
           <div>
             <h2 className="font-serif text-2xl font-bold">Productos de la comunidad</h2>
-            {productos.length ? (
+            {productosComunidad.length ? (
               <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {productos.map((p) => (
+                {productosComunidad.map((p) => (
                   <ProductCard key={p.id} producto={p} />
                 ))}
               </div>

@@ -7,7 +7,6 @@ import { Heart, MessageCircle, Share2 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import {
   getComunidad,
-  getProductoById,
   type Publicacion,
 } from '@/lib/data'
 import { cn } from '@/lib/utils'
@@ -55,20 +54,6 @@ export function PublicationCard({ publicacion }: { publicacion: Publicacion }) {
               <Image src={img} alt="" fill sizes="50vw" className="object-cover" />
             </div>
           ))}
-        </div>
-      )}
-
-      {publicacion.productosRelacionados.length > 0 && (
-        <div className="flex flex-wrap gap-2 px-4 pt-3">
-          {publicacion.productosRelacionados.map((pid) => {
-            const prod = getProductoById(pid)
-            if (!prod) return null
-            return (
-              <Link key={pid} href={`/marketplace/${prod.slug}`}>
-                <Badge variant="clay">Producto: {prod.nombre}</Badge>
-              </Link>
-            )
-          })}
         </div>
       )}
 

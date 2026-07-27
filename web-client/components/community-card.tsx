@@ -2,21 +2,18 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { MapPin, Package, Users } from 'lucide-react'
 import {
-  getComunidadBySlug,
   getMunicipio,
-  productosByComunidad,
   type Comunidad,
 } from '@/lib/data'
 
 type ComunidadCardProps = {
   comunidad: Comunidad
   municipio?: { nombre: string; departamento: string }
+  totalProductos?: number
 }
 
-export function CommunityCard({ comunidad, municipio }: ComunidadCardProps) {
+export function CommunityCard({ comunidad, municipio, totalProductos = 0 }: ComunidadCardProps) {
   const resolvedMunicipio = municipio ?? getMunicipio(comunidad.municipioId)
-  const localCommunity = getComunidadBySlug(comunidad.slug)
-  const totalProductos = localCommunity ? productosByComunidad(localCommunity.id).length : 0
 
   return (
     <Link

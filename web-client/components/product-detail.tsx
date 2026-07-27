@@ -7,11 +7,10 @@ import { MessageCircle, Package, Users } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { formatCOP, getComunidad, type Producto } from '@/lib/data'
+import { formatCOP, type Comunidad, type Producto } from '@/lib/data'
 
-export function ProductDetail({ producto }: { producto: Producto }) {
+export function ProductDetail({ producto, comunidad }: { producto: Producto; comunidad?: Comunidad }) {
   const [active, setActive] = useState(0)
-  const comunidad = getComunidad(producto.comunidadId)
 
   return (
     <div className="grid gap-10 lg:grid-cols-2">
