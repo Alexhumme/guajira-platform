@@ -790,6 +790,206 @@ async function renderPosts(context) {
   });
 }
 
+function createBadge(label, color) {
+  const badge = document.createElement('span');
+  badge.className = 'badge-pill';
+  badge.textContent = label;
+  badge.style.background = color;
+  return badge;
+}
+
+function getMonitoringLevel(score) {
+  if (score >= 8) return { label: 'Alto', color: '#16a34a' };
+  if (score >= 5) return { label: 'Medio', color: '#f59e0b' };
+  return { label: 'Bajo', color: '#dc2626' };
+}
+
+function buildMaturityItem({ label, ok }) {
+  const item = document.createElement('li');
+  item.className = `indicator-item ${ok ? 'ok' : 'bad'}`;
+  const labelNode = document.createElement('span');
+  labelNode.textContent = label;
+  const statusNode = document.createElement('span');
+  statusNode.textContent = ok ? 'Cumple' : 'Falta';
+  item.append(labelNode, statusNode);
+  return item;
+}
+
+async function renderMonitoring(context) {
+  const content = context.content;
+  const communities = await requestJson('/api/monitoring/comunidades') || [];
+  content.innerHTML = '';
+
+  const titleCard = document.createElement('div');
+  titleCard.className = 'summary-card';
+  titleCard.innerHTML = `
+    <h2>Monitoreo de comunidades</h2>
+    <p>Controla la distribución de género, el perfil de marca y el nivel de madurez de cada comunidad registrada.</p>
+  `;
+  content.appendChild(titleCard);
+
+  if (!communities.length) {
+    const empty = document.createElement('div');
+    empty.className = 'card';
+    empty.innerHTML = '<p>No hay comunidades disponibles para monitorear.</p>';
+    content.appendChild(empty);
+    return;
+  }
+
+  let selectedId = communities[0].id_comunidad;
+
+  const monitoringGrid = document.createElement('div');
+  monitoringGrid.className = 'monitoring-grid';
+
+  const leftColumn = document.createElement('div');
+  const rightColumn = document.createElement('div');
+
+  const communitySelectCard = document.createElement('div');
+  communitySelectCard.className = 'summary-card';
+  communitySelectCard.innerHTML = '<h3>Selecciona una comunidad</h3>';
+  const select = document.createElement('select');
+  select.style.width = '100%';
+  select.style.marginTop = '12px';
+  communities.forEach((community) => {
+    const option = document.createElement('option');
+    option.value = community.id_comunidad;
+    option.textContent = `${community.nombre} — ${community.municipio}, ${community.departamento} (${community.maturity_score}/10)`;
+    select.appendChild(option);
+  });
+  communitySelectCard.appendChild(select);
+  leftColumn.appendChild(communitySelectCard);
+
+  const communityListCard = document.createElement('div');
+  communityListCard.className = 'card';
+  communityListCard.innerHTML = '<h3>Resumen de madurez</h3>';
+  const list = document.createElement('div');
+  list.style.display = 'grid';
+  list.style.gap = '10px';
+  communities.forEach((community) => {
+    const item = document.createElement('div');
+    item.className = 'indicator-item';
+    item.style.justifyContent = 'space-between';
+    item.style.cursor = 'pointer';
+    item.innerHTML = `
+      <span>${community.nombre}</span>
+      <strong>${community.maturity_score}/10</strong>
+    `;
+    item.addEventListener('click', () => {
+      selectedId = community.id_comunidad;
+      select.value = selectedId;
+      renderSelected();
+    });
+    list.appendChild(item);
+  });
+  communityListCard.appendChild(list);
+  leftColumn.appendChild(communityListCard);
+
+  const profileCard = document.createElement('div');
+  profileCard.className = 'profile-card';
+  rightColumn.appendChild(profileCard);
+
+  const detailsCard = document.createElement('div');
+  detailsCard.className = 'profile-card';
+  rightColumn.appendChild(detailsCard);
+
+  const indicatorsCard = document.createElement('div');
+  indicatorsCard.className = 'indicator-card';
+  rightColumn.appendChild(indicatorsCard);
+
+  monitoringGrid.append(leftColumn, rightColumn);
+  content.appendChild(monitoringGrid);
+
+  async function renderSelected() {
+    const detail = await requestJson(`/api/monitoring/comunidades/${selectedId}`);
+    if (!detail) return;
+
+    const { profile, gender, counts, maturity } = detail;
+    const level = getMonitoringLevel(maturity.score);
+
+    profileCard.innerHTML = '';
+    const title = document.createElement('h3');
+    title.textContent = 'Perfil de comunidad';
+    profileCard.appendChild(title);
+
+    if (profile.logo_dir) {
+      const image = document.createElement('img');
+      image.className = 'profile-image';
+      image.src = profile.logo_dir;
+      image.alt = profile.nombre;
+      profileCard.appendChild(image);
+    } else {
+      const placeholder = document.createElement('div');
+      placeholder.className = 'profile-image';
+      placeholder.style.display = 'grid';
+      placeholder.style.placeItems = 'center';
+      placeholder.style.color = 'var(--muted)';
+      placeholder.textContent = 'Sin logo disponible';
+      profileCard.appendChild(placeholder);
+    }
+
+    const profileInfo = document.createElement('div');
+    profileInfo.style.display = 'grid';
+    profileInfo.style.gap = '10px';
+    profileInfo.style.marginTop = '12px';
+    profileInfo.innerHTML = `
+      <div><strong>${profile.nombre}</strong></div>
+      <div>${profile.municipio}, ${profile.departamento}</div>
+      <div>${profile.descripcion || 'Sin descripción disponible.'}</div>
+      <div>Contacto: ${profile.numero_contacto || 'No definido'}</div>
+    `;
+    profileCard.appendChild(profileInfo);
+
+    const scoreRow = document.createElement('div');
+    scoreRow.className = 'detail-row';
+    scoreRow.style.marginTop = '14px';
+    scoreRow.append(
+      createBadge(`${maturity.score}/10 ${level.label}`, level.color),
+      (() => {
+        const summary = document.createElement('span');
+        summary.textContent = `Miembros: ${counts.miembros} · Posts: ${counts.posts} · Productos: ${counts.productos} · Rutas: ${counts.rutas}`;
+        summary.style.color = 'var(--muted)';
+        return summary;
+      })(),
+    );
+    profileCard.appendChild(scoreRow);
+
+    detailsCard.innerHTML = `
+      <h3>Distribución de género</h3>
+      <div class="metric-grid"></div>
+    `;
+    const metrics = document.createElement('div');
+    metrics.className = 'metric-grid';
+    const genderItems = [
+      { label: 'Masculino', value: gender.masculino },
+      { label: 'Femenino', value: gender.femenino },
+      { label: 'Otros/Binario', value: gender.otros },
+      { label: 'No definido', value: gender.sin_genero },
+    ];
+    genderItems.forEach((item) => {
+      const card = document.createElement('div');
+      card.className = 'metric-card';
+      card.innerHTML = `<div style="font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em;">${item.label}</div><div style="font-size: 24px; font-weight: 700;">${item.value}</div>`;
+      metrics.appendChild(card);
+    });
+    detailsCard.querySelector('.metric-grid').replaceWith(metrics);
+
+    indicatorsCard.innerHTML = '<h3>Nivel de madurez de marca</h3>';
+    const indicatorList = document.createElement('ul');
+    indicatorList.className = 'indicator-list';
+    maturity.indicators.forEach((indicator) => {
+      indicatorList.appendChild(buildMaturityItem(indicator));
+    });
+    indicatorsCard.appendChild(indicatorList);
+  }
+
+  select.addEventListener('change', async () => {
+    selectedId = select.value;
+    await renderSelected();
+  });
+
+  await renderSelected();
+}
+
 export function createRenderers(context) {
   return {
     roles: () => renderSimpleEntity(context, { title: 'Roles', singular: 'rol', endpoint: '/api/roles', idKey: 'id_rol', stat: 'statRoles' }),
@@ -799,6 +999,7 @@ export function createRenderers(context) {
     comunidades: () => renderComunidades(context),
     miembros: () => renderMiembros(context),
     admins: () => renderAdmins(context),
+    monitoring: () => renderMonitoring(context),
     roles: () => renderSimpleEntity(context, { title: 'Roles', singular: 'rol', endpoint: '/api/roles', idKey: 'id_rol', stat: 'statRoles' }),
     tipos: () => renderSimpleEntity(context, { title: 'Tipos de Producto', singular: 'tipo de producto', endpoint: '/api/tipos-producto', idKey: 'id_tipo_producto', stat: 'statTipos' }),
     departamentos: () => renderSimpleEntity(context, { title: 'Departamentos', singular: 'departamento', endpoint: '/api/departamentos', idKey: 'id_departamento', stat: 'statDeps' }),

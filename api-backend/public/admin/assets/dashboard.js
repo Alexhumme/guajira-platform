@@ -54,5 +54,5 @@ navItems.forEach((item) => {
   configureFormModal();
   configureDetailsModal();
   await refreshStats();
-  activate('roles');
+  activate('monitoring');
 })();

@@ -84,7 +84,10 @@ FROM (
   SELECT 'Puerto Caracol', 'miembro', 40938916, 'Paula C. Martinez', 'Femenino', '', '' UNION ALL
   SELECT 'Puerto Caracol', 'miembro', 1192728403, 'Tabedis Epieyu', 'Femenino', '', '' UNION ALL
     -- Tocoromana
-  SELECT 'Tocoromana', 'miembro', 1192728403, 'Yeneris Gouriyu', 'Femenino', '', '' UNION ALL
+  SELECT 'Tocoromana', 'miembro', 1118829899, 'Yeneris Gouriyu', 'Femenino', '', '3117930793' UNION ALL
+  SELECT 'Tocoromana', 'miembro', 1119392297, 'Yeraldin Gouriyu', 'Femenino', '', '3206434608' UNION ALL
+  SELECT 'Tocoromana', 'miembro', 26960618, 'Cecilia Ipuana', 'Femenino', '', '3116525432' UNION ALL
+
     -- El Guajirito
     SELECT 'El Guajirito', 'miembro', 90929891, 'Eloisa', 'Femenino', '3159691362', '' UNION ALL
     -- SELECT 'El Guajirito', 'miembro', XXXXXXXX, 'Aurora Jaxaiyú', 'Femenino', '', '' UNION ALL
