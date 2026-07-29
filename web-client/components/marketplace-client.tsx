@@ -36,7 +36,7 @@ export function MarketplaceClient() {
       if (precio !== null && p.precio > precio) return false
       return true
     })
-  }, [query, categoria, comunidad, municipio, precio])
+  }, [query, categoria, comunidad, municipio, precio, productos, comunidades])
 
   const resetFilters = () => {
     setQuery('')

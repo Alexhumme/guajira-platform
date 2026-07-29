@@ -64,7 +64,7 @@ FROM (
   SELECT 'Rancheria', 'Riohacha' UNION ALL
   SELECT 'Manantiales', 'Maicao' UNION ALL
   SELECT 'Guamachito', 'Hatonuevo' UNION ALL
-  SELECT 'La Esperanza', 'Urumita' UNION ALL
+  SELECT 'La Esperanza Urumita', 'Urumita' UNION ALL
   SELECT 'La Esperanza', 'Uribia' UNION ALL
   SELECT 'Fundacion de campesinos', 'Urumita' UNION ALL
   SELECT 'Grasamana', 'Manaure' UNION ALL

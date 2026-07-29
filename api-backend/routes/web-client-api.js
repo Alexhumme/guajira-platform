@@ -21,6 +21,7 @@ function mapCategoria(nombre) {
     .toLowerCase();
 
   if (normalized.includes('artesania')) return 'Artesanías';
+  if (normalized.includes('panaderia')) return 'Panaderia';
   if (normalized.includes('gastronomia')) return 'Gastronomía';
   if (normalized.includes('agricultura') || normalized.includes('agronomia')) return 'Agricultura';
   if (normalized.includes('pesca')) return 'Pesca';

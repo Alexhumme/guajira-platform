@@ -816,7 +816,6 @@ function buildMaturityItem({ label, ok }) {
 }
 
 async function renderMonitoring(context) {
-  const content = context.content;
   const communities = await requestJson('/api/monitoring/comunidades') || [];
   content.innerHTML = '';
 
@@ -907,25 +906,19 @@ async function renderMonitoring(context) {
     const level = getMonitoringLevel(maturity.score);
 
     profileCard.innerHTML = '';
-    const title = document.createElement('h3');
-    title.textContent = 'Perfil de comunidad';
-    profileCard.appendChild(title);
+    profileCard.append(
+      (() => {
+        const title = document.createElement('h3');
+        title.textContent = 'Perfil de comunidad';
+        return title;
+      })(),
+    );
 
-    if (profile.logo_dir) {
-      const image = document.createElement('img');
-      image.className = 'profile-image';
-      image.src = profile.logo_dir;
-      image.alt = profile.nombre;
-      profileCard.appendChild(image);
-    } else {
-      const placeholder = document.createElement('div');
-      placeholder.className = 'profile-image';
-      placeholder.style.display = 'grid';
-      placeholder.style.placeItems = 'center';
-      placeholder.style.color = 'var(--muted)';
-      placeholder.textContent = 'Sin logo disponible';
-      profileCard.appendChild(placeholder);
-    }
+    const image = document.createElement('img');
+    image.className = 'profile-image';
+    image.src = profile.logo_dir || '/admin/assets/placeholder.png';
+    image.alt = profile.nombre;
+    profileCard.appendChild(image);
 
     const profileInfo = document.createElement('div');
     profileInfo.style.display = 'grid';
@@ -999,7 +992,6 @@ export function createRenderers(context) {
     comunidades: () => renderComunidades(context),
     miembros: () => renderMiembros(context),
     admins: () => renderAdmins(context),
-    monitoring: () => renderMonitoring(context),
     roles: () => renderSimpleEntity(context, { title: 'Roles', singular: 'rol', endpoint: '/api/roles', idKey: 'id_rol', stat: 'statRoles' }),
     tipos: () => renderSimpleEntity(context, { title: 'Tipos de Producto', singular: 'tipo de producto', endpoint: '/api/tipos-producto', idKey: 'id_tipo_producto', stat: 'statTipos' }),
     departamentos: () => renderSimpleEntity(context, { title: 'Departamentos', singular: 'departamento', endpoint: '/api/departamentos', idKey: 'id_departamento', stat: 'statDeps' }),

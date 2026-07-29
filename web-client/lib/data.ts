@@ -34,6 +34,7 @@ export type Categoria =
   | 'Artesanías'
   | 'Gastronomía'
   | 'Agricultura'
+  | 'Panaderia'
   | 'Pesca'
   | 'Turismo'
   | 'Otros'

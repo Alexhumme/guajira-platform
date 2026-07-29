@@ -84,25 +84,56 @@ FROM (
   SELECT 'Puerto Caracol', 'miembro', 40938916, 'Paula C. Martinez', 'Femenino', '', '' UNION ALL
   SELECT 'Puerto Caracol', 'miembro', 1192728403, 'Tabedis Epieyu', 'Femenino', '', '' UNION ALL
     -- Tocoromana
-  SELECT 'Tocoromana', 'miembro', 1118829899, 'Yeneris Gouriyu', 'Femenino', '', '3117930793' UNION ALL
-  SELECT 'Tocoromana', 'miembro', 1119392297, 'Yeraldin Gouriyu', 'Femenino', '', '3206434608' UNION ALL
-  SELECT 'Tocoromana', 'miembro', 26960618, 'Cecilia Ipuana', 'Femenino', '', '3116525432' UNION ALL
-
+  SELECT 'Tocoromana', 'miembro', 1118829899, 'Yeneris Gouriyu', 'Femenino', '3117930793', 'yeraldinmaria2006@gmail.com' UNION ALL
+  SELECT 'Tocoromana', 'miembro', 1119392297, 'Yeraldin Gouriyu', 'Femenino', '3206439608', 'luzmeri@gmail.com' UNION ALL
+  SELECT 'Tocoromana', 'miembro', 26960618, 'Cecilia Ipuana', 'Femenino', '3116525432', 'gouriyuguillermina@gmail.com' UNION ALL
+  SELECT 'Tocoromana', 'miembro', 40857552, 'Elvia Epiayu', 'Femenino', '3117930793', 'yeraldingouriyu@gmail.com' UNION ALL
+  SELECT 'Tocoromana', 'miembro', 1124379362, 'Guillermina Gouriyu', 'Femenino', '3116525432', 'gouriyuguillermina@gmail.com' UNION ALL
+  SELECT 'Tocoromana', 'lider', 84110067, 'Pinilla Gouriyu', 'Masculino', '3107526798', 'gouriyupinilla5@gmail.com' UNION ALL
+  SELECT 'Tocoromana', 'miembro', 1119931800, 'Angela Ipuana', 'femenino', '3107526798', 'gouriyupinilla5@gmail.com' UNION ALL
+  SELECT 'Tocoromana', 'miembro', 1118829899, 'Gerisi Ipuana', 'femenino', '3206439608', 'gouriyuipuanaluzmeri@gmail.com' UNION ALL
+  SELECT 'Tocoromana', 'miembro', 1119702688, 'Ismael Gouriyu', 'masculino', '3126845020', 'gouriyuipuanaluzmeri@gmail.com' UNION ALL
+  SELECT 'Tocoromana', 'miembro', 1124376091, 'Luzmeri Gouriyu', 'femenino', '3126845020', 'gouriyuipuanaluzmeri@gmail.com' UNION ALL
+  SELECT 'Tocoromana', 'miembro', 1006572075, 'Kola Bouriyu', 'femenino', '3218911078', 'Ibouriyugonzalez@gmail.com' UNION ALL
+  SELECT 'Tocoromana', 'miembro', 111884842, 'Cecilia Bouriyu', 'femenino', '3218911078', 'Ibouriyugonzalez@gmail.com' UNION ALL
+  SELECT 'Tocoromana', 'miembro', 1119396146, 'Marina Bouriyu', 'femenino', '3218911078', 'Ibouriyugonzalez@gmail.com' UNION ALL
+  SELECT 'Tocoromana', 'miembro', 1113934602, 'Brayan Gouriyu', 'masculino', '3107526798', 'ipuanagouriyupinilla@gmail.com' UNION ALL
+  SELECT 'Tocoromana', 'miembro', 1129336565, 'Hermos Ipuana', 'masculino', '3107526798', 'ipuanagouriyupinilla@gmail.com' UNION ALL
     -- El Guajirito
-    SELECT 'El Guajirito', 'miembro', 90929891, 'Eloisa', 'Femenino', '3159691362', '' UNION ALL
-    -- SELECT 'El Guajirito', 'miembro', XXXXXXXX, 'Aurora Jaxaiyú', 'Femenino', '', '' UNION ALL
-    SELECT 'El Guajirito', 'miembro', 1124497782, 'Carmen Ipuana', 'Femenino', '3233380141', '' UNION ALL
-    SELECT 'El Guajirito', 'miembro', 1124497780, 'Deicy Ipuana', 'Femenino', '3011934491', '' UNION ALL
-    SELECT 'El Guajirito', 'miembro', 40950501, 'Laudith Uriana', 'Femenino', '3159033286', '' UNION ALL
-    SELECT 'El Guajirito', 'miembro', 1119393696, 'Sharon Siosi', 'Femenino', '3181272028', '' UNION ALL
-    SELECT 'El Guajirito', 'miembro', 40930387, 'Aurora Uriana', 'Femenino', '3024323552', '' UNION ALL
-    SELECT 'El Guajirito', 'miembro', 40919948, 'Eva Onano', 'Femenino', '3044414434', '' UNION ALL
-    SELECT 'El Guajirito', 'miembro', 1006617115, 'Odelmis Gouriyu', 'Femenino', '3044414434', '' UNION ALL
-    SELECT 'El Guajirito', 'miembro', 26960239, 'Evelina Jayariyú', 'Femenino', '3044414434', '' UNION ALL
-    -- SELECT 'El Guajirito', 'miembro', XXXXXXXX, 'Daicy Ipuana', 'Femenino', '', '' UNION ALL
-    SELECT 'El Guajirito', 'miembro', 1118840635, 'Carmen Pérez', 'Femenino', '3230614532', '' UNION ALL
-    -- SELECT 'El Guajirito', 'miembro', XXXXXXXX, 'Helka Pérez', 'Femenino', '', '' UNION ALL
-    -- SELECT 'El Guajirito', 'miembro', XXXXXXXX, 'Marlene Uriana', 'Femenino', '', ''
+  SELECT 'El Guajirito', 'miembro', 90929891, 'Eloisa', 'Femenino', '3159691362', 'odelmisgouriyu17@gmail.com' UNION ALL
+  -- SELECT 'El Guajirito', 'miembro', XXXXXXXX, 'Aurora Jaxaiyú', 'Femenino', '', '' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 1124497782, 'Carmen Ipuana', 'Femenino', '3233380141', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 1124497780, 'Deicy Ipuana', 'Femenino', '3011934491', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 40950501, 'Laudith Uriana', 'Femenino', '3159033286', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 1119393696, 'Sharon Siosi', 'Femenino', '3181272028', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 40930387, 'Aurora Uriana', 'Femenino', '3024323552', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 40919948, 'Eva Uriana', 'Femenino', '3044414434', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 1006617115, 'Odelmis Gouriyu', 'Femenino', '3044414434', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 26960239, 'Evelina Jayariyú', 'Femenino', '3044414434', 'odelmisgouriyu17@gmail.com' UNION ALL
+  -- SELECT 'El Guajirito', 'miembro', XXXXXXXX, 'Daicy Ipuana', 'Femenino', '', '' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 1118840635, 'Carmen Pérez', 'Femenino', '3230614532', 'odelmisgouriyu17@gmail.com' UNION ALL
+  -- SELECT 'El Guajirito', 'miembro', XXXXXXXX, 'Helka Pérez', 'Femenino', '', '' UNION ALL
+  -- SELECT 'El Guajirito', 'miembro', XXXXXXXX, 'Marlene Uriana', 'Femenino', '', ''
+  SELECT 'El Guajirito', 'miembro', 1096579749, 'Ana Gouriyu', 'Femenino', '3150974544', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 40971759, 'Genith Gouriyu', 'Femenino', '3025160100', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 1119390903, 'Sandra Jarariyú', 'Femenino', '3144076737', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 1121536880, 'Mineib Bonivento', 'Femenino', '3142332728', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 40934344, 'María Isabel Ipuana', 'Femenino', '', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 1118815326, 'María Ipuana', 'Femenino', '3177078721', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 409791362, 'Victoria Uriana', 'Femenino', '', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 1118856502, 'Franca Epieyú', 'Femenino', '3176633578', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 1118323537, 'Eladis Epieyú', 'Femenino', '', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 1118844958, 'Dionisia Rodríguez', 'Femenino', '3246238264', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 40934228, 'Verónica Rodríguez', 'Femenino', '', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 1004287582, 'Carmen Jama', 'Femenino', '3233380367', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 1121407780, 'Deisy Ipuana', 'Femenino', '3012836041', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 1006572841, 'Daisy Ipuana', 'Femenino', '', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 1118463348, 'Ruis Pastuma', 'Masculino', '3332978301', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 1006542931, 'Luzmila Jusayú', 'Femenino', '', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 1128940635, 'Carmen Pérez', 'Femenino', '3234676262', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 100580527, 'Marlen Uriana', 'Femenino', '3174606662', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 1006584988, 'Yuleika Jusayú', 'Femenino', '', 'odelmisgouriyu17@gmail.com' UNION ALL
+  SELECT 'El Guajirito', 'miembro', 1006577387, 'Dionis Pérez', 'Femenino', '', 'odelmisgouriyu17@gmail.com'
     -- Bayabonda
   SELECT 'Bayabonda', 'lider', 1006713738, 'Erika Solano', 'Femenino', '3019424376', 'erikasolpus92@gmail.com' UNION ALL
     -- Buenos Aires
