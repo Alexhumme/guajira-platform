@@ -619,6 +619,12 @@ async function renderRutas(context) {
   setStat('statRutas', rows.length);
   const reload = () => renderRutas(context);
   const mediaManager = createMediaManager({ endpoint: '/api/rutas', record: null, idKey: 'id_ruta', listKey: 'id_ruta_media', entityLabel: 'ruta' });
+  const toBase64 = (file) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error('No se pudo leer el archivo.'));
+    reader.readAsDataURL(file);
+  });
   const fields = [
     { key: 'nombre', label: 'Nombre', type: 'text', required: true },
     { key: 'id_comunidad', label: 'Comunidad', type: 'select', numeric: true, required: true, options: optionsFrom(coms, 'id_comunidad', (com) => com.nombre) },
@@ -631,7 +637,7 @@ async function renderRutas(context) {
       { value: 'Alta', label: 'Alta' },
     ] },
     { key: 'tipo_experiencia', label: 'Tipo de experiencia', type: 'text' },
-    { key: 'portada_dir', label: 'Portada', type: 'text', placeholder: 'URL externa o ruta del servidor /uploads/rutas/...' },
+    { key: 'portada_dir', label: 'Portada', type: 'image', placeholder: 'URL externa o ruta del servidor', onUpload: async (file) => { const result = await requestJson('/api/rutas/upload', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fileData: await toBase64(file), fileName: file.name }) }); return result?.path || ''; } },
     { key: 'visibilidad', label: 'Visible', type: 'checkbox', defaultValue: true },
     { key: 'fecha_registro', label: 'Fecha de registro', type: 'date' },
   ];

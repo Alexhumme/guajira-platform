@@ -13,7 +13,8 @@ import { Button } from '@/components/ui/button'
 import { getIndicadores } from '@/lib/api/indicadores'
 import { getTopComunidades } from '@/lib/api/comunidades'
 import { getProductos } from '@/lib/api/productos'
-import { rutas, publicaciones, galeria } from '@/lib/data'
+import { getRutas } from '@/lib/api/rutas'
+import { publicaciones, galeria } from '@/lib/data'
 
 const pilares = [
   { icon: ShoppingBag, title: 'Comercialización justa', desc: 'Nuevos canales para vender productos comunitarios de forma directa.' },
@@ -26,6 +27,7 @@ export default async function HomePage() {
   const indicadores = await getIndicadores()
   const topComunidades = await getTopComunidades()
   const productos = await getProductos()
+  const rutas = await getRutas()
 
   return (
     <>

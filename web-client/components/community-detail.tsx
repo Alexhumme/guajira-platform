@@ -2,7 +2,6 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { useState } from "react"
 import { Calendar, Mail, MapPin, MessageCircle, Phone, Users } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -11,12 +10,13 @@ import { RouteCard } from "@/components/route-card"
 import { PublicationCard } from "@/components/publication-card"
 import { WayuuDivider } from "@/components/wayuu-divider"
 import { cn } from "@/lib/utils"
+import { useMemo, useState } from 'react'
 import { useProductos } from '@/hooks/useProductos'
+import { useRutas } from '@/hooks/useRutas'
 import {
   type Comunidad,
   getMunicipio,
   publicacionesByComunidad,
-  rutasByComunidad,
   serviciosByComunidad,
 } from '@/lib/data'
 
@@ -31,9 +31,13 @@ type Tab = (typeof tabs)[number]
 export function CommunityDetail({ comunidad, municipio }: CommunityDetailProps) {
   const [tab, setTab] = useState<Tab>('Historia')
   const { productos } = useProductos()
+  const { rutas, isLoading: rutasLoading } = useRutas()
   const resolvedMunicipio = municipio ?? getMunicipio(comunidad.municipioId)
   const productosComunidad = productos.filter((producto) => producto.comunidadId === comunidad.id)
-  const rutas = rutasByComunidad(comunidad.id)
+  const rutasComunidad = useMemo(
+    () => rutas.filter((ruta) => ruta.comunidadesIds.includes(comunidad.id)),
+    [rutas, comunidad.id],
+  )
   const publicaciones = publicacionesByComunidad(comunidad.id)
   const servicios = serviciosByComunidad(comunidad.id)
 
@@ -125,9 +129,11 @@ export function CommunityDetail({ comunidad, municipio }: CommunityDetailProps) 
           <div className="space-y-10">
             <div>
               <h2 className="font-serif text-2xl font-bold">Rutas relacionadas</h2>
-              {rutas.length ? (
+              {rutasLoading ? (
+                <p className="mt-4 text-muted-foreground">Cargando rutas...</p>
+              ) : rutasComunidad.length ? (
                 <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {rutas.map((r) => (
+                  {rutasComunidad.map((r) => (
                     <RouteCard key={r.id} ruta={r} />
                   ))}
                 </div>

@@ -22,6 +22,34 @@ function sanitizeFileName(name) {
     .toLowerCase();
 }
 
+router.post('/upload', async (req, res, next) => {
+  try {
+    const { fileData, fileName, media_dir = null } = req.body || {};
+    if (media_dir) {
+      return res.status(201).json({ path: media_dir });
+    }
+    if (!fileData) {
+      return res.status(400).json({ message: 'fileData requerido' });
+    }
+
+    const matches = /^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/.exec(fileData);
+    if (!matches) {
+      return res.status(400).json({ message: 'Formato de archivo no soportado' });
+    }
+
+    ensureUploadsDir();
+    const extension = path.extname(fileName || 'media.bin') || '.bin';
+    const safeName = `${Date.now()}-${sanitizeFileName(path.basename(fileName || 'media', extension))}${extension}`;
+    const buffer = Buffer.from(matches[2], 'base64');
+    const filePath = path.join(uploadsDir, safeName);
+    fs.writeFileSync(filePath, buffer);
+
+    res.status(201).json({ path: `/uploads/rutas/${safeName}` });
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.get('/', async (req, res, next) => {
   try {
     const [rows] = await pool.query(

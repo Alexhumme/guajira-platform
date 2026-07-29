@@ -96,6 +96,8 @@ export type RutaTuristica = {
   municipioId: string
   comunidadPrincipalId: string
   comunidadesIds: string[]
+  dificultad?: string
+  tipoExperiencia?: string
   portada: string
   galeria: string[]
   puntos: PuntoInteres[]
