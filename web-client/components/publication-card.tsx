@@ -4,13 +4,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import { ChevronLeft, ChevronRight, Clipboard, Heart, Mail, Share2, X } from 'lucide-react'
-import { getComunidad, type Publicacion } from '@/lib/data'
+import { type Publicacion } from '@/lib/data'
 import { cn } from '@/lib/utils'
 
 const isVideoMedia = (src: string) => /\.(mp4|webm|mov|ogg)$/i.test(src)
 
 export function PublicationCard({ publicacion }: { publicacion: Publicacion }) {
-  const comunidad = getComunidad(publicacion.comunidadId)
   const [liked, setLiked] = useState(false)
   const [activeIndex, setActiveIndex] = useState(0)
   const [showLightbox, setShowLightbox] = useState(false)
@@ -22,7 +21,8 @@ export function PublicationCard({ publicacion }: { publicacion: Publicacion }) {
     month: 'long',
     year: 'numeric',
   })
-
+  
+  const comunidad = {slug: publicacion.comunidadSlug, nombre: publicacion.comunidadNombre};
   const media = publicacion.imagenes
   const activeMedia = media[activeIndex]
   const shareUrl = typeof window !== 'undefined' ? window.location.href : ''

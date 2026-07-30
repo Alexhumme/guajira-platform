@@ -61,7 +61,8 @@ export type Publicacion = {
   id: string
   autor: string
   avatar: string
-  comunidadId: string
+  comunidadSlug: string
+  comunidadNombre: string
   fecha: string
   contenido: string
   imagenes: string[]
@@ -121,108 +122,6 @@ export const municipios: Municipio[] = [
   { id: 'm2', nombre: 'Manaure', departamento: 'La Guajira' },
   { id: 'm3', nombre: 'Riohacha', departamento: 'La Guajira' },
   { id: 'm4', nombre: 'Maicao', departamento: 'La Guajira' },
-]
-
-export const comunidades: Comunidad[] = [
-  {
-    id: 'c1',
-    slug: 'wayuu-uribia',
-    nombre: 'Comunidad Wotkasainru',
-    municipioId: 'm1',
-    descripcion:
-      'Comunidad artesanal de Uribia reconocida por sus mochilas y chinchorros tejidos a mano.',
-    logo: '/images/artisan-1.png',
-    portada: '/images/community-1.png',
-    galeria: ['/images/gallery-1.png', '/images/gallery-2.png', '/images/gallery-4.png'],
-    contacto: { telefono: '+57 300 000 0001', correo: 'wotkasainru@iapguajira.co', whatsapp: '573000000001' },
-    redes: [{ red_social: 'instagram', usuario: '@wotkasainru', link: 'https://instagram.com/wotkasainru' }],
-    fundacion: '1978',
-    habitantes: 42,
-  },
-  {
-    id: 'c2',
-    slug: 'manaure-salinas',
-    nombre: 'Comunidad Salinera Shipia',
-    municipioId: 'm2',
-    descripcion:
-      'Comunidad dedicada a la extracción artesanal de sal marina en las charcas de Manaure.',
-    logo: '/images/community-2.png',
-    portada: '/images/community-2.png',
-    galeria: ['/images/community-2.png', '/images/product-sal.png', '/images/gallery-3.png'],
-    contacto: { telefono: '+57 300 000 0002', correo: 'shipia@iapguajira.co', whatsapp: '573000000002' },
-    redes: [{ red_social: 'facebook', usuario: 'Salinas Shipia', link: 'https://facebook.com/salinasshipia' }],
-    fundacion: '1965',
-    habitantes: 68,
-  },
-  {
-    id: 'c3',
-    slug: 'cabo-de-la-vela',
-    nombre: 'Comunidad Jepira',
-    municipioId: 'm1',
-    descripcion:
-      'Comunidad costera en Cabo de la Vela dedicada a la pesca artesanal y el turismo comunitario.',
-    logo: '/images/community-3.png',
-    portada: '/images/community-3.png',
-    galeria: ['/images/community-3.png', '/images/tourism-2.png', '/images/product-pescado.png'],
-    contacto: { telefono: '+57 300 000 0003', correo: 'jepira@iapguajira.co', whatsapp: '573000000003' },
-    redes: [{ red_social: 'instagram', usuario: '@jepira.cabo', link: 'https://instagram.com/jepira.cabo' }],
-    fundacion: '1990',
-    habitantes: 35,
-  },
-  {
-    id: 'c4',
-    slug: 'macuira',
-    nombre: 'Comunidad Serranía de la Macuira',
-    municipioId: 'm1',
-    descripcion:
-      'Comunidad del oasis de la Macuira que combina agricultura, pastoreo y ecoturismo.',
-    logo: '/images/community-4.png',
-    portada: '/images/community-4.png',
-    galeria: ['/images/community-4.png', '/images/gallery-3.png', '/images/product-friche.png'],
-    contacto: { telefono: '+57 300 000 0004', correo: 'macuira@iapguajira.co', whatsapp: '573000000004' },
-    redes: [],
-    fundacion: '1982',
-    habitantes: 27,
-  },
-]
-
-export const publicaciones: Publicacion[] = [
-  {
-    id: 'pub1',
-    autor: 'María Epieyu',
-    avatar: '/images/artisan-1.png',
-    comunidadId: 'c1',
-    fecha: '2026-07-10',
-    contenido:
-      'Terminamos una nueva colección de mochilas con los colores del atardecer guajiro. Cada pieza cuenta una historia de nuestro clan.',
-    imagenes: ['/images/product-mochila.png', '/images/gallery-1.png'],
-    productosRelacionados: ['p1'],
-    likes: 128,
-  },
-  {
-    id: 'pub2',
-    autor: 'Comunidad Jepira',
-    avatar: '/images/gallery-2.png',
-    comunidadId: 'c3',
-    fecha: '2026-07-08',
-    contenido:
-      'Hoy recibimos visitantes que aprendieron a lanzar la atarraya con nuestros pescadores. El turismo comunitario fortalece nuestra economía.',
-    imagenes: ['/images/tourism-2.png'],
-    productosRelacionados: ['p4'],
-    likes: 96,
-  },
-  {
-    id: 'pub3',
-    autor: 'Cooperativa Shipia',
-    avatar: '/images/gallery-3.png',
-    comunidadId: 'c2',
-    fecha: '2026-07-05',
-    contenido:
-      'La cosecha de sal de esta temporada fue abundante. Gracias al proyecto IAP ahora llegamos a nuevos mercados.',
-    imagenes: ['/images/community-2.png', '/images/product-sal.png'],
-    productosRelacionados: ['p6'],
-    likes: 74,
-  },
 ]
 
 export const servicios: ServicioTuristico[] = [
@@ -319,12 +218,9 @@ export const galeria = [
 export const formatCOP = (value: number) =>
   new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(value)
 
-export const getComunidad = (id: string) => comunidades.find((c) => c.id === id)
-export const getComunidadBySlug = (slug: string) => comunidades.find((c) => c.slug === slug)
 export const getMunicipio = (id: string) => municipios.find((m) => m.id === id)
 export const getRuta = (slug: string) => rutas.find((r) => r.slug === slug)
 export const getServicio = (id: string) => servicios.find((s) => s.id === id)
-export const publicacionesByComunidad = (comunidadId: string) => publicaciones.filter((p) => p.comunidadId === comunidadId)
 export const rutasByComunidad = (comunidadId: string) => rutas.filter((r) => r.comunidadesIds.includes(comunidadId))
 export const serviciosByComunidad = (comunidadId: string) => servicios.filter((s) => s.comunidadId === comunidadId)
 

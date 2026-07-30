@@ -154,6 +154,22 @@ FROM (
   SELECT 'Buenos Aires', 'miembro', 1175963169, 'Keini Uriana', 'Femenino',  '3012923484', '' UNION ALL
   SELECT 'Buenos Aires', 'miembro', 1106573125, 'Paula Epiayu', 'Femenino', '3169704800', '' UNION ALL
   SELECT 'Buenos Aires', 'miembro', 56070423, 'Maria Paz', 'Femenino', '3169704800', '' 
+    -- Pautshamana
+  --SELECT 'Pautshamana', 'miembro', NULL, 'Jose Ramiro', 'Masculino', '3142748628', '' UNION ALL
+  SELECT 'Pautshamana', 'miembro', 1118850105, 'Jose Alberto', 'Masculino', '3011389825', '' UNION ALL
+  SELECT 'Pautshamana', 'miembro', 8430213, 'Maximo Perez Gouriyu', 'Masculino', '3015878566', '' UNION ALL
+  SELECT 'Pautshamana', 'miembro', 1118833579, 'Carolina Perez', 'Femenino', '3015878566', '' UNION ALL
+  SELECT 'Pautshamana', 'miembro', 1118816563, 'Melisa Paola Pushaina', 'Femenino', '3005291900', '' UNION ALL
+  SELECT 'Pautshamana', 'miembro', 1124373544, 'Erika Sijona Gouriyu', 'Femenino', '3014675667', '' UNION ALL
+  SELECT 'Pautshamana', 'miembro', 1118833575, 'Ramiro Andres Perez', 'Masculino', '3015598160', '' UNION ALL
+  SELECT 'Pautshamana', 'miembro', 40929305, 'Candelaria Sijona Gouriyu', 'Femenino', '', '' UNION ALL
+  SELECT 'Pautshamana', 'miembro', 1118833573, 'Luzmari Perez', 'Femenino', '3242850081', '' UNION ALL
+  SELECT 'Pautshamana', 'miembro', 1192900487, 'Yolanda Pushaina', 'Femenino', '3047391825', '' UNION ALL
+  SELECT 'Pautshamana', 'miembro', 1118856111, 'Leida Sijona Bouriyu', 'Femenino', '', '' UNION ALL
+  SELECT 'Pautshamana', 'miembro', 1006582362, 'Maria Alejandra Perez', 'Femenino', '3015598160', '' UNION ALL
+  SELECT 'Pautshamana', 'miembro', 1118833572, 'Rusmiri Perez Sijona', 'Femenino', '3015873731', '' UNION ALL
+  SELECT 'Pautshamana', 'miembro', 1118847935, 'Brayan Jesus Perez Bouriyu', 'Masculino', '3018555861', '' UNION ALL
+  SELECT 'Pautshamana', 'miembro', 1118876419, 'Sheily Pushaina', 'Femenino', '3014466667', '';
 ) m
 JOIN comunidad c ON c.nombre = m.comunidad
 JOIN rol r ON r.nombre = m.rol
