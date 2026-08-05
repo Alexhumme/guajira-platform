@@ -788,10 +788,17 @@ async function renderPosts(context) {
     },
     onView: async (record) => {
       const media = await requestJson(`/api/posts/${record.id_post}/media`) || [];
-      openDetails('Detalle post', [
-        ['Miembro', record.miembro], ['Comunidad', record.comunidad], ['Descripcion', record.descripcion],
-        ['Visible', record.visibilidad ? 'Si' : 'No'], ['Likes', record.likes], ['Registro', toDateInput(record.fecha_registro)],
-      ], { mediaItems: media.map((item) => item.media_dir).filter(Boolean) });
+      const mediaItems = media.map((item) => item.media_dir).filter(Boolean);
+      openDetails('Detalle post', [], {
+        preview: {
+          author: record.miembro,
+          communityName: record.comunidad,
+          date: toDateInput(record.fecha_registro),
+          content: record.descripcion,
+          likes: Number(record.likes || 0),
+          mediaItems,
+        },
+      });
     },
   });
 }

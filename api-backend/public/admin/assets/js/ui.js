@@ -32,6 +32,140 @@ export function openDetails(title, entries, options = {}) {
   titleElement.textContent = title;
   body.innerHTML = '';
 
+  if (options.preview) {
+    const previewCard = document.createElement('div');
+    previewCard.style.border = '1px solid #e5e7eb';
+    previewCard.style.borderRadius = '16px';
+    previewCard.style.padding = '16px';
+    previewCard.style.marginBottom = '16px';
+    previewCard.style.background = '#fff';
+    previewCard.style.boxShadow = '0 8px 24px rgba(15, 23, 42, 0.06)';
+
+    const header = document.createElement('div');
+    header.style.display = 'flex';
+    header.style.alignItems = 'center';
+    header.style.gap = '12px';
+    header.style.marginBottom = '12px';
+
+    const avatar = document.createElement('div');
+    avatar.style.width = '44px';
+    avatar.style.height = '44px';
+    avatar.style.borderRadius = '999px';
+    avatar.style.background = options.preview.avatarUrl ? '' : '#f1f5f9';
+    avatar.style.overflow = 'hidden';
+    avatar.style.display = 'flex';
+    avatar.style.alignItems = 'center';
+    avatar.style.justifyContent = 'center';
+    avatar.style.color = '#475569';
+    avatar.style.fontWeight = '700';
+    avatar.textContent = options.preview.author?.charAt(0)?.toUpperCase() || 'P';
+
+    if (options.preview.avatarUrl) {
+      const avatarImage = document.createElement('img');
+      avatarImage.src = options.preview.avatarUrl;
+      avatarImage.alt = options.preview.author || 'Avatar';
+      avatarImage.style.width = '100%';
+      avatarImage.style.height = '100%';
+      avatarImage.style.objectFit = 'cover';
+      avatar.appendChild(avatarImage);
+    }
+
+    const meta = document.createElement('div');
+    meta.style.minWidth = '0';
+    const author = document.createElement('div');
+    author.style.fontWeight = '700';
+    author.textContent = options.preview.author || 'Publicación';
+    const community = document.createElement('div');
+    community.style.color = '#64748b';
+    community.style.fontSize = '13px';
+    community.textContent = [options.preview.communityName, options.preview.date].filter(Boolean).join(' • ');
+    meta.append(author, community);
+    header.append(avatar, meta);
+    previewCard.appendChild(header);
+
+    const content = document.createElement('div');
+    content.style.marginBottom = '12px';
+    content.style.color = '#334155';
+    content.style.fontSize = '14px';
+    content.style.lineHeight = '1.6';
+    content.textContent = options.preview.content || '';
+    previewCard.appendChild(content);
+
+    const mediaItems = options.preview.mediaItems || [];
+    if (mediaItems.length) {
+      const mediaWrap = document.createElement('div');
+      mediaWrap.style.display = 'grid';
+      mediaWrap.style.gridTemplateColumns = mediaItems.length > 1 ? 'repeat(2, minmax(0, 1fr))' : '1fr';
+      mediaWrap.style.gap = '8px';
+      mediaWrap.style.marginBottom = '12px';
+
+      mediaItems.slice(0, 4).forEach((item, index) => {
+        const url = typeof item === 'string' ? item : item.media_dir || item.url || '';
+        if (!url) return;
+        const mediaBox = document.createElement('div');
+        mediaBox.style.position = 'relative';
+        mediaBox.style.borderRadius = '12px';
+        mediaBox.style.overflow = 'hidden';
+        mediaBox.style.aspectRatio = mediaItems.length > 1 ? '1 / 1' : '4 / 3';
+        mediaBox.style.background = '#f8fafc';
+
+        const isVideo = /\.(mp4|webm|ogg|mov)$/i.test(url);
+        if (isVideo) {
+          const video = document.createElement('video');
+          video.src = url;
+          video.controls = true;
+          video.preload = 'metadata';
+          video.style.width = '100%';
+          video.style.height = '100%';
+          video.style.objectFit = 'cover';
+          mediaBox.appendChild(video);
+        } else {
+          const img = document.createElement('img');
+          img.src = url;
+          img.alt = 'Media';
+          img.style.width = '100%';
+          img.style.height = '100%';
+          img.style.objectFit = 'cover';
+          mediaBox.appendChild(img);
+        }
+
+        if (index === 3 && mediaItems.length > 4) {
+          const overlay = document.createElement('div');
+          overlay.style.position = 'absolute';
+          overlay.style.inset = '0';
+          overlay.style.background = 'rgba(15, 23, 42, 0.7)';
+          overlay.style.display = 'flex';
+          overlay.style.alignItems = 'center';
+          overlay.style.justifyContent = 'center';
+          overlay.style.color = '#fff';
+          overlay.style.fontWeight = '700';
+          overlay.textContent = `+${mediaItems.length - 4}`;
+          mediaBox.appendChild(overlay);
+        }
+        mediaWrap.appendChild(mediaBox);
+      });
+      previewCard.appendChild(mediaWrap);
+    }
+
+    const footer = document.createElement('div');
+    footer.style.display = 'flex';
+    footer.style.alignItems = 'center';
+    footer.style.justifyContent = 'space-between';
+    footer.style.paddingTop = '8px';
+    footer.style.borderTop = '1px solid #f1f5f9';
+    footer.style.color = '#64748b';
+    footer.style.fontSize = '13px';
+
+    const left = document.createElement('div');
+    left.textContent = `${options.preview.likes ?? 0} likes`;
+    const right = document.createElement('div');
+    right.textContent = 'Compartir • Me gusta';
+    footer.append(left, right);
+    previewCard.appendChild(footer);
+
+    body.appendChild(previewCard);
+  }
+
   entries.forEach(([label, value]) => {
     const item = document.createElement('div');
     item.className = 'details-item';
