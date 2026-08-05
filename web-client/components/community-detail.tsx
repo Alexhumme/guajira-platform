@@ -18,7 +18,7 @@ import {
   getMunicipio,
   serviciosByComunidad,
 } from '@/lib/data'
-import { getPublicacionesByComunidad } from '@/lib/api/publicaciones'
+import { usePublicaciones } from '@/hooks/usePublicaciones'
 
 type CommunityDetailProps = {
   comunidad: Comunidad
@@ -38,7 +38,7 @@ export function CommunityDetail({ comunidad, municipio }: CommunityDetailProps) 
     () => rutas.filter((ruta) => ruta.comunidadesIds.includes(comunidad.id)),
     [rutas, comunidad.id],
   )
-  const publicaciones = getPublicacionesByComunidad(comunidad.slug)
+  const { publicaciones } = usePublicaciones(comunidad.id)
   const servicios = serviciosByComunidad(comunidad.id)
 
   return (
