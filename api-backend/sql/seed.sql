@@ -70,7 +70,8 @@ FROM (
   SELECT 'Grasamana', 'Manaure' UNION ALL
   SELECT 'Bayabonda', 'Fonseca' UNION ALL
   SELECT 'Yawoulia', 'Maicao' UNION ALL
-  SELECT 'El Guajirito', 'Riohacha'
+  SELECT 'El Guajirito', 'Riohacha' UNION ALL
+  SELECT 'Pautshamana', 'Riohacha' 
 ) c
 JOIN municipio m ON m.nombre = c.municipio
 ON DUPLICATE KEY UPDATE nombre = VALUES(nombre), updated_at = NOW();

@@ -1011,6 +1011,7 @@ export function createRenderers(context) {
     municipios: () => renderMunicipios(context),
     comunidades: () => renderComunidades(context),
     miembros: () => renderMiembros(context),
+    monitoring: () => renderMonitoring(context),
     productos: () => renderProductos(context),
     rutas: () => renderRutas(context),
     categoriasTuristicas: () => renderCategoriasTuristicas(context),
