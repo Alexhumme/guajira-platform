@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const pool = require('../config/db');
-const { requireAdmin } = require('../middleware/auth');
+const pool = require('../../config/db');
+const { requireAdmin } = require('../../middleware/auth');
 
 const router = express.Router();
 router.use(requireAdmin);

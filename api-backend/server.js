@@ -87,23 +87,28 @@ app.get('/', (req, res) => {
 });
 
 // Public web-client API (no authentication required)
-app.use('/api/web-client', require('./routes/web-client-api'));
+app.use('/web-client', require('./routes/web/web-client-api'));
+app.use('/web-client', require('./routes/web/posts'));
+app.use('/web-client', require('./routes/web/municipios'));
+app.use('/web-client', require('./routes/web/comunidades'));
+app.use('/web-client', require('./routes/web/productos'));
+app.use('/web-client', require('./routes/web/rutas'));
 
 // Admin auth & core entities
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/admins', require('./routes/admins'));
-app.use('/api/export', require('./routes/export'));
-app.use('/api/roles', require('./routes/roles'));
-app.use('/api/tipos-producto', require('./routes/tipoProducto'));
-app.use('/api/departamentos', require('./routes/departamentos'));
-app.use('/api/municipios', require('./routes/municipios'));
-app.use('/api/comunidades', require('./routes/comunidades'));
-app.use('/api/miembros', require('./routes/miembro'));
-app.use('/api/monitoring', require('./routes/monitoring'));
-app.use('/api/productos', require('./routes/productos'));
-app.use('/api/posts', require('./routes/post'));
-app.use('/api/rutas', require('./routes/ruta'));
-app.use('/api/categorias-turisticas', require('./routes/categoriaTuristica'));
+app.use('/api/auth', require('./routes/admin/auth'));
+app.use('/api/admins', require('./routes/admin/admins'));
+app.use('/api/export', require('./routes/admin/export'));
+app.use('/api/roles', require('./routes/admin/roles'));
+app.use('/api/tipos-producto', require('./routes/admin/tipoProducto'));
+app.use('/api/departamentos', require('./routes/admin/departamentos'));
+app.use('/api/municipios', require('./routes/admin/municipios'));
+app.use('/api/comunidades', require('./routes/admin/comunidades'));
+app.use('/api/miembros', require('./routes/admin/miembro'));
+app.use('/api/monitoring', require('./routes/admin/monitoring'));
+app.use('/api/productos', require('./routes/admin/productos'));
+app.use('/api/posts', require('./routes/admin/post'));
+app.use('/api/rutas', require('./routes/admin/ruta'));
+app.use('/api/categorias-turisticas', require('./routes/admin/categoriaTuristica'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

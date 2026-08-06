@@ -18,5 +18,5 @@ export type ComunidadWithMunicipio = Comunidad & {
 }
 
 export async function getTopComunidades(): Promise<ComunidadWithMunicipio[]> {
-  return fetchApi<ComunidadWithMunicipio[]>('/api/web-client/comunidades/top')
+  return fetchApi<ComunidadWithMunicipio[]>('/web-client/comunidades/top')
 }

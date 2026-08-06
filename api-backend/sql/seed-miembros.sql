@@ -133,7 +133,7 @@ FROM (
   SELECT 'El Guajirito', 'miembro', 1128940635, 'Carmen Pérez', 'Femenino', '3234676262', 'odelmisgouriyu17@gmail.com' UNION ALL
   SELECT 'El Guajirito', 'miembro', 100580527, 'Marlen Uriana', 'Femenino', '3174606662', 'odelmisgouriyu17@gmail.com' UNION ALL
   SELECT 'El Guajirito', 'miembro', 1006584988, 'Yuleika Jusayú', 'Femenino', '', 'odelmisgouriyu17@gmail.com' UNION ALL
-  SELECT 'El Guajirito', 'miembro', 1006577387, 'Dionis Pérez', 'Femenino', '', 'odelmisgouriyu17@gmail.com'
+  SELECT 'El Guajirito', 'miembro', 1006577387, 'Dionis Pérez', 'Femenino', '', 'odelmisgouriyu17@gmail.com' UNION ALL
     -- Bayabonda
   SELECT 'Bayabonda', 'lider', 1006713738, 'Erika Solano', 'Femenino', '3019424376', 'erikasolpus92@gmail.com' UNION ALL
     -- Buenos Aires
@@ -153,9 +153,9 @@ FROM (
   SELECT 'Buenos Aires', 'miembro', 1006638550, 'Yonidis Jusayu', 'Femenino',  '3169704800', '' UNION ALL
   SELECT 'Buenos Aires', 'miembro', 1175963169, 'Keini Uriana', 'Femenino',  '3012923484', '' UNION ALL
   SELECT 'Buenos Aires', 'miembro', 1106573125, 'Paula Epiayu', 'Femenino', '3169704800', '' UNION ALL
-  SELECT 'Buenos Aires', 'miembro', 56070423, 'Maria Paz', 'Femenino', '3169704800', '' 
+  SELECT 'Buenos Aires', 'miembro', 56070423, 'Maria Paz', 'Femenino', '3169704800', '' UNION ALL
     -- Pautshamana
-  --SELECT 'Pautshamana', 'miembro', NULL, 'Jose Ramiro', 'Masculino', '3142748628', '' UNION ALL
+  -- SELECT 'Pautshamana', 'miembro', NULL, 'Jose Ramiro', 'Masculino', '3142748628', '' UNION ALL
   SELECT 'Pautshamana', 'miembro', 1118850105, 'Jose Alberto', 'Masculino', '3011389825', '' UNION ALL
   SELECT 'Pautshamana', 'miembro', 8430213, 'Maximo Perez Gouriyu', 'Masculino', '3015878566', '' UNION ALL
   SELECT 'Pautshamana', 'miembro', 1118833579, 'Carolina Perez', 'Femenino', '3015878566', '' UNION ALL
@@ -169,7 +169,7 @@ FROM (
   SELECT 'Pautshamana', 'miembro', 1006582362, 'Maria Alejandra Perez', 'Femenino', '3015598160', '' UNION ALL
   SELECT 'Pautshamana', 'miembro', 1118833572, 'Rusmiri Perez Sijona', 'Femenino', '3015873731', '' UNION ALL
   SELECT 'Pautshamana', 'miembro', 1118847935, 'Brayan Jesus Perez Bouriyu', 'Masculino', '3018555861', '' UNION ALL
-  SELECT 'Pautshamana', 'miembro', 1118876419, 'Sheily Pushaina', 'Femenino', '3014466667', '';
+  SELECT 'Pautshamana', 'miembro', 1118876419, 'Sheily Pushaina', 'Femenino', '3014466667', ''
 ) m
 JOIN comunidad c ON c.nombre = m.comunidad
 JOIN rol r ON r.nombre = m.rol

@@ -92,6 +92,7 @@ CREATE TABLE IF NOT EXISTS miembro (
   id_miembro INT AUTO_INCREMENT PRIMARY KEY,
   id_comunidad INT NOT NULL,
   rol_id INT NOT NULL,
+  avatar_dir TEXT NULL,
   cedula INT NOT NULL UNIQUE,
   nombres TEXT NOT NULL,
   fecha_nacimiento DATE NULL,

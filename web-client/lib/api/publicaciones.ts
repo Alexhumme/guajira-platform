@@ -2,7 +2,7 @@ import type { Publicacion } from '@/lib/data'
 import { fetchApi, resolveApiAssetUrl } from './client'
 
 export async function getPublicaciones(): Promise<Publicacion[]> {
-  const publicaciones = await fetchApi<Publicacion[]>('/api/web-client/posts')
+  const publicaciones = await fetchApi<Publicacion[]>('/web-client/posts')
   return publicaciones.map((publicacion) => ({
     ...publicacion,
     imagenes: publicacion.imagenes.map(resolveApiAssetUrl),
@@ -17,3 +17,11 @@ export async function getPublicacionesByComunidad(comunidadId: string): Promise<
   }))
 }
 
+export async function getPublicacionesRecientes(): Promise<Publicacion[]> {
+  const publicaciones = await fetchApi<Publicacion[]>('/web-client/posts/recent')
+  return publicaciones.map((publicacion) => ({
+    ...publicacion,
+    imagenes: publicacion.imagenes.map(resolveApiAssetUrl),
+  }))
+  
+}

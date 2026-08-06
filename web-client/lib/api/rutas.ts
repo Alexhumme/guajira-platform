@@ -2,7 +2,7 @@ import type { RutaTuristica } from '@/lib/data'
 import { fetchApi, resolveApiAssetUrl } from './client'
 
 export async function getRutas(): Promise<RutaTuristica[]> {
-  const rutas = await fetchApi<RutaTuristica[]>('/api/web-client/rutas')
+  const rutas = await fetchApi<RutaTuristica[]>('/web-client/rutas')
   return rutas.map((ruta) => ({
     ...ruta,
     portada: resolveApiAssetUrl(ruta.portada),

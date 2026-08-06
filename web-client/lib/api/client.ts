@@ -24,9 +24,9 @@ export async function fetchApi<T>(path: string): Promise<T> {
 }
 
 export async function getComunidades(): Promise<Comunidad[]> {
-  return fetchApi<Comunidad[]>('/api/web-client/comunidades')
+  return fetchApi<Comunidad[]>('/web-client/comunidades')
 }
 
 export async function getMunicipios(): Promise<Municipio[]> {
-  return fetchApi<Municipio[]>('/api/web-client/municipios')
+  return fetchApi<Municipio[]>('/web-client/municipios')
 }
