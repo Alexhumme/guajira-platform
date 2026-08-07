@@ -4,6 +4,29 @@ const pool = require('../../config/db');
 
 const router = express.Router();
 
+async function syncBootstrapAdminPassword(username, password) {
+  const bootstrapUser = process.env.ADMIN_BOOTSTRAP_USER;
+  const bootstrapPass = process.env.ADMIN_BOOTSTRAP_PASSWORD;
+
+  if (!bootstrapUser || !bootstrapPass || username !== bootstrapUser || password !== bootstrapPass) {
+    return false;
+  }
+
+  const [rows] = await pool.query('SELECT id_admin FROM admin WHERE username = ? LIMIT 1', [username]);
+  if (!rows.length) {
+    const passwordHash = await bcrypt.hash(bootstrapPass, 10);
+    await pool.query(
+      'INSERT INTO admin (username, password_hash, active, created_at, updated_at) VALUES (?, ?, 1, NOW(), NOW())',
+      [bootstrapUser, passwordHash]
+    );
+    return true;
+  }
+
+  const passwordHash = await bcrypt.hash(bootstrapPass, 10);
+  await pool.query('UPDATE admin SET password_hash = ?, active = 1, updated_at = NOW() WHERE id_admin = ?', [passwordHash, rows[0].id_admin]);
+  return true;
+}
+
 router.post('/login', async (req, res, next) => {
   try {
     const { username, password } = req.body || {};
@@ -13,7 +36,16 @@ router.post('/login', async (req, res, next) => {
 
     const [rows] = await pool.query('SELECT id_admin, username, password_hash, active FROM admin WHERE username = ? LIMIT 1', [username]);
     if (!rows.length) {
-      return res.status(401).json({ message: 'Credenciales invalidas' });
+      const bootstrapSynced = await syncBootstrapAdminPassword(username, password);
+      if (!bootstrapSynced) {
+        return res.status(401).json({ message: 'Credenciales invalidas' });
+      }
+
+      const [refreshedRows] = await pool.query('SELECT id_admin, username, password_hash, active FROM admin WHERE username = ? LIMIT 1', [username]);
+      const admin = refreshedRows[0];
+      req.session.adminId = admin.id_admin;
+      req.session.username = admin.username;
+      return res.json({ message: 'Login ok', username: admin.username });
     }
 
     const admin = rows[0];
@@ -23,7 +55,16 @@ router.post('/login', async (req, res, next) => {
 
     const ok = await bcrypt.compare(password, admin.password_hash);
     if (!ok) {
-      return res.status(401).json({ message: 'Credenciales invalidas' });
+      const bootstrapSynced = await syncBootstrapAdminPassword(username, password);
+      if (!bootstrapSynced) {
+        return res.status(401).json({ message: 'Credenciales invalidas' });
+      }
+
+      const [refreshedRows] = await pool.query('SELECT id_admin, username, password_hash, active FROM admin WHERE username = ? LIMIT 1', [username]);
+      const refreshedAdmin = refreshedRows[0];
+      req.session.adminId = refreshedAdmin.id_admin;
+      req.session.username = refreshedAdmin.username;
+      return res.json({ message: 'Login ok', username: refreshedAdmin.username });
     }
 
     req.session.adminId = admin.id_admin;
