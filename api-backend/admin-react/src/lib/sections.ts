@@ -12,7 +12,7 @@ import {
   Users,
 } from 'lucide-react'
 import type { SectionDefinition } from '../types'
-import { formatCurrency, formatDate } from './api'
+import { formatCurrency, formatDate } from './utils'
 
 // Configuración central de las secciones del panel para que sea fácil extender CRUDs y formularios.
 export const sections: SectionDefinition[] = [
