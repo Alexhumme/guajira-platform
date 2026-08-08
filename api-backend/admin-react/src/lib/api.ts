@@ -1,12 +1,20 @@
 // Utilidades compartidas para invocar las rutas CRUD del backend admin.
+const apiBase = import.meta.env.VITE_API_BASE ?? (import.meta.env.DEV ? 'http://localhost:5000' : '')
+
+export function resolveApiPath(path: string) {
+  if (path.startsWith('http://') || path.startsWith('https://')) return path
+  if (!apiBase) return `${path.startsWith('/') ? '' : '/'}${path}`
+  return `${apiBase.replace(/\/$/, '')}${path.startsWith('/') ? '' : '/'}${path}`
+}
+
 export async function readJson<T>(path: string): Promise<T> {
-  const response = await fetch(path, { credentials: 'include' })
+  const response = await fetch(resolveApiPath(path), { credentials: 'include' })
   if (!response.ok) throw new Error(`No se pudo cargar ${path}`)
   return response.json() as Promise<T>
 }
 
 export async function createRecord<T>(path: string, payload: Record<string, unknown>): Promise<T> {
-  const response = await fetch(path, {
+  const response = await fetch(resolveApiPath(path), {
     method: 'POST',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
@@ -22,7 +30,7 @@ export async function createRecord<T>(path: string, payload: Record<string, unkn
 }
 
 export async function updateRecord<T>(path: string, payload: Record<string, unknown>): Promise<T> {
-  const response = await fetch(path, {
+  const response = await fetch(resolveApiPath(path), {
     method: 'PUT',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
@@ -38,7 +46,7 @@ export async function updateRecord<T>(path: string, payload: Record<string, unkn
 }
 
 export async function deleteRecord(path: string): Promise<void> {
-  const response = await fetch(path, {
+  const response = await fetch(resolveApiPath(path), {
     method: 'DELETE',
     credentials: 'include',
   })

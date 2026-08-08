@@ -1,6 +1,6 @@
 import type { LucideIcon } from 'lucide-react'
 
-export type FieldType = 'text' | 'number' | 'textarea' | 'checkbox' | 'date' | 'select' | 'password'
+export type FieldType = 'text' | 'number' | 'textarea' | 'checkbox' | 'date' | 'select' | 'password' | 'media' | 'subcrud'
 
 export type FormField = {
   key: string
@@ -10,12 +10,24 @@ export type FormField = {
   defaultValue?: string | number | boolean | null
   placeholder?: string
   options?: Array<{ value: string; label: string }>
+  optionSource?: string
+  nestedEndpoint?: string
+  nestedCollectionKey?: string
+  nestedListKey?: string
+  nestedFields?: FormField[]
+  allowUpload?: boolean
+  allowUrl?: boolean
+  allowExisting?: boolean
+  existingSource?: string
+  uploadEndpoint?: string
 }
+
+import type { ReactNode } from 'react'
 
 export type ColumnDefinition = {
   key: string
   label: string
-  render?: (row: Record<string, unknown>) => string
+  render?: (row: Record<string, unknown>) => ReactNode
 }
 
 export type SectionDefinition = {

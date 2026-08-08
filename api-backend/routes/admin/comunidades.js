@@ -6,9 +6,23 @@ const pool = require('../../config/db');
 const { requireAdmin } = require('../../middleware/auth');
 
 const router = express.Router();
-router.use(requireAdmin);
 
-const uploadsDir = path.join(__dirname, '..', 'public', 'uploads', 'comunidades');
+const uploadsDir = path.join(__dirname, '..', '..', 'public', 'uploads', 'comunidades');
+
+router.get('/uploads', async (req, res, next) => {
+  try {
+    ensureUploadsDir();
+    const entries = fs.readdirSync(uploadsDir, { withFileTypes: true })
+      .filter((entry) => entry.isFile())
+      .map((entry) => `/uploads/comunidades/${entry.name}`)
+      .sort();
+    res.json(entries);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.use(requireAdmin);
 
 function ensureUploadsDir() {
   fs.mkdirSync(uploadsDir, { recursive: true });

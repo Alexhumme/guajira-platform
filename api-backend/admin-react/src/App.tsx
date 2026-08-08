@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { Loader2, LogOut, ShieldCheck } from 'lucide-react'
 import { AuthScreen } from './components/AuthScreen'
 import { EntityModal } from './components/EntityModal'
-import { createRecord, deleteRecord, formatValue, readJson, updateRecord } from './lib/api'
+import { createRecord, deleteRecord, formatValue, readJson, resolveApiPath, updateRecord } from './lib/api'
 import { sections } from './lib/sections'
 import type { SectionDefinition, SectionKey } from './types'
 
@@ -24,6 +24,9 @@ export default function App() {
   const [loginError, setLoginError] = useState('')
   const [modalState, setModalState] = useState<ModalState>({ open: false, mode: 'create' })
   const [submitting, setSubmitting] = useState(false)
+  const [previewPost, setPreviewPost] = useState<Record<string, unknown> | null>(null)
+  const [previewMedia, setPreviewMedia] = useState<string[]>([])
+  const [previewLoading, setPreviewLoading] = useState(false)
   const [page, setPage] = useState(1)
   const pageSize = 8
 
@@ -46,10 +49,12 @@ export default function App() {
     const section = sections.find((item) => item.key === activeSection)
     if (!section) return
 
+    const endpoint = section.endpoint
+
     async function loadSection() {
       try {
         setLoading(true)
-        const data = await readJson<Record<string, unknown>[]>(section.endpoint)
+        const data = await readJson<Record<string, unknown>[]>(endpoint)
         setRowsBySection((current) => ({ ...current, [activeSection]: Array.isArray(data) ? data : [] }))
       } catch (error) {
         console.error(error)
@@ -76,7 +81,8 @@ export default function App() {
 
       if (!response.ok) {
         const data = await response.json().catch(() => ({}))
-        setLoginError(data.message || 'No se pudo iniciar sesión.')
+        const errorMessage = data.message || 'No se pudo iniciar sesión.'
+        setLoginError(errorMessage)
         return
       }
 
@@ -126,29 +132,58 @@ export default function App() {
     setModalState({ open: true, mode: 'edit', section: currentSection, initialValues: row })
   }
 
-  async function handleSubmit(payload: Record<string, unknown>) {
+  async function commitNestedChanges(section: SectionDefinition, recordId: string, nestedChanges: Record<string, { items: Record<string, unknown>[]; removedIds: string[] }>) {
+    for (const [fieldKey, changes] of Object.entries(nestedChanges)) {
+      const field = section.formFields.find((item) => item.key === fieldKey)
+      if (!field || !field.nestedEndpoint || !field.nestedCollectionKey) continue
+
+      const basePath = `${field.nestedEndpoint}/${recordId}/${field.nestedCollectionKey}`
+      for (const mediaId of changes.removedIds) {
+        try {
+          await deleteRecord(`${basePath}/${mediaId}`)
+        } catch (error) {
+          console.error('Error eliminando elemento anidado:', fieldKey, mediaId, error)
+        }
+      }
+
+      for (const item of changes.items) {
+        if (!item.isNew) continue
+        try {
+          await createRecord(basePath, item)
+        } catch (error) {
+          console.error('Error guardando elemento anidado:', fieldKey, item, error)
+        }
+      }
+    }
+  }
+
+  async function handleSubmit(payload: Record<string, unknown>, nestedChanges: Record<string, { items: Record<string, unknown>[]; removedIds: string[] }> = {}) {
     if (!modalState.section) return
 
     setSubmitting(true)
     try {
       const section = modalState.section
-      const endpoint = `${section.endpoint}/${modalState.mode === 'edit' ? String(payload[section.entityIdKey] ?? '') : ''}`.replace(/\/$/, '')
+      const editId = modalState.mode === 'edit'
+        ? String(payload[section.entityIdKey] ?? modalState.initialValues?.[section.entityIdKey] ?? '')
+        : ''
+      const endpoint = `${section.endpoint}/${editId}`.replace(/\/$/, '')
       const request = modalState.mode === 'edit'
         ? updateRecord<Record<string, unknown>>(endpoint, payload)
         : createRecord<Record<string, unknown>>(section.endpoint, payload)
 
       const saved = await request
-      setRowsBySection((current) => {
-        const items = current[section.key] ?? []
-        if (modalState.mode === 'edit') {
-          return {
-            ...current,
-            [section.key]: items.map((item) => String(item[section.entityIdKey]) === String(saved[section.entityIdKey] ?? payload[section.entityIdKey]) ? { ...item, ...saved } : item),
-          }
-        }
+      const recordId = String(saved[section.entityIdKey] ?? payload[section.entityIdKey] ?? editId)
 
-        return { ...current, [section.key]: [saved, ...items] }
-      })
+      if (recordId && Object.keys(nestedChanges).length) {
+        await commitNestedChanges(section, recordId, nestedChanges)
+      }
+
+      const updatedRows = await readJson<Record<string, unknown>[]>(section.endpoint)
+      setRowsBySection((current) => ({
+        ...current,
+        [section.key]: Array.isArray(updatedRows) ? updatedRows : [],
+      }))
+
       setModalState({ open: false, mode: 'create' })
     } catch (error) {
       console.error(error)
@@ -170,7 +205,29 @@ export default function App() {
       }))
     } catch (error) {
       console.error(error)
-      setLoginError(error instanceof Error ? error.message : 'No se pudo eliminar el registro')
+      const message = error instanceof Error ? error.message : 'No se pudo eliminar el registro'
+      setLoginError(message)
+    }
+  }
+
+  async function handleViewPost(row: Record<string, unknown>) {
+    const id = String(row.id_post ?? row[Object.keys(row).find((key) => key === 'id_post') ?? ''])
+    if (!id) return
+
+    setPreviewLoading(true)
+    try {
+      const data = await readJson<Record<string, unknown>[]>(`/api/posts/${id}/media`)
+      const items = Array.isArray(data)
+        ? data.map((item) => String(item.media_dir ?? ''))
+        : []
+      setPreviewMedia(items)
+      setPreviewPost(row)
+    } catch (error) {
+      console.error('Error cargando preview del post:', error)
+      setPreviewMedia([])
+      setPreviewPost(row)
+    } finally {
+      setPreviewLoading(false)
     }
   }
 
@@ -241,6 +298,9 @@ export default function App() {
           <div className="pill">
             <ShieldCheck size={16} /> Autenticación admin
           </div>
+          <div className="pill">
+            <strong>{rowsBySection[currentSection.key]?.length ?? 0}</strong> registros
+          </div>
         </header>
 
         <section className="panel-card">
@@ -281,10 +341,19 @@ export default function App() {
                         {currentSection.columns.map((column) => {
                           const value = row[column.key]
                           const render = column.render
-                          return <td key={column.key}>{render ? render(row) : formatValue(value)}</td>
+                          let content = render ? render(row) : formatValue(value)
+                          if (currentSection.key === 'miembros' && column.key === 'avatar_dir') {
+                            const src = String(row.avatar_dir ?? '')
+                            const resolvedSrc = src ? resolveApiPath(src) : ''
+                            content = resolvedSrc ? <img src={resolvedSrc} alt="Avatar" style={{ width: 32, height: 32, borderRadius: '999px', objectFit: 'cover' }} /> : '—'
+                          }
+                          return <td key={column.key}>{content}</td>
                         })}
                         <td>
                           <div className="row-actions">
+                            {currentSection.key === 'posts' ? (
+                              <button className="secondary-action" onClick={() => void handleViewPost(row)}>Ver</button>
+                            ) : null}
                             <button className="secondary-action" onClick={() => openEditModal(row)}>Editar</button>
                             <button className="danger-action" onClick={() => handleDelete(row)}>Eliminar</button>
                           </div>
@@ -316,6 +385,64 @@ export default function App() {
           onSubmit={handleSubmit}
           isSubmitting={submitting}
         />
+        {previewPost ? (
+          <div className="modal-backdrop" role="dialog" aria-modal="true">
+            <div className="modal-card preview-modal">
+              <div className="modal-header">
+                <h3>Preview del post</h3>
+                <button type="button" className="modal-close" onClick={() => setPreviewPost(null)}>Cerrar</button>
+              </div>
+              <div className="preview-card-body">
+                <div className="preview-header">
+                  <div className="preview-avatar">
+                    {previewPost.avatar_dir ? (
+                      <img src={resolveApiPath(String(previewPost.avatar_dir))} alt="Avatar" />
+                    ) : (
+                      <span>{String(previewPost.miembro ?? '').charAt(0).toUpperCase() || 'P'}</span>
+                    )}
+                  </div>
+                  <div>
+                    <p className="preview-author">{String(previewPost.miembro ?? '')}</p>
+                    <p className="preview-subtitle">{String(previewPost.comunidad ?? '')} · {String(previewPost.fecha_registro ?? '')}</p>
+                  </div>
+                </div>
+                <p className="preview-description">{String(previewPost.descripcion ?? '')}</p>
+                <div className="preview-info">
+                  <span>Likes: {String(previewPost.likes ?? 0)}</span>
+                  <span>{previewPost.visibilidad ? 'Visible' : 'No visible'}</span>
+                </div>
+                {previewLoading ? (
+                  <div className="empty-state">Cargando recursos...</div>
+                ) : previewMedia.length ? (
+                  <div className="preview-gallery">
+                    <div className="preview-main-media">
+                      {previewMedia[0].match(/\.(mp4|webm|mov|ogg)$/i) ? (
+                        <video src={resolveApiPath(String(previewMedia[0]))} controls className="preview-main-video" />
+                      ) : (
+                        <img src={resolveApiPath(String(previewMedia[0]))} alt="Recurso principal" />
+                      )}
+                    </div>
+                    {previewMedia.length > 1 ? (
+                      <div className="preview-thumbs">
+                        {previewMedia.slice(1).map((media) => (
+                          <div key={media} className="preview-thumb">
+                            {media.match(/\.(mp4|webm|mov|ogg)$/i) ? (
+                              <video src={resolveApiPath(String(media))} muted className="preview-thumb-video" />
+                            ) : (
+                              <img src={resolveApiPath(String(media))} alt="Recurso" />
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+                ) : (
+                  <div className="empty-state">No hay recursos para este post.</div>
+                )}
+              </div>
+            </div>
+          </div>
+        ) : null}
       </main>
     </div>
   )

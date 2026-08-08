@@ -1,3 +1,4 @@
+import { createElement } from 'react'
 import {
   Building2,
   Briefcase,
@@ -86,7 +87,7 @@ export const sections: SectionDefinition[] = [
     ],
     formFields: [
       { key: 'nombre', label: 'Nombre', type: 'text', required: true },
-      { key: 'id_departamento', label: 'ID departamento', type: 'number', required: true },
+      { key: 'id_departamento', label: 'Departamento', type: 'select', required: true, optionSource: '/api/departamentos' },
     ],
   },
   {
@@ -104,12 +105,18 @@ export const sections: SectionDefinition[] = [
     ],
     formFields: [
       { key: 'nombre', label: 'Nombre', type: 'text', required: true },
-      { key: 'id_municipio', label: 'ID municipio', type: 'number', required: true },
+      { key: 'id_municipio', label: 'Municipio', type: 'select', required: true, optionSource: '/api/municipios' },
       { key: 'descripcion', label: 'Descripción', type: 'textarea' },
       { key: 'direccion', label: 'Dirección', type: 'text' },
       { key: 'numero_contacto', label: 'Número de contacto', type: 'text' },
-      { key: 'fecha_fundacion', label: 'Fecha de fundación', type: 'date' },
+      { key: 'fecha_fundacion', label: 'Fecha de fundación', type: 'date', required: false },
       { key: 'visibilidad', label: 'Visible', type: 'checkbox', defaultValue: true },
+      { key: 'media', label: 'Recursos', type: 'media', nestedEndpoint: '/api/comunidades', nestedCollectionKey: 'media', nestedListKey: 'id_comunidad_media', allowUpload: true, allowUrl: true, allowExisting: true, existingSource: '/api/comunidades/uploads' },
+      { key: 'redes', label: 'Redes sociales', type: 'subcrud', nestedEndpoint: '/api/comunidades', nestedCollectionKey: 'redes', nestedListKey: 'id_red_comunidad', nestedFields: [
+        { key: 'red_social', label: 'Red social', type: 'text', required: true },
+        { key: 'usuario', label: 'Usuario', type: 'text' },
+        { key: 'link', label: 'Enlace', type: 'text' },
+      ], existingSource: '/api/comunidades/{id_comunidad}/redes' },
     ],
   },
   {
@@ -120,6 +127,18 @@ export const sections: SectionDefinition[] = [
     icon: Users,
     entityIdKey: 'id_miembro',
     columns: [
+      {
+        key: 'avatar_dir',
+        label: 'Avatar',
+        render: (row) => {
+          const src = String(row.avatar_dir ?? '')
+          return src ? createElement('img', {
+            src,
+            alt: 'Avatar',
+            style: { width: 32, height: 32, borderRadius: '999px', objectFit: 'cover' },
+          }) : '—'
+        },
+      },
       { key: 'nombres', label: 'Nombre' },
       { key: 'comunidad', label: 'Comunidad' },
       { key: 'rol', label: 'Rol' },
@@ -128,8 +147,9 @@ export const sections: SectionDefinition[] = [
     formFields: [
       { key: 'nombres', label: 'Nombres', type: 'text', required: true },
       { key: 'cedula', label: 'Cédula', type: 'number', required: true },
-      { key: 'id_comunidad', label: 'ID comunidad', type: 'number', required: true },
-      { key: 'rol_id', label: 'ID rol', type: 'number', required: true },
+      { key: 'id_comunidad', label: 'Comunidad', type: 'select', required: true, optionSource: '/api/comunidades' },
+      { key: 'rol_id', label: 'Rol', type: 'select', required: true, optionSource: '/api/roles' },
+      { key: 'avatar_dir', label: 'Avatar', type: 'media', allowUpload: true, allowUrl: false, allowExisting: false, uploadEndpoint: '/api/miembros/upload' },
       { key: 'fecha_nacimiento', label: 'Fecha de nacimiento', type: 'date' },
       { key: 'genero', label: 'Género', type: 'text' },
       { key: 'numero_contacto', label: 'Número de contacto', type: 'text' },
@@ -174,9 +194,10 @@ export const sections: SectionDefinition[] = [
     formFields: [
       { key: 'nombre', label: 'Nombre', type: 'text', required: true },
       { key: 'precio', label: 'Precio', type: 'number', required: true },
-      { key: 'id_miembro', label: 'ID miembro', type: 'number', required: true },
-      { key: 'id_tipo_producto', label: 'ID tipo producto', type: 'number', required: true },
+      { key: 'id_miembro', label: 'Miembro', type: 'select', required: true, optionSource: '/api/miembros' },
+      { key: 'id_tipo_producto', label: 'Tipo de producto', type: 'select', required: true, optionSource: '/api/tipos-producto' },
       { key: 'descripcion', label: 'Descripción', type: 'textarea' },
+      { key: 'recursos', label: 'Recursos', type: 'media', nestedEndpoint: '/api/productos', nestedCollectionKey: 'media', nestedListKey: 'id_producto_media', allowUpload: true, allowUrl: true, allowExisting: true, existingSource: '/api/productos/uploads' },
       { key: 'visibilidad', label: 'Visible', type: 'checkbox', defaultValue: true },
     ],
   },
@@ -195,7 +216,7 @@ export const sections: SectionDefinition[] = [
     ],
     formFields: [
       { key: 'nombre', label: 'Nombre', type: 'text', required: true },
-      { key: 'id_comunidad', label: 'ID comunidad', type: 'number', required: true },
+      { key: 'id_comunidad', label: 'Comunidad', type: 'select', required: true, optionSource: '/api/comunidades' },
       { key: 'descripcion', label: 'Descripción', type: 'textarea' },
       { key: 'duracion', label: 'Duración', type: 'text' },
       { key: 'distancia', label: 'Distancia', type: 'text' },
@@ -232,8 +253,9 @@ export const sections: SectionDefinition[] = [
       { key: 'likes', label: 'Likes' },
     ],
     formFields: [
-      { key: 'id_miembro', label: 'ID miembro', type: 'number', required: true },
+      { key: 'id_miembro', label: 'Miembro', type: 'select', required: true, optionSource: '/api/miembros' },
       { key: 'descripcion', label: 'Descripción', type: 'textarea', required: true },
+      { key: 'recursos', label: 'Recursos del post', type: 'media', nestedEndpoint: '/api/posts', nestedCollectionKey: 'media', nestedListKey: 'id_post_media', allowUpload: true, allowUrl: true, allowExisting: true, existingSource: '/api/posts/uploads' },
       { key: 'visibilidad', label: 'Visible', type: 'checkbox', defaultValue: true },
       { key: 'likes', label: 'Likes', type: 'number' },
     ],

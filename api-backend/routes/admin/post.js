@@ -8,7 +8,7 @@ const { requireAdmin } = require('../../middleware/auth');
 const router = express.Router();
 router.use(requireAdmin);
 
-const uploadsDir = path.join(__dirname, '..', 'public', 'uploads', 'posts');
+const uploadsDir = path.join(__dirname, '..', '..', 'public', 'uploads', 'posts');
 
 function ensureUploadsDir() {
   fs.mkdirSync(uploadsDir, { recursive: true });
@@ -21,6 +21,18 @@ function sanitizeFileName(name) {
     .replace(/-+/g, '-')
     .toLowerCase();
 }
+
+router.get('/uploads', async (req, res, next) => {
+  try {
+    ensureUploadsDir();
+    const entries = fs.readdirSync(uploadsDir, { withFileTypes: true })
+      .filter((entry) => entry.isFile())
+      .map((entry) => `/uploads/posts/${entry.name}`)
+    res.json(entries)
+  } catch (err) {
+    next(err)
+  }
+});
 
 router.get('/', async (req, res, next) => {
   try {

@@ -8,7 +8,7 @@ const { requireAdmin } = require('../../middleware/auth');
 const router = express.Router();
 router.use(requireAdmin);
 
-const uploadsDir = path.join(__dirname, '..', 'public', 'uploads', 'rutas');
+const uploadsDir = path.join(__dirname, '..', '..', 'public', 'uploads', 'rutas');
 
 function ensureUploadsDir() {
   fs.mkdirSync(uploadsDir, { recursive: true });
