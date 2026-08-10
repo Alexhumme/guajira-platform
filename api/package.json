@@ -1,5 +1,5 @@
 {
-  "name": "api-backend",
+  "name": "api",
   "version": "1.0.0",
   "description": "API Backend for Guajira Platform - Rural Communities Marketplace",
   "main": "server.js",

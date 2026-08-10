@@ -72,10 +72,6 @@ app.use(session({
 
 // Static assets
 app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
-app.use('/admin', express.static(path.join(__dirname, 'public', 'admin', 'dist')));
-app.get(/^\/admin(?:\/(.*))?\/?$/, (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'admin', 'dist', 'index.html'));
-});
 
 // Routes
 app.get('/', (req, res) => {
