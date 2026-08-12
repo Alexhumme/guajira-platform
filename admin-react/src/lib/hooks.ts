@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { readJson } from './api'
+import { readJson, resolveApiPath } from './api'
 import type { SectionKey } from '../types'
 
 export function useAuthState() {
@@ -8,7 +8,7 @@ export function useAuthState() {
   useEffect(() => {
     async function ensureSession() {
       try {
-        const response = await fetch('/api/auth/me', { credentials: 'include' })
+        const response = await fetch(resolveApiPath('/api/auth/me'), { credentials: 'include' })
         setAuthState(response.ok ? 'authenticated' : 'guest')
       } catch {
         setAuthState('guest')

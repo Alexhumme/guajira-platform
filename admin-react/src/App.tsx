@@ -43,7 +43,7 @@ export default function App() {
     setLoginError('')
 
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch(resolveApiPath('/api/auth/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -66,7 +66,7 @@ export default function App() {
 
   async function handleLogout() {
     try {
-      await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' })
+      await fetch(resolveApiPath('/api/auth/logout'), { method: 'POST', credentials: 'include' })
     } catch {
       // ignore cleanup errors
     } finally {
