@@ -58,7 +58,7 @@ export function PublicationCard({ publicacion }: { publicacion: Publicacion }) {
       <div className="flex-1">
         <div className="flex items-center gap-3 p-4">
           <span className="relative size-10 overflow-hidden rounded-full bg-muted">
-            <Image src={publicacion.avatar} alt={publicacion.autor} fill className="object-cover" />
+            <Image src={publicacion.avatar ?? '/default-avatar.png'} alt={publicacion.autor} fill className="object-cover" />
           </span>
           <div className="min-w-0">
             <p className="truncate font-medium">{publicacion.autor}</p>
