@@ -30,6 +30,7 @@ export async function createRecord<T>(path: string, payload: Record<string, unkn
 }
 
 export async function updateRecord<T>(path: string, payload: Record<string, unknown>): Promise<T> {
+  console.log('Updating record at path:', path, 'with payload:', payload) // Log the path and payload for debugging
   const response = await fetch(resolveApiPath(path), {
     method: 'PUT',
     credentials: 'include',

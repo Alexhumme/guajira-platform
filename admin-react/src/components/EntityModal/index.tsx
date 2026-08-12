@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
-import { readJson } from '../../lib/api'
+import { readJson, resolveApiPath } from '../../lib/api'
 import type { FormField } from '../../types'
 import type { EntityModalProps, NestedChanges, NestedItem, SelectOption } from './types'
 import { normalizeFieldValue, createOptionsFromRecords, interpolatePath, fileToDataURL, guessOptionLabel, guessOptionValue } from './helpers'
@@ -239,7 +239,7 @@ export function EntityModal({ isOpen, title, fields, initialValues, onClose, onS
     const file = fileInput?.files?.[0]
     const directData = directMediaDataByField[field.key]
     if (field.uploadEndpoint && directData?.fileData && directData.fileName) {
-      const response = await fetch(field.uploadEndpoint, {
+      const response = await fetch(resolveApiPath(field.uploadEndpoint), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fileData: directData.fileData, fileName: directData.fileName }),
@@ -250,7 +250,7 @@ export function EntityModal({ isOpen, title, fields, initialValues, onClose, onS
     }
     if (file && field.uploadEndpoint) {
       const fileData = await fileToDataURL(file)
-      const response = await fetch(field.uploadEndpoint, {
+      const response = await fetch(resolveApiPath(field.uploadEndpoint), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fileData, fileName: file.name }),
