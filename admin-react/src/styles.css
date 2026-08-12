@@ -34,7 +34,7 @@ button, input, textarea, select { font: inherit; }
 
 .main-panel { padding: 24px; display: grid; gap: 18px; }
 .hero-card, .panel-card { background: white; border: 1px solid #e2e8f0; border-radius: 20px; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06); }
-.hero-card { padding: 24px 28px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.hero-card { padding: 24px 28px; display: flex; align-items: center; justify-content: space-between; gap: 16px; height: fit-content;}
 .eyebrow { margin: 0 0 6px; text-transform: uppercase; letter-spacing: 0.2em; color: #b45309; font-size: 0.75rem; font-weight: 700; }
 .hero-card h1 { margin: 0; font-size: 1.75rem; }
 .hero-card p { margin: 8px 0 0; color: #475569; }

@@ -22,7 +22,7 @@ export default async function ComunidadesPage() {
         eyebrow="Nuestra gente"
         title="Comunidades Wayuu participantes"
         description="Cada comunidad conserva un saber propio: el tejido, la sal, la pesca o el pastoreo. Conócelas y apoya su trabajo."
-        image="/images/community-1.png"
+        image="/images/mock-up/community-1.png"
       />
       <WayuuDivider />
       <section className="mx-auto max-w-6xl px-4 py-12 md:py-16">

@@ -12,7 +12,7 @@ router.get('/posts', async (req, res, next) => {
 
     // Build SQL with optional filter before ORDER BY to avoid invalid SQL
     let sql = `SELECT p.id_post, m.nombres AS autor, `
-      //+`m.avatar_dir AS avatar, `
+      +`m.avatar_dir AS avatar, `
       +`c.nombre AS comunidad, p.fecha_registro AS fecha, p.descripcion AS contenido, p.likes
        FROM post p
        JOIN miembro m ON m.id_miembro = p.id_miembro
@@ -33,7 +33,7 @@ router.get('/posts', async (req, res, next) => {
     const payload = rows.map((post) => ({
       id: String(post.id_post),
       autor: post.autor,
-      avatar: null,//post.avatar,
+      avatar: post.avatar,
       comunidadSlug: slugify(post.comunidad),
       comunidadNombre: post.comunidad,
       fecha: String(post.fecha),

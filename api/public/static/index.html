@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="shortcut icon" href="./server.png" type="image/png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guajira Platform API</title>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🌴 Guajira Platform</h1>
+        <p>Estado de la API</p>
+      </div>
+
+      <div class="card">
+        <div class="status" id="serverStatus">
+          <span class="dot"></span>
+          Comprobando servidor...
+        </div>
+
+        <div class="info">
+          <div class="item">
+            <span class="label">Puerto</span>
+            <span class="value" id="port">—</span>
+          </div>
+
+          <div class="item">
+            <span class="label">Entorno</span>
+            <span class="value" id="environment">—</span>
+          </div>
+
+          <div class="item">
+            <span class="label">Node.js</span>
+            <span class="value" id="node">—</span>
+          </div>
+
+          <div class="item">
+            <span class="label">Uptime</span>
+            <span class="value" id="uptime">—</span>
+          </div>
+        </div>
+
+        <div class="database" id="database">
+          🗄️ Comprobando conexión con MySQL...
+        </div>
+
+        <div class="footer">Guajira Platform API</div>
+      </div>
+    </div>
+
+    <script>
+      async function checkHealth() {
+        try {
+          const response = await fetch("/health");
+
+          const data = await response.json();
+
+          document.getElementById("port").textContent = data.port;
+          document.getElementById("environment").textContent = data.environment;
+          document.getElementById("node").textContent = data.node;
+          document.getElementById("uptime").textContent = formatUptime(
+            data.uptime,
+          );
+
+          const serverStatus = document.getElementById("serverStatus");
+          const database = document.getElementById("database");
+
+          serverStatus.innerHTML = `
+          <span class="dot"></span>
+          Servidor funcionando correctamente
+        `;
+
+          if (data.database === "connected") {
+            database.innerHTML = `
+            🗄️ Base de datos:
+            <strong>Conectada</strong>
+            <br>
+            <small>Respuesta: ${data.databaseResponseTime} ms</small>
+          `;
+          } else {
+            database.innerHTML = `
+            🗄️ Base de datos:
+            <strong style="color:#b91c1c">
+              Sin conexión
+            </strong>
+          `;
+          }
+        } catch (error) {
+          document.getElementById("serverStatus").innerHTML = `
+          <span class="dot" style="background:#ef4444"></span>
+          No se pudo comprobar el servidor
+        `;
+
+          document.getElementById("database").textContent =
+            "🗄️ No se pudo obtener el estado de la base de datos";
+        }
+      }
+
+      function formatUptime(seconds) {
+        const days = Math.floor(seconds / 86400);
+
+        seconds %= 86400;
+
+        const hours = Math.floor(seconds / 3600);
+
+        seconds %= 3600;
+
+        const minutes = Math.floor(seconds / 60);
+
+        seconds = Math.floor(seconds % 60);
+
+        return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      }
+
+      checkHealth();
+    </script>
+  </body>
+</html>

@@ -144,12 +144,12 @@ export const rutas: RutaTuristica[] = [
     municipioId: 'm1',
     comunidadPrincipalId: 'c3',
     comunidadesIds: ['c3', 'c1'],
-    portada: '/images/tourism-2.png',
-    galeria: ['/images/community-3.png', '/images/tourism-2.png', '/images/tourism-1.png'],
+    portada: '/images/mock-up/tourism-2.png',
+    galeria: ['/images/mock-up/community-3.png', '/images/mock-up/tourism-2.png', '/images/mock-up/tourism-1.png'],
     puntos: [
-      { nombre: 'Pilón de Azúcar', descripcion: 'Mirador sagrado con vistas al Caribe.', latitud: 12.2, longitud: -72.16, imagen: '/images/tourism-1.png' },
-      { nombre: 'Playa del Faro', descripcion: 'Atardecer y kitesurf.', latitud: 12.22, longitud: -72.15, imagen: '/images/tourism-2.png' },
-      { nombre: 'Ranchería Jepira', descripcion: 'Convivencia y gastronomía local.', latitud: 12.21, longitud: -72.15, imagen: '/images/community-3.png' },
+      { nombre: 'Pilón de Azúcar', descripcion: 'Mirador sagrado con vistas al Caribe.', latitud: 12.2, longitud: -72.16, imagen: '/images/mock-up/tourism-1.png' },
+      { nombre: 'Playa del Faro', descripcion: 'Atardecer y kitesurf.', latitud: 12.22, longitud: -72.15, imagen: '/images/mock-up/tourism-2.png' },
+      { nombre: 'Ranchería Jepira', descripcion: 'Convivencia y gastronomía local.', latitud: 12.21, longitud: -72.15, imagen: '/images/mock-up/community-3.png' },
     ],
     serviciosIds: ['s1', 's2', 's4'],
   },
@@ -164,10 +164,10 @@ export const rutas: RutaTuristica[] = [
     municipioId: 'm1',
     comunidadPrincipalId: 'c4',
     comunidadesIds: ['c4'],
-    portada: '/images/community-4.png',
-    galeria: ['/images/community-4.png', '/images/gallery-3.png'],
+    portada: '/images/mock-up/community-4.png',
+    galeria: ['/images/mock-up/community-4.png', '/images/gallery-3.png'],
     puntos: [
-      { nombre: 'Cerro Palúa', descripcion: 'Senderismo con vistas panorámicas.', latitud: 12.15, longitud: -71.34, imagen: '/images/community-4.png' },
+      { nombre: 'Cerro Palúa', descripcion: 'Senderismo con vistas panorámicas.', latitud: 12.15, longitud: -71.34, imagen: '/images/mock-up/community-4.png' },
       { nombre: 'Oasis interior', descripcion: 'Bosque de niebla único.', latitud: 12.14, longitud: -71.33, imagen: '/images/gallery-3.png' },
     ],
     serviciosIds: ['s3', 's2'],
@@ -183,11 +183,11 @@ export const rutas: RutaTuristica[] = [
     municipioId: 'm1',
     comunidadPrincipalId: 'c3',
     comunidadesIds: ['c3', 'c2'],
-    portada: '/images/tourism-1.png',
-    galeria: ['/images/tourism-1.png', '/images/community-2.png', '/images/tourism-3.png'],
+    portada: '/images/mock-up/tourism-1.png',
+    galeria: ['/images/mock-up/tourism-1.png', '/images/mock-up/community-2.png', '/images/mock-up/tourism-3.png'],
     puntos: [
-      { nombre: 'Dunas de Taroa', descripcion: 'Dunas que caen al mar Caribe.', latitud: 12.45, longitud: -71.7, imagen: '/images/tourism-1.png' },
-      { nombre: 'Bahía Hondita', descripcion: 'Avistamiento de flamencos.', latitud: 12.43, longitud: -71.73, imagen: '/images/tourism-3.png' },
+      { nombre: 'Dunas de Taroa', descripcion: 'Dunas que caen al mar Caribe.', latitud: 12.45, longitud: -71.7, imagen: '/images/mock-up/tourism-1.png' },
+      { nombre: 'Bahía Hondita', descripcion: 'Avistamiento de flamencos.', latitud: 12.43, longitud: -71.73, imagen: '/images/mock-up/tourism-3.png' },
     ],
     serviciosIds: ['s1', 's2', 's4'],
 },
@@ -208,10 +208,10 @@ export const galeria = [
   '/images/gallery-2.png',
   '/images/gallery-3.png',
   '/images/gallery-4.png',
-  '/images/community-3.png',
-  '/images/tourism-1.png',
-  '/images/product-mochila.png',
-  '/images/tourism-3.png',
+  '/images/mock-up/community-3.png',
+  '/images/mock-up/tourism-1.png',
+  '/images/mock-up/product-mochila.png',
+  '/images/mock-up/tourism-3.png',
 ]
 
 // Helpers
@@ -237,10 +237,10 @@ export type MapPoint = {
 }
 
 export const mapPoints: MapPoint[] = [
-  { id: 'mp1', nombre: 'Comunidad Wotkasainru', tipo: 'Comunidad', x: 46, y: 58, descripcion: 'Centro artesanal en Uribia.', href: '/comunidades/wayuu-uribia', imagen: '/images/community-1.png' },
-  { id: 'mp2', nombre: 'Salinas de Manaure', tipo: 'Artesanal', x: 30, y: 52, descripcion: 'Extracción de sal marina.', href: '/comunidades/manaure-salinas', imagen: '/images/community-2.png' },
-  { id: 'mp3', nombre: 'Cabo de la Vela', tipo: 'Playa', x: 52, y: 30, descripcion: 'Playas y turismo comunitario.', href: '/comunidades/cabo-de-la-vela', imagen: '/images/community-3.png' },
-  { id: 'mp4', nombre: 'Serranía de la Macuira', tipo: 'Cultural', x: 78, y: 26, descripcion: 'Oasis de bosque de niebla.', href: '/comunidades/macuira', imagen: '/images/community-4.png' },
-  { id: 'mp5', nombre: 'Punta Gallinas', tipo: 'Turístico', x: 66, y: 12, descripcion: 'Punto más al norte de Suramérica.', href: '/turismo/punta-gallinas', imagen: '/images/tourism-1.png' },
+  { id: 'mp1', nombre: 'Comunidad Wotkasainru', tipo: 'Comunidad', x: 46, y: 58, descripcion: 'Centro artesanal en Uribia.', href: '/comunidades/wayuu-uribia', imagen: '/images/mock-up/community-1.png' },
+  { id: 'mp2', nombre: 'Salinas de Manaure', tipo: 'Artesanal', x: 30, y: 52, descripcion: 'Extracción de sal marina.', href: '/comunidades/manaure-salinas', imagen: '/images/mock-up/community-2.png' },
+  { id: 'mp3', nombre: 'Cabo de la Vela', tipo: 'Playa', x: 52, y: 30, descripcion: 'Playas y turismo comunitario.', href: '/comunidades/cabo-de-la-vela', imagen: '/images/mock-up/community-3.png' },
+  { id: 'mp4', nombre: 'Serranía de la Macuira', tipo: 'Cultural', x: 78, y: 26, descripcion: 'Oasis de bosque de niebla.', href: '/comunidades/macuira', imagen: '/images/mock-up/community-4.png' },
+  { id: 'mp5', nombre: 'Punta Gallinas', tipo: 'Turístico', x: 66, y: 12, descripcion: 'Punto más al norte de Suramérica.', href: '/turismo/punta-gallinas', imagen: '/images/mock-up/tourism-1.png' },
   { id: 'mp6', nombre: 'Riohacha', tipo: 'Comunidad', x: 20, y: 66, descripcion: 'Capital y punto de partida.', href: '/mapa', imagen: '/images/gallery-4.png' },
 ]

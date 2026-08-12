@@ -71,16 +71,17 @@ app.use(session({
 }));
 
 // Static assets
+app.use('', require('./routes/health'));
+
+app.use(express.static(path.join(__dirname, 'public', 'static')));
+
 app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
 
 // Routes
 app.get('/', (req, res) => {
-    res.json({
-        message: '🌴 Guajira Platform API',
-        version: '1.0.0',
-        status: 'Running'
-    });
+  res.sendFile(path.join(__dirname, 'public', 'static', 'index.html'));
 });
+
 
 // Public web-client API (no authentication required)
 app.use('/web-client', require('./routes/web/web-client-api'));
