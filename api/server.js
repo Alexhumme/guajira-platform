@@ -90,6 +90,7 @@ app.use('/web-client', require('./routes/web/municipios'));
 app.use('/web-client', require('./routes/web/comunidades'));
 app.use('/web-client', require('./routes/web/productos'));
 app.use('/web-client', require('./routes/web/rutas'));
+app.use('/web-client', require('./routes/web/miembros.js'));
 
 // Admin auth & core entities
 app.use('/api/auth', require('./routes/admin/auth'));

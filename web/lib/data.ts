@@ -107,12 +107,12 @@ export type RutaTuristica = {
 
 export type Rol = 'Administrador' | 'Gestor' | 'Líder comunitario' | 'Artesano' | 'Publicador'
 
-export type Usuario = {
+export type Miembro = {
   id: string
   nombre: string
   correo: string
   rol: Rol
-  fotografia: string
+  avatar: string
   comunidadId: string
   estado: 'Activo' | 'Inactivo'
 }
@@ -193,12 +193,12 @@ export const rutas: RutaTuristica[] = [
 },
 ]
 
-export const usuarios: Usuario[] = [
-  { id: 'u1', nombre: 'Andrés Gómez', correo: 'admin@iapguajira.co', rol: 'Administrador', fotografia: '/images/artisan-1.png', comunidadId: 'c1', estado: 'Activo' },
-  { id: 'u2', nombre: 'María Epieyu', correo: 'maria@iapguajira.co', rol: 'Artesano', fotografia: '/images/artisan-1.png', comunidadId: 'c1', estado: 'Activo' },
-  { id: 'u3', nombre: 'José Ipuana', correo: 'jose@iapguajira.co', rol: 'Líder comunitario', fotografia: '/images/gallery-2.png', comunidadId: 'c3', estado: 'Activo' },
-  { id: 'u4', nombre: 'Laura Restrepo', correo: 'laura@iapguajira.co', rol: 'Gestor', fotografia: '/images/gallery-3.png', comunidadId: 'c2', estado: 'Inactivo' },
-  { id: 'u5', nombre: 'Rosa Uriana', correo: 'rosa@iapguajira.co', rol: 'Publicador', fotografia: '/images/artisan-1.png', comunidadId: 'c1', estado: 'Activo' },
+export const miembros: Miembro[] = [
+  { id: 'u1', nombre: 'Andrés Gómez', correo: 'admin@iapguajira.co', rol: 'Administrador', avatar: '/images/artisan-1.png', comunidadId: 'c1', estado: 'Activo' },
+  { id: 'u2', nombre: 'María Epieyu', correo: 'maria@iapguajira.co', rol: 'Artesano', avatar: '/images/artisan-1.png', comunidadId: 'c1', estado: 'Activo' },
+  { id: 'u3', nombre: 'José Ipuana', correo: 'jose@iapguajira.co', rol: 'Líder comunitario', avatar: '/images/gallery-2.png', comunidadId: 'c3', estado: 'Activo' },
+  { id: 'u4', nombre: 'Laura Restrepo', correo: 'laura@iapguajira.co', rol: 'Gestor', avatar: '/images/gallery-3.png', comunidadId: 'c2', estado: 'Inactivo' },
+  { id: 'u5', nombre: 'Rosa Uriana', correo: 'rosa@iapguajira.co', rol: 'Publicador', avatar: '/images/artisan-1.png', comunidadId: 'c1', estado: 'Activo' },
 ]
 
 export const roles: Rol[] = ['Administrador', 'Gestor', 'Líder comunitario', 'Artesano', 'Publicador']
