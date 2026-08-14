@@ -1,8 +1,12 @@
-import type { Comunidad } from '@/lib/data'
+import type { Comunidad, Miembro } from '@/lib/data'
 import { getComunidades as fetchComunidades, fetchApi } from './client'
 
 export async function getComunidades(): Promise<Comunidad[]> {
   return fetchComunidades()
+}
+
+export async function getLideres(comunidadId: string): Promise<Miembro[]> {
+  return fetchApi<Miembro[]>('/web-client/comunidades/' + comunidadId + '/lideres')
 }
 
 export async function getComunidadBySlug(slug: string): Promise<Comunidad | undefined> {

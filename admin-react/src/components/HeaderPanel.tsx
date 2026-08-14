@@ -15,9 +15,6 @@ export function HeaderPanel({ section, recordsCount }: HeaderPanelProps) {
         <p>{section.description}</p>
       </div>
       <div className="pill">
-        <ShieldCheck size={16} /> Autenticación admin
-      </div>
-      <div className="pill">
         <strong>{recordsCount}</strong> registros
       </div>
     </header>

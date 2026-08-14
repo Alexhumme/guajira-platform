@@ -10,10 +10,10 @@ import { cn } from '@/lib/utils'
 const nav = [
   { href: '/', label: 'Inicio' },
   { href: '/marketplace', label: 'Marketplace' },
-  { href: '/comunidades', label: 'Comunidades' },
   { href: '/publicaciones', label: 'Publicaciones' },
-  { href: '/turismo', label: 'Turismo' },
-  { href: '/mapa', label: 'Mapa' },
+  { href: '/comunidades', label: 'Comunidades' },
+  //{ href: '/turismo', label: 'Turismo' },
+  //{ href: '/mapa', label: 'Mapa' },
   { href: '/proyecto', label: 'Proyecto IAP' },
 ]
 
@@ -37,6 +37,17 @@ export function SiteHeader() {
           </span>
         </Link>
 
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            aria-label="Abrir menú"
+            className="inline-flex size-9 items-center justify-center rounded-md hover:bg-muted lg:hidden"
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
+        </div>
+
         <nav className="hidden items-center gap-1 lg:flex">
           {nav.map((item) => (
             <Link
@@ -52,25 +63,6 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
-          <Button
-            size="sm"
-            variant="outline"
-            className="hidden sm:inline-flex"
-            render={<Link href="/admin" />}
-          >
-            <ShieldCheck className="size-4" />
-            Admin
-          </Button>
-          <button
-            type="button"
-            aria-label="Abrir menú"
-            className="inline-flex size-9 items-center justify-center rounded-md hover:bg-muted lg:hidden"
-            onClick={() => setOpen((v) => !v)}
-          >
-            {open ? <X className="size-5" /> : <Menu className="size-5" />}
-          </button>
-        </div>
       </div>
 
       {open && (
@@ -89,13 +81,6 @@ export function SiteHeader() {
                 {item.label}
               </Link>
             ))}
-            <Link
-              href="/admin"
-              onClick={() => setOpen(false)}
-              className="mt-1 rounded-md px-3 py-2.5 text-sm font-medium text-foreground/80"
-            >
-              Panel administrativo
-            </Link>
           </nav>
         </div>
       )}

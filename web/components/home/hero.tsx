@@ -35,9 +35,9 @@ export function Hero() {
             size="lg"
             variant="outline"
             className="h-11 border-white/40 bg-white/10 px-5 text-base text-white hover:bg-white/20 hover:text-white"
-            render={<Link href="/turismo" />}
+            render={<Link href="/comunidades" />}
           >
-            Descubrir rutas turísticas
+            Descubrir nuestras comunidades
           </Button>
         </div>
       </div>

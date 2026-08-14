@@ -74,7 +74,7 @@ Actualmente los productos están hardcodeados en `Shop.js`. Estructura:
 ## Cómo Ejecutar
 
 \`\`\`bash
-cd web-client
+cd web
 npm start
 \`\`\`
 

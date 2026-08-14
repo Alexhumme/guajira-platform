@@ -50,7 +50,7 @@ ON DUPLICATE KEY UPDATE nombre = VALUES(nombre), updated_at = NOW();
 
 -- Comunidades (por municipio)
 INSERT INTO comunidad (nombre, id_municipio, visibilidad, fecha_registro, created_at, updated_at)
-SELECT c.nombre, m.id_municipio, 1, CURRENT_DATE, NOW(), NOW()
+SELECT c.nombre, m.id_municipio, 0, CURRENT_DATE, NOW(), NOW()
 FROM (
   SELECT 'El Ahumao 2' AS nombre, 'Riohacha' AS municipio UNION ALL
   SELECT 'Tocoromana', 'Riohacha' UNION ALL

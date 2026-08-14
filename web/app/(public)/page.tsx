@@ -109,7 +109,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Tourism */}
+      {/* Tourism 
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
         <SectionHeading
           eyebrow="Turismo"
@@ -123,8 +123,9 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
+      */}
 
-      {/* Map */}
+      {/* Map 
       <section className="bg-secondary/40">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
           <SectionHeading
@@ -139,6 +140,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+          */}
 
       {/* Publications */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">

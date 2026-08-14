@@ -101,7 +101,12 @@ export const sections: SectionDefinition[] = [
       { key: 'nombre', label: 'Comunidad' },
       { key: 'municipio', label: 'Municipio' },
       { key: 'numero_contacto', label: 'Contacto' },
-      { key: 'fecha_registro', label: 'Registro', render: (row) => formatDate(String(row.fecha_registro ?? '')) },
+      { key: 'visibilidad', label: 'Visibilidad', render: (row) => {
+          return createElement('span', {
+            className: row.visibilidad ? 'pill checked' : 'pill cancel',
+            style: { },
+          })
+        }, },
     ],
     formFields: [
       { key: 'nombre', label: 'Nombre', type: 'text', required: true },

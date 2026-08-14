@@ -1,10 +1,10 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const slugify = require('../../utils/slugify');
-const pool = require('../../config/db');
+const slugify = require("../../utils/slugify");
+const pool = require("../../config/db");
 
 // GET /api/web-client/comunidades - Devuelve todas las comunidades en el formato del web-client
-router.get('/comunidades', async (req, res, next) => {
+router.get("/comunidades", async (req, res, next) => {
   try {
     // Obtener todas las comunidades visibles
     const [comunidadesRows] = await pool.query(
@@ -12,28 +12,28 @@ router.get('/comunidades', async (req, res, next) => {
               c.direccion, c.coordenadas, c.numero_contacto, c.fecha_fundacion
        FROM comunidad c
        WHERE c.visibilidad = 1
-       ORDER BY c.id_comunidad DESC`
+       ORDER BY c.id_comunidad DESC`,
     );
 
     // Obtener media para todas las comunidades
     const [mediaRows] = await pool.query(
       `SELECT id_comunidad, media_dir, \`index\`
        FROM comunidad_media
-       ORDER BY id_comunidad ASC, \`index\` ASC`
+       ORDER BY id_comunidad ASC, \`index\` ASC`,
     );
 
     // Obtener redes sociales para todas las comunidades
     const [redesRows] = await pool.query(
       `SELECT id_comunidad, red_social, usuario, link
        FROM red_comunidad
-       ORDER BY id_comunidad ASC`
+       ORDER BY id_comunidad ASC`,
     );
 
     // Obtener cantidad de miembros por comunidad
     const [habitantesRows] = await pool.query(
       `SELECT id_comunidad, COUNT(*) AS total
        FROM miembro
-       GROUP BY id_comunidad`
+       GROUP BY id_comunidad`,
     );
 
     // Mapear media por comunidad
@@ -64,28 +64,35 @@ router.get('/comunidades', async (req, res, next) => {
     const payload = comunidadesRows.map((comunidad) => {
       const media = mediaByComunidad.get(comunidad.id_comunidad) || [];
       const galeria = media.map((item) => item.media_dir).filter(Boolean);
-      const portada = galeria.length > 0 ? galeria[0] : (comunidad.portada_dir || comunidad.logo_dir || '');
+      const portada =
+        galeria.length > 0
+          ? galeria[0]
+          : comunidad.portada_dir || comunidad.logo_dir || "";
 
       return {
         id: String(comunidad.id_comunidad),
         slug: slugify(comunidad.nombre),
         nombre: comunidad.nombre,
         municipioId: String(comunidad.id_municipio),
-        descripcion: comunidad.descripcion || '',
+        descripcion: comunidad.descripcion || "",
         logo: comunidad.logo_dir || undefined,
         portada: portada,
         galeria: galeria,
         contacto: {
-          telefono: comunidad.numero_contacto || '',
-          correo: '',
-          whatsapp: '',
+          telefono: comunidad.numero_contacto || "",
+          correo: "",
+          whatsapp: "",
         },
-        redes: (redesByComunidad.get(comunidad.id_comunidad) || []).map((red) => ({
-          red_social: red.red_social,
-          usuario: red.usuario || undefined,
-          link: red.link || undefined,
-        })),
-        fundacion: comunidad.fecha_fundacion ? String(comunidad.fecha_fundacion) : '',
+        redes: (redesByComunidad.get(comunidad.id_comunidad) || []).map(
+          (red) => ({
+            red_social: red.red_social,
+            usuario: red.usuario || undefined,
+            link: red.link || undefined,
+          }),
+        ),
+        fundacion: comunidad.fecha_fundacion
+          ? String(comunidad.fecha_fundacion)
+          : "",
         habitantes: habitantesByComunidad.get(comunidad.id_comunidad) || 0,
         direccion: comunidad.direccion || undefined,
         coordenadas: comunidad.coordenadas || undefined,
@@ -98,9 +105,8 @@ router.get('/comunidades', async (req, res, next) => {
   }
 });
 
-
 // GET /api/web-client/comunidades/top - Devuelve las comunidades top por puntaje combinado
-router.get('/comunidades/top', async (req, res, next) => {
+router.get("/comunidades/top", async (req, res, next) => {
   try {
     const [comunidadesRows] = await pool.query(
       `SELECT c.id_comunidad, c.nombre, c.id_municipio, c.logo_dir, c.portada_dir, c.descripcion, 
@@ -121,7 +127,7 @@ router.get('/comunidades/top', async (req, res, next) => {
        LEFT JOIN (SELECT id_comunidad, COUNT(*) AS habitantes_count FROM miembro WHERE status = 'activo' GROUP BY id_comunidad) h ON h.id_comunidad = c.id_comunidad
        WHERE c.visibilidad = 1
        ORDER BY combined_score DESC
-       LIMIT 4`
+       LIMIT 4`,
     );
 
     const ids = comunidadesRows.map((r) => r.id_comunidad);
@@ -131,11 +137,15 @@ router.get('/comunidades/top', async (req, res, next) => {
 
     if (ids.length > 0) {
       const [mRows] = await pool.query(
-        `SELECT id_comunidad, media_dir, ` + "`index`" + `
+        `SELECT id_comunidad, media_dir, ` +
+          "`index`" +
+          `
          FROM comunidad_media
          WHERE id_comunidad IN (?)
-         ORDER BY id_comunidad ASC, ` + "`index`" + ` ASC`,
-        [ids]
+         ORDER BY id_comunidad ASC, ` +
+          "`index`" +
+          ` ASC`,
+        [ids],
       );
       mediaRows = mRows;
 
@@ -144,7 +154,7 @@ router.get('/comunidades/top', async (req, res, next) => {
          FROM red_comunidad
          WHERE id_comunidad IN (?)
          ORDER BY id_comunidad ASC`,
-        [ids]
+        [ids],
       );
       redesRows = rRows;
     }
@@ -170,7 +180,10 @@ router.get('/comunidades/top', async (req, res, next) => {
     const payload = comunidadesRows.map((comunidad) => {
       const media = mediaByComunidad.get(comunidad.id_comunidad) || [];
       const galeria = media.map((item) => item.media_dir).filter(Boolean);
-      const portada = galeria.length > 0 ? galeria[0] : (comunidad.portada_dir || comunidad.logo_dir || '');
+      const portada =
+        galeria.length > 0
+          ? galeria[0]
+          : comunidad.portada_dir || comunidad.logo_dir || "";
 
       return {
         id: String(comunidad.id_comunidad),
@@ -178,24 +191,28 @@ router.get('/comunidades/top', async (req, res, next) => {
         nombre: comunidad.nombre,
         municipioId: String(comunidad.id_municipio),
         municipio: {
-          nombre: comunidad.municipio_nombre || '',
-          departamento: comunidad.departamento_nombre || '',
+          nombre: comunidad.municipio_nombre || "",
+          departamento: comunidad.departamento_nombre || "",
         },
-        descripcion: comunidad.descripcion || '',
+        descripcion: comunidad.descripcion || "",
         logo: comunidad.logo_dir || undefined,
         portada: portada,
         galeria: galeria,
         contacto: {
-          telefono: comunidad.numero_contacto || '',
-          correo: '',
-          whatsapp: '',
+          telefono: comunidad.numero_contacto || "",
+          correo: "",
+          whatsapp: "",
         },
-        redes: (redesByComunidad.get(comunidad.id_comunidad) || []).map((red) => ({
-          red_social: red.red_social,
-          usuario: red.usuario || undefined,
-          link: red.link || undefined,
-        })),
-        fundacion: comunidad.fecha_fundacion ? String(comunidad.fecha_fundacion) : '',
+        redes: (redesByComunidad.get(comunidad.id_comunidad) || []).map(
+          (red) => ({
+            red_social: red.red_social,
+            usuario: red.usuario || undefined,
+            link: red.link || undefined,
+          }),
+        ),
+        fundacion: comunidad.fecha_fundacion
+          ? String(comunidad.fecha_fundacion)
+          : "",
         habitantes: Number(comunidad.habitantes_count || 0),
         direccion: comunidad.direccion || undefined,
         coordenadas: comunidad.coordenadas || undefined,
@@ -209,18 +226,18 @@ router.get('/comunidades/top', async (req, res, next) => {
 });
 
 // GET /api/web-client/comunidades/:id - Devuelve una comunidad específica en el formato del web-client
-router.get('/comunidades/:id', async (req, res, next) => {
+router.get("/comunidades/:id", async (req, res, next) => {
   try {
     const [comunidadesRows] = await pool.query(
       `SELECT c.id_comunidad, c.nombre, c.id_municipio, c.logo_dir, c.portada_dir, c.descripcion, 
               c.direccion, c.coordenadas, c.numero_contacto, c.fecha_fundacion
        FROM comunidad c
        WHERE c.id_comunidad = ? AND c.visibilidad = 1`,
-      [req.params.id]
+      [req.params.id],
     );
 
     if (comunidadesRows.length === 0) {
-      return res.status(404).json({ message: 'Comunidad no encontrada' });
+      return res.status(404).json({ message: "Comunidad no encontrada" });
     }
 
     const comunidad = comunidadesRows[0];
@@ -231,7 +248,7 @@ router.get('/comunidades/:id', async (req, res, next) => {
        FROM comunidad_media
        WHERE id_comunidad = ?
        ORDER BY \`index\` ASC`,
-      [req.params.id]
+      [req.params.id],
     );
 
     // Obtener redes para esta comunidad
@@ -239,7 +256,7 @@ router.get('/comunidades/:id', async (req, res, next) => {
       `SELECT red_social, usuario, link
        FROM red_comunidad
        WHERE id_comunidad = ?`,
-      [req.params.id]
+      [req.params.id],
     );
 
     // Obtener habitantes
@@ -247,32 +264,37 @@ router.get('/comunidades/:id', async (req, res, next) => {
       `SELECT COUNT(*) AS total
        FROM miembro
        WHERE id_comunidad = ?`,
-      [req.params.id]
+      [req.params.id],
     );
 
     const galeria = mediaRows.map((item) => item.media_dir).filter(Boolean);
-    const portada = galeria.length > 0 ? galeria[0] : (comunidad.portada_dir || comunidad.logo_dir || '');
+    const portada =
+      galeria.length > 0
+        ? galeria[0]
+        : comunidad.portada_dir || comunidad.logo_dir || "";
 
     const payload = {
       id: String(comunidad.id_comunidad),
       slug: slugify(comunidad.nombre),
       nombre: comunidad.nombre,
       municipioId: String(comunidad.id_municipio),
-      descripcion: comunidad.descripcion || '',
+      descripcion: comunidad.descripcion || "",
       logo: comunidad.logo_dir || undefined,
       portada: portada,
       galeria: galeria,
       contacto: {
-        telefono: comunidad.numero_contacto || '',
-        correo: '',
-        whatsapp: '',
+        telefono: comunidad.numero_contacto || "",
+        correo: "",
+        whatsapp: "",
       },
       redes: redesRows.map((red) => ({
         red_social: red.red_social,
         usuario: red.usuario || undefined,
         link: red.link || undefined,
       })),
-      fundacion: comunidad.fecha_fundacion ? String(comunidad.fecha_fundacion) : '',
+      fundacion: comunidad.fecha_fundacion
+        ? String(comunidad.fecha_fundacion)
+        : "",
       habitantes: Number(habitantesRows[0]?.total || 0),
       direccion: comunidad.direccion || undefined,
       coordenadas: comunidad.coordenadas || undefined,
@@ -284,5 +306,34 @@ router.get('/comunidades/:id', async (req, res, next) => {
   }
 });
 
-module.exports = router;
+// GET /api/web-client/comunidades/:id/lideres - Devuelve los líderes de una comunidad específica en el formato del web-client
+router.get("/comunidades/:id/lideres", async (req, res, next) => {
+  try {
+    const [lideresRows] = await pool.query(
+      `SELECT m.id_miembro, m.nombres, m.id_comunidad, m.avatar_dir, 
+              m.numero_contacto, m.email_contacto, m.fecha_nacimiento
+       FROM miembro m
+       JOIN comunidad c ON m.id_comunidad = c.id_comunidad
+       JOIN rol r ON m.rol_id = r.id_rol
+       WHERE m.id_comunidad = ? AND m.status = 'activo' AND r.nombre = 'lider'
+       ORDER BY m.id_miembro ASC`,
+      [req.params.id],
+    );
 
+    const payload = lideresRows.map((lider) => ({
+      id: String(lider.id_miembro),
+      nombre: lider.nombres,
+      avatar: lider.avatar_dir || undefined,
+      telefono: lider.numero_contacto || undefined,
+      correo: lider.email_contacto || undefined,
+      fechaNacimiento: lider.fecha_nacimiento
+        ? String(lider.fecha_nacimiento)
+        : undefined,
+    }));
+
+    res.json(payload);
+  } catch (error) {
+    next(error);
+  }
+});
+module.exports = router;
