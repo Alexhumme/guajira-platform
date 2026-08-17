@@ -136,6 +136,27 @@
   }
 }
 
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
 /* Wayuu-inspired geometric pattern band */
 .wayuu-band {
   background-image: repeating-linear-gradient(
@@ -152,7 +173,7 @@
 }
 
 .wayuu-diamonds {
-  background-color: transparent;
+  background-color: var(--clay);
   background-image:
     linear-gradient(135deg, var(--primary) 25%, transparent 25%),
     linear-gradient(225deg, var(--primary) 25%, transparent 25%),
@@ -165,4 +186,124 @@
     0 0;
   background-size: 20px 20px;
   background-repeat: repeat;
+}
+
+.communities-atlas {
+  overflow: hidden;
+  background: var(--background);
+}
+
+.communities-intro {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  max-width: 90rem;
+  margin: 0 auto;
+  padding: clamp(4.5rem, 10vw, 8rem) clamp(1.5rem, 6vw, 6rem) clamp(3rem, 7vw, 5.5rem);
+}
+
+.communities-kicker,
+.communities-atlas__all-heading p,
+.association-menu__heading p,
+.association-profile__identity p {
+  margin: 0;
+  color: var(--primary);
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.communities-content {
+  display: grid;
+  grid-template-columns: minmax(13rem, 18rem) minmax(0, 1fr);
+  gap: clamp(1.5rem, 2vw, 4rem);
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 6vw, 6rem) 6rem;
+}
+
+.association-menu {
+  align-self: start;
+  padding-top: 2rem;
+}
+
+.association-menu__heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .75rem;
+  margin-bottom: .75rem;
+}
+
+.association-menu__heading span { color: var(--muted-foreground); font-size: .75rem; }
+.association-menu__options { display: grid; }
+
+.association-menu__option {
+  display: grid;
+  grid-template-columns: 1.85rem minmax(0, 1fr);
+  gap: .65rem;
+  align-items: center;
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
+  background: transparent;
+  padding: .78rem .25rem;
+  color: var(--foreground);
+  cursor: pointer;
+  text-align: left;
+  transition: color .2s ease, padding .2s ease, background .2s ease;
+}
+
+.association-menu__option:hover,
+.association-menu__option.is-active { padding-left: .65rem; color: var(--primary); background: color-mix(in oklab, var(--sand) 42%, transparent); }
+.association-menu__option strong { display: block; font-size: .86rem; }
+.association-menu__option small { display: block; margin-top: .1rem; color: var(--muted-foreground); font-size: .7rem; line-height: 1.25; }
+.association-menu__glyph { color: var(--clay); font-size: 1.1rem; }
+.association-menu__logo { position: relative; display: grid; width: 1.85rem; aspect-ratio: 1; place-items: center; overflow: hidden; border: 1px solid color-mix(in oklab, var(--primary) 45%, var(--border)); border-radius: 999px; background: var(--sand); color: var(--primary); font-size: .58rem; font-weight: 800; }
+
+.communities-atlas__body { margin-top: 2rem; min-width: 0; }
+.communities-atlas__all-heading { margin: 0 0 1.75rem; background-color: var(--background); }
+.communities-atlas__all-heading h2 { margin: .4rem 0 0; font-family: var(--font-serif); font-size: clamp(1.9rem, 3vw, 3rem); line-height: 1; font-weight: bold; }
+
+.association-profile {
+  display: grid;
+  grid-template-columns: minmax(12rem, .75fr) minmax(0, 1.5fr);
+  gap: 1.5rem 2rem;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  padding: clamp(1.25rem, 3vw, 2.4rem);
+  border: 1px solid color-mix(in oklab, var(--primary) 35%, var(--border));
+  background: color-mix(in oklab, var(--card) 94%, var(--sand));
+}
+
+.association-profile__identity { display: flex; align-items: center; }
+.association-profile__identity h2 { margin: .3rem 0 0; font-family: var(--font-serif); font-size: clamp(1.45rem, 2.4vw, 2.3rem); line-height: 1; }
+.association-profile__main { position: relative; z-index: 1; }
+.association-profile__description { margin: 0; line-height: 1.65; }
+.association-profile__contact { display: flex; flex-wrap: wrap; gap: .55rem 1rem; margin-top: 1rem; }
+.association-profile__contact a { display: inline-flex; align-items: center; gap: .35rem; color: var(--primary); font-size: .83rem; font-weight: 700; text-decoration: none; }
+.association-profile__contact svg { width: .9rem; height: .9rem; }
+.association-profile__details { grid-column: 1 / -1; display: grid; gap: .5rem; position: relative; z-index: 1; }
+.association-profile details { border-top: 1px solid var(--border); padding-top: .75rem; }
+.association-profile summary { display: flex; align-items: center; justify-content: space-between; list-style: none; cursor: pointer; font-size: .88rem; font-weight: 800; }
+.association-profile summary::-webkit-details-marker { display: none; }
+.association-profile summary svg { width: 1rem; transition: transform .2s ease; }
+.association-profile details[open] summary svg { transform: rotate(180deg); }
+.association-profile details > div { display: flex; flex-wrap: wrap; gap: .3rem 1rem; margin: .75rem 0 .15rem; color: var(--muted-foreground); font-size: .85rem; }
+.association-profile__representatives p { display: grid; margin: 0; min-width: 11rem; }
+.association-profile__representatives strong { color: var(--foreground); }
+
+.community-groups__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1.25rem; }
+.communities-atlas__empty { border-top: 2px solid var(--clay); margin-top: 1.25rem; padding: 1rem 0; color: var(--muted-foreground); }
+
+@media (max-width: 760px) {
+  .communities-content { grid-template-columns: 1fr; padding-bottom: 4rem; }
+  .association-menu { position: static; overflow-x: auto; padding-bottom: .5rem; }
+  .association-menu__options { display: flex; width: max-content; min-width: 100%; }
+  .association-menu__option { grid-template-columns: 1.85rem auto; width: auto; min-width: 10rem; border: 1px solid var(--border); border-left: 0; padding: .65rem; }
+  .association-menu__option:first-child { border-left: 1px solid var(--border); }
+  .association-menu__option:hover, .association-menu__option.is-active { padding-left: .65rem; }
+  .association-profile { grid-template-columns: 1fr; }
+  .association-profile__details { grid-column: auto; }
 }

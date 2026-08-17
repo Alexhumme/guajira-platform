@@ -1,6 +1,7 @@
 export * from './comunidades'
 export * from './municipios'
 export * from './indicadores'
+export * from './asociaciones'
 export * from './productos'
 export * from './publicaciones'
 export * from './rutas'

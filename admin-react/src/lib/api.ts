@@ -1,5 +1,5 @@
 // Utilidades compartidas para invocar las rutas CRUD del backend admin.
-const apiBase = import.meta.env.VITE_API_BASE ?? (import.meta.env.DEV ? 'http://localhost:5000' : '')
+const apiBase = import.meta.env.VITE_API_BASE ?? ''
 
 export function resolveApiPath(path: string) {
   if (path.startsWith('http://') || path.startsWith('https://')) return path

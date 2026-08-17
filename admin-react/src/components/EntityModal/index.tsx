@@ -10,6 +10,7 @@ import { SubcrudField } from './SubcrudField'
 export function EntityModal({ isOpen, title, fields, initialValues, onClose, onSubmit, isSubmitting = false }: EntityModalProps) {
   const [values, setValues] = useState<Record<string, unknown>>({})
   const [optionsByField, setOptionsByField] = useState<Record<string, SelectOption[]>>({})
+  const [nestedOptionsByField, setNestedOptionsByField] = useState<Record<string, Record<string, SelectOption[]>>>({})
   const [nestedItemsByField, setNestedItemsByField] = useState<Record<string, NestedItem[]>>({})
   const [nestedRemovedByField, setNestedRemovedByField] = useState<Record<string, string[]>>({})
   const [existingOptionsByField, setExistingOptionsByField] = useState<Record<string, SelectOption[]>>({})
@@ -31,6 +32,7 @@ export function EntityModal({ isOpen, title, fields, initialValues, onClose, onS
 
     setValues(nextValues)
     setOptionsByField({})
+    setNestedOptionsByField({})
     setNestedItemsByField({})
     setNestedRemovedByField({})
     setExistingOptionsByField({})
@@ -49,6 +51,9 @@ export function EntityModal({ isOpen, title, fields, initialValues, onClose, onS
 
     async function loadOptionsAndNestedItems() {
       const selectFields = fields.filter((field) => field.type === 'select' && field.optionSource)
+      const nestedSelectFields = fields.flatMap((field) => (field.type === 'subcrud' ? (field.nestedFields ?? [])
+        .filter((nestedField) => nestedField.type === 'select' && nestedField.optionSource)
+        .map((nestedField) => ({ parentKey: field.key, field: nestedField })) : []))
       const nestedFields = fields.filter((field) => (field.type === 'media' || field.type === 'subcrud') && field.nestedEndpoint && field.nestedCollectionKey)
 
       const selectPromises = selectFields.map(async (field) => {
@@ -62,6 +67,15 @@ export function EntityModal({ isOpen, title, fields, initialValues, onClose, onS
       })
 
       const existingOptions: Record<string, SelectOption[]> = {}
+      const nestedSelectPromises = nestedSelectFields.map(async ({ parentKey, field }) => {
+        try {
+          const data = await readJson<Record<string, unknown>[]>(field.optionSource!)
+          return { parentKey, key: field.key, options: createOptionsFromRecords(data) }
+        } catch (error) {
+          console.error('No se pudieron cargar opciones para', field.key, field.optionSource, error)
+          return { parentKey, key: field.key, options: field.options ?? [] }
+        }
+      })
       const nestedPromises = nestedFields.map(async (field) => {
         const items: NestedItem[] = []
         const removedIds: string[] = []
@@ -106,6 +120,15 @@ export function EntityModal({ isOpen, title, fields, initialValues, onClose, onS
       const loadedSelects = await Promise.all(selectPromises)
       setOptionsByField(loadedSelects.reduce<Record<string, SelectOption[]>>((accumulator, item) => {
         accumulator[item.key] = item.options
+        return accumulator
+      }, {}))
+
+      const loadedNestedSelects = await Promise.all(nestedSelectPromises)
+      setNestedOptionsByField(loadedNestedSelects.reduce<Record<string, Record<string, SelectOption[]>>>((accumulator, item) => {
+        accumulator[item.parentKey] = {
+          ...accumulator[item.parentKey],
+          [item.key]: item.options,
+        }
         return accumulator
       }, {}))
 
@@ -342,6 +365,7 @@ export function EntityModal({ isOpen, title, fields, initialValues, onClose, onS
                   field={field}
                   items={nestedItemsByField[field.key] ?? []}
                   draft={nestedDraftByField[field.key] ?? {}}
+                  optionsByField={nestedOptionsByField[field.key] ?? {}}
                   onDraftChange={(draftKey, draftValue) => handleNestedDraftChange(field.key, draftKey, draftValue)}
                   onAdd={() => handleAddSubcrudItem(field)}
                   onRemove={(item) => handleRemoveNestedItem(field.key, item)}

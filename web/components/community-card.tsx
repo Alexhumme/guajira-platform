@@ -37,8 +37,8 @@ export function CommunityCard({ comunidad, municipio, totalProductos = 0 }: Comu
         </div>
       </div>
       <div className="flex flex-1 flex-col p-4">
-        <p className="line-clamp-2 text-sm text-muted-foreground">{comunidad.descripcion}</p>
-        <div className="mt-4 flex items-center gap-4 text-xs text-muted-foreground">
+        <p className="line-clamp-2 text-sm text-muted-foreground">{comunidad.descripcion || "Comunidad Wayuu"}</p>
+        <div className="mt-2 flex items-center gap-4 text-xs text-muted-foreground">
           <span className="flex items-center gap-1"><Package className="size-3.5 text-primary" /> {totalProductos} productos</span>
           <span className="flex items-center gap-1"><Users className="size-3.5 text-primary" /> {comunidad.habitantes} habitantes</span>
         </div>

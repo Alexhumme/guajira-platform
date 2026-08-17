@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
-import { PageHero } from '@/components/page-hero'
-import { CommunityCard } from '@/components/community-card'
-import { WayuuDivider } from '@/components/wayuu-divider'
+import { CommunitiesExplorer } from '@/components/communities-explorer'
+import { getAsociaciones } from '@/lib/api/asociaciones'
 import { getComunidades } from '@/lib/api/comunidades'
 import { getMunicipios } from '@/lib/api/municipios'
 import { getProductos } from '@/lib/api/productos'
@@ -15,25 +14,14 @@ export default async function ComunidadesPage() {
   const comunidades = await getComunidades()
   const municipios = await getMunicipios()
   const productos = await getProductos()
+  const asociaciones = await getAsociaciones()
 
   return (
-    <>
-      <PageHero
-        eyebrow="Nuestra gente"
-        title="Comunidades Wayuu participantes"
-        description="Cada comunidad conserva un saber propio: el tejido, la sal, la pesca o el pastoreo. Conócelas y apoya su trabajo."
-        image="/images/mock-up/community-1.png"
-      />
-      <WayuuDivider />
-      <section className="mx-auto max-w-6xl px-4 py-12 md:py-16">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {comunidades.map((c) => {
-            const municipio = municipios.find((m) => m.id === c.municipioId)
-            const totalProductos = productos.filter((producto) => producto.comunidadId === c.id).length
-            return <CommunityCard key={c.id} comunidad={c} municipio={municipio} totalProductos={totalProductos} />
-          })}
-        </div>
-      </section>
-    </>
+    <CommunitiesExplorer
+      asociaciones={asociaciones}
+      comunidades={comunidades}
+      municipios={municipios}
+      productos={productos}
+    />
   )
 }

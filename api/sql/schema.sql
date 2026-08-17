@@ -88,6 +88,34 @@ CREATE TABLE IF NOT EXISTS comunidad_media (
     ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+CREATE TABLE IF NOT EXISTS asociacion (
+  id_asociacion CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+  nombre TEXT NOT NULL,
+  acronimo TEXT NULL,
+  telefono TEXT NULL,
+  correo TEXT NULL,
+  logo_dir TEXT NULL,
+  descripcion TEXT NULL,
+  nombre_representante_sena TEXT NULL,
+  telefono_representante_sena TEXT NULL,
+  correo_representante_sena TEXT NULL,
+  visibilidad TINYINT(1) NOT NULL DEFAULT 1,
+  fecha_registro DATE NOT NULL DEFAULT (CURRENT_DATE)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS asociacion_comunidad (
+  id_asociacion_comunidad CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+  id_asociacion CHAR(36) NOT NULL,
+  id_comunidad INT NOT NULL,
+  CONSTRAINT fk_asociacion_comunidad_asociacion
+    FOREIGN KEY (id_asociacion) REFERENCES asociacion(id_asociacion)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT fk_asociacion_comunidad_comunidad
+    FOREIGN KEY (id_comunidad) REFERENCES comunidad(id_comunidad)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+  UNIQUE KEY uq_asociacion_comunidad (id_asociacion, id_comunidad)
+) ENGINE=InnoDB;
+
 CREATE TABLE IF NOT EXISTS miembro (
   id_miembro INT AUTO_INCREMENT PRIMARY KEY,
   id_comunidad INT NOT NULL,
@@ -109,6 +137,30 @@ CREATE TABLE IF NOT EXISTS miembro (
   CONSTRAINT fk_miembro_rol
     FOREIGN KEY (rol_id) REFERENCES rol(id_rol)
     ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS miembro_representante (
+  id_miembro_representante CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+  id_asociacion CHAR(36) NOT NULL,
+  id_miembro INT NOT NULL,
+  CONSTRAINT fk_miembro_representante_asociacion
+    FOREIGN KEY (id_asociacion) REFERENCES asociacion(id_asociacion)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT fk_miembro_representante_miembro
+    FOREIGN KEY (id_miembro) REFERENCES miembro(id_miembro)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+  UNIQUE KEY uq_miembro_representante (id_asociacion, id_miembro)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS red_asociacion (
+  id_red_asociacion CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+  id_asociacion CHAR(36) NOT NULL,
+  red_social TEXT NOT NULL,
+  usuario TEXT NULL,
+  link TEXT NULL,
+  CONSTRAINT fk_red_asociacion_asociacion
+    FOREIGN KEY (id_asociacion) REFERENCES asociacion(id_asociacion)
+    ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS producto (

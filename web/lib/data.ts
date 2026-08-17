@@ -51,6 +51,28 @@ export type Producto = {
   imagenes: string[]
 }
 
+export type RepresentanteAsociacion = {
+  id: string
+  nombre: string
+  comunidad: string
+  telefono: string
+  correo: string
+}
+
+export type Asociacion = {
+  id: string
+  nombre: string
+  acronimo: string
+  telefono: string
+  correo: string
+  logo: string
+  descripcion: string
+  representanteSena: { nombre: string; telefono: string; correo: string }
+  comunidadesIds: string[]
+  representantes: RepresentanteAsociacion[]
+  redes: RedSocial[]
+}
+
 export type Indicador = {
   label: string
   valor: number | string

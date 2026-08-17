@@ -43,4 +43,4 @@ export type SectionDefinition = {
   emptyMessage?: string
 }
 
-export type SectionKey = 'monitoring' | 'roles' | 'tipos' | 'departamentos' | 'municipios' | 'comunidades' | 'miembros' | 'admins' | 'productos' | 'rutas' | 'categorias' | 'posts'
+export type SectionKey = 'monitoring' | 'roles' | 'tipos' | 'departamentos' | 'municipios' | 'comunidades' | 'asociaciones' | 'miembros' | 'admins' | 'productos' | 'rutas' | 'categorias' | 'posts'
