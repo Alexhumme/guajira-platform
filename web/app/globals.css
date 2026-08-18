@@ -189,18 +189,9 @@
 }
 
 .communities-atlas {
-  overflow: hidden;
   background: var(--background);
 }
 
-.communities-intro {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  max-width: 90rem;
-  margin: 0 auto;
-  padding: clamp(4.5rem, 10vw, 8rem) clamp(1.5rem, 6vw, 6rem) clamp(3rem, 7vw, 5.5rem);
-}
 
 .communities-kicker,
 .communities-atlas__all-heading p,

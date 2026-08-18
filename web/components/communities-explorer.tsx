@@ -44,13 +44,12 @@ export function CommunitiesExplorer({ asociaciones, comunidades, municipios, pro
         image="images/mock-up/community-1.png"
       />
       <section className="communities-content">
-        <aside className="association-menu !self-stretch" aria-label="Filtrar por asociación">
-          <div className="sticky top-0">
-            <div className="association-menu__heading">
-              <p>Redes del territorio</p>
-              <span>{asociaciones.length} asociaciones</span>
-            </div>
-            <div className="association-menu__options">
+        <aside className="association-menu sticky top-18" aria-label="Filtrar por asociación">
+          <div className="association-menu__heading">
+            <p>Redes del territorio</p>
+            <span>{asociaciones.length} asociaciones</span>
+          </div>
+          <div className="association-menu__options">
             <button
               type="button"
               className={!asociacionActiva ? 'association-menu__option is-active' : 'association-menu__option'}
@@ -75,7 +74,6 @@ export function CommunitiesExplorer({ asociaciones, comunidades, municipios, pro
                 </span>
               </button>
             ))}
-          </div>
           </div>
         </aside>
 
