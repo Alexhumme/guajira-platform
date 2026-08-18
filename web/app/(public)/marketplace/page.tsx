@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { PageHero } from '@/components/page-hero'
-import { MarketplaceClient } from '@/components/marketplace-client'
+import { MarketplaceClient } from '@/components/marketplace/marketplace-client'
 
 export const metadata: Metadata = {
   title: 'Marketplace — IAP La Guajira',
@@ -14,6 +14,7 @@ export default function MarketplacePage() {
         eyebrow="Marketplace"
         title="Productos de las comunidades"
         description="Explora y filtra artesanías, gastronomía, pesca y más. Contacta directamente a los productores."
+        image="images/mock-up/product-chinchorro.png"
       />
       <MarketplaceClient />
     </>

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { CommunitiesExplorer } from '@/components/communities-explorer'
+import { CommunitiesExplorer } from '@/components/communities/communities-explorer'
 import { getAsociaciones } from '@/lib/api/asociaciones'
 import { getComunidades } from '@/lib/api/comunidades'
 import { getMunicipios } from '@/lib/api/municipios'

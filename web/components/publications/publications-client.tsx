@@ -1,11 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { PublicationCard } from "@/components/publication-card";
-import { PublicationSearch } from "@/components/publication-search";
-import { PublicationSort } from "@/components/publication-sort";
-import { PublicationPreviews } from "@/components/publication-previews";
-import { PublicationFeed } from "@/components/publication-feed";
+import { PublicationCard } from "@/components/publications/publication-card";
+import { PublicationSearch } from "@/components/publications/publication-search";
+import { PublicationSort } from "@/components/publications/publication-sort";
+import { PublicationPreviews } from "@/components/publications/publication-previews";
+import { PublicationFeed } from "@/components/publications/publication-feed";
 import { Publicacion, Comunidad, Miembro } from "@/lib/data";
 
 type SortMode = "recent" | "relevant";

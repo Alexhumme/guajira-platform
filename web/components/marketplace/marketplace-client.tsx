@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { Search, SlidersHorizontal, X } from 'lucide-react'
-import { ProductCard } from '@/components/product-card'
+import { ProductCard } from '@/components/products/product-card'
 import { Input, Select } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useProductos } from '@/hooks/useProductos'

@@ -35,7 +35,6 @@ export function SiteFooter() {
           <ul className="mt-4 space-y-2 text-sm text-sidebar-foreground/70">
             <li><Link href="/proyecto" className="hover:text-sidebar-foreground">Sobre el IAP</Link></li>
             <li><Link href="/publicaciones" className="hover:text-sidebar-foreground">Publicaciones</Link></li>
-            <li><Link href="/admin" className="hover:text-sidebar-foreground">Panel administrativo</Link></li>
           </ul>
         </div>
 

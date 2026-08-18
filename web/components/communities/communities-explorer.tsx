@@ -4,8 +4,8 @@ import Image from 'next/image'
 import { ChevronDown, ExternalLink, Mail, Phone } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import type { Asociacion, Comunidad, Municipio, Producto } from '@/lib/data'
-import { CommunityCard } from '@/components/community-card'
-import { PageHero } from './page-hero'
+import { CommunityCard } from '@/components/communities/community-card'
+import { PageHero } from '../page-hero'
 
 type CommunitiesExplorerProps = {
   asociaciones: Asociacion[]

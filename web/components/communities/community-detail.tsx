@@ -16,8 +16,8 @@ import {
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ProductCard } from "@/components/product-card"
-import { PublicationCard } from "@/components/publication-card"
+import { ProductCard } from "@/components/products/product-card"
+import { PublicationCard } from "@/components/publications/publication-card"
 import { WayuuDivider } from "@/components/wayuu-divider"
 
 import { cn } from "@/lib/utils"

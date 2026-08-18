@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { PageHero } from "@/components/page-hero";
 import { getPublicaciones, getComunidades, getMiembros } from "@/lib/api";
-import { PublicationsClient } from "@/components/publications-client";
+import { PublicationsClient } from "@/components/publications/publications-client";
 
 export const metadata: Metadata = {
   title: "Publicaciones | IAP La Guajira",

@@ -10,10 +10,10 @@ import {
 } from 'lucide-react'
 
 import { Hero } from '@/components/home/hero'
-import { ProductCard } from '@/components/product-card'
-import { CommunityCard } from '@/components/community-card'
+import { ProductCard } from '@/components/products/product-card'
+import { CommunityCard } from '@/components/communities/community-card'
 import { RouteCard } from '@/components/route-card'
-import { PublicationCard } from '@/components/publication-card'
+import { PublicationCard } from '@/components/publications/publication-card'
 import { PhotoGallery } from '@/components/photo-gallery'
 import { InteractiveMap } from '@/components/interactive-map'
 import { WayuuDivider } from '@/components/wayuu-divider'

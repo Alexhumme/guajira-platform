@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { CommunityDetail } from '@/components/community-detail'
+import { CommunityDetail } from '@/components/communities/community-detail'
 import { getComunidadBySlug } from '@/lib/api/comunidades'
 import { getMunicipios } from '@/lib/api/municipios'
 

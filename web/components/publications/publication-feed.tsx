@@ -1,4 +1,4 @@
-import { PublicationCard } from "@/components/publication-card";
+import { PublicationCard } from "@/components/publications/publication-card";
 import { Miembro, Comunidad, Publicacion } from "@/lib/data";
 
 
@@ -16,7 +16,7 @@ export function PublicationFeed({
   }
 
   return (
-    <div className="mx-auto w-full max-w-2xl space-y-6">
+    <div className="mx-auto w-full space-y-6">
       {publicaciones.map((publicacion) => (
         <div
           key={publicacion.id}

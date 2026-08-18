@@ -9,9 +9,9 @@ import {
   ProyectoImage,
   ProyectoNumber,
   ProyectoQuote,
-} from "@/components/proyecto-mosaic"
+} from "@/components/proyecto/proyecto-mosaic"
 
-import { ProyectoMarquee } from "@/components/proyecto-animations"
+import { ProyectoMarquee } from "@/components/proyecto/proyecto-animations"
 
 const lideresProyecto = [
   {

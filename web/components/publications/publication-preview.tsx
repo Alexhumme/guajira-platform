@@ -19,7 +19,7 @@ export function PublicationPreview({
       type="button"
       onClick={onClick}
       className={`
-        relative aspect-square overflow-hidden rounded-lg
+        relative aspect-square overflow-hidden
         border-2 transition-all
         ${
           active
