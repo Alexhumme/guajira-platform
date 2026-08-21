@@ -24,7 +24,12 @@ export async function fetchApi<T>(path: string): Promise<T> {
 }
 
 export async function getComunidades(): Promise<Comunidad[]> {
-  return fetchApi<Comunidad[]>('/web-client/comunidades')
+  const comunidades = await fetchApi<Comunidad[]>('/web-client/comunidades')
+  const comunidadesWithImages = comunidades.map((comunidad) => ({
+    ...comunidad,
+    galeria: comunidad.galeria.map((imagen) => resolveApiAssetUrl(imagen))
+  }))
+  return comunidadesWithImages
 }
 
 export async function getMunicipios(): Promise<Municipio[]> {

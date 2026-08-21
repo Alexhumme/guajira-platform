@@ -264,6 +264,7 @@ export function EntityModal({ isOpen, title, fields, initialValues, onClose, onS
     if (field.uploadEndpoint && directData?.fileData && directData.fileName) {
       const response = await fetch(resolveApiPath(field.uploadEndpoint), {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fileData: directData.fileData, fileName: directData.fileName }),
       })
@@ -275,6 +276,7 @@ export function EntityModal({ isOpen, title, fields, initialValues, onClose, onS
       const fileData = await fileToDataURL(file)
       const response = await fetch(resolveApiPath(field.uploadEndpoint), {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fileData, fileName: file.name }),
       })
