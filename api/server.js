@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-//const helmet = require('helmet');
+const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
@@ -11,7 +11,9 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middlewares de seguridad
-//app.use(helmet());
+app.use(helmet({
+    crossOriginResourcePolicy: { policy: 'cross-origin' }
+}));
 
 // Rate limiting
 const limiter = rateLimit({
@@ -21,10 +23,17 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // CORS configuration
+const allowedOrigins = (process.env.CORS_ORIGINS || '')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
 app.use(cors({
-    origin: process.env.NODE_ENV === 'production'
-        ? ['https://your-web-domain.com']
-        : ['http://localhost:3000', 'http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:8081', 'http://localhost:5000'],
+    origin: allowedOrigins.length > 0
+        ? allowedOrigins
+        : (process.env.NODE_ENV === 'production'
+            ? false
+            : ['http://localhost:3000', 'http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:8081', 'http://localhost:5000']),
     credentials: true
 }));
 

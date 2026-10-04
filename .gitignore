@@ -90,3 +90,5 @@ local/
 # Docker
 .dockerignore
 docker-compose.override.yml
+# TypeScript build info
+*.tsbuildinfo
