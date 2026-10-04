@@ -1,5 +1,3 @@
-import type { Comunidad, Municipio } from '@/lib/data'
-
 const trimTrailingSlash = (value: string) => value.replace(/\/+$|\/+(?=\?)|\/+(?=#)/g, '')
 
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ? trimTrailingSlash(process.env.NEXT_PUBLIC_API_URL) : ''
@@ -21,17 +19,4 @@ export async function fetchApi<T>(path: string): Promise<T> {
   }
 
   return response.json()
-}
-
-export async function getComunidades(): Promise<Comunidad[]> {
-  const comunidades = await fetchApi<Comunidad[]>('/web-client/comunidades')
-  const comunidadesWithImages = comunidades.map((comunidad) => ({
-    ...comunidad,
-    galeria: comunidad.galeria.map((imagen) => resolveApiAssetUrl(imagen))
-  }))
-  return comunidadesWithImages
-}
-
-export async function getMunicipios(): Promise<Municipio[]> {
-  return fetchApi<Municipio[]>('/web-client/municipios')
 }

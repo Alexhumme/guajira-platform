@@ -1,8 +1,13 @@
 import type { Comunidad, Miembro } from '@/lib/data'
-import { getComunidades as fetchComunidades, fetchApi } from './client'
+import { fetchApi, resolveApiAssetUrl } from './client'
 
 export async function getComunidades(): Promise<Comunidad[]> {
-  return fetchComunidades()
+  const comunidades = await fetchApi<Comunidad[]>('/web-client/comunidades')
+  const comunidadesWithImages = comunidades.map((comunidad) => ({
+    ...comunidad,
+    galeria: comunidad.galeria.map((imagen) => resolveApiAssetUrl(imagen))
+  }))
+  return comunidadesWithImages
 }
 
 export async function getLideres(comunidadId: string): Promise<Miembro[]> {
@@ -10,7 +15,7 @@ export async function getLideres(comunidadId: string): Promise<Miembro[]> {
 }
 
 export async function getComunidadBySlug(slug: string): Promise<Comunidad | undefined> {
-  const comunidades = await fetchComunidades()
+  const comunidades = await getComunidades()
   return comunidades.find((comunidad) => comunidad.slug === slug)
 }
 

@@ -76,14 +76,6 @@ FROM (
 JOIN municipio m ON m.nombre = c.municipio
 ON DUPLICATE KEY UPDATE nombre = VALUES(nombre), updated_at = NOW();
 
--- Rutas de prueba.
-INSERT INTO ruta (id_ruta, id_comunidad, nombre, descripcion, duracion, distancia, dificultad, tipo_experiencia, portada_dir, visibilidad, fecha_registro, created_at, updated_at)
-VALUES
-  ('a1d2e3f4-0000-4000-8000-000000000001', (SELECT id_comunidad FROM comunidad WHERE nombre = 'El Ahumao 2'), 'Ruta de la Sal', 'Recorrido por los salares y la cultura ancestral Wayuu.', '3 horas', '5 km', 'Media', 'Cultural', '/uploads/rutas/ruta-sal.jpg', 1, CURRENT_DATE, NOW(), NOW()),
-  ('b2d3f4a5-0000-4000-8000-000000000002', (SELECT id_comunidad FROM comunidad WHERE nombre = 'Tocoromana'), 'Camino de la Playa', 'Tour entre manglares y costas cercanas a la comunidad.', '2 horas', '4 km', 'Baja', 'Naturaleza', '/uploads/rutas/ruta-playa.jpg', 1, CURRENT_DATE, NOW(), NOW()),
-  ('c3f4a5b6-0000-4000-8000-000000000003', (SELECT id_comunidad FROM comunidad WHERE nombre = 'Santa Rita de la Sierra'), 'Sendero del Horizonte', 'Ruta de montaña con miradores sobre el valle.', '4 horas', '7 km', 'Alta', 'Aventura', '/uploads/rutas/ruta-horizonte.jpg', 1, CURRENT_DATE, NOW(), NOW())
-ON DUPLICATE KEY UPDATE nombre = VALUES(nombre), descripcion = VALUES(descripcion), duracion = VALUES(duracion), distancia = VALUES(distancia), dificultad = VALUES(dificultad), tipo_experiencia = VALUES(tipo_experiencia), portada_dir = VALUES(portada_dir), visibilidad = VALUES(visibilidad), fecha_registro = VALUES(fecha_registro), updated_at = NOW();
-
 -- Categorias turísticas de prueba.
 INSERT INTO categoria_turistica (id_categoria_turistica, nombre, icono_dir, created_at, updated_at)
 VALUES
@@ -92,6 +84,14 @@ VALUES
   ('d95a6042-8513-40d2-a2a4-6851e4a3472f', 'Playa', '/uploads/icons/playa.svg', NOW(), NOW()),
   ('9a108f4a-b58f-4934-b3de-3f59b3db64da', 'Punto de avistamiento', '/uploads/icons/aves.svg', NOW(), NOW())
 ON DUPLICATE KEY UPDATE nombre = VALUES(nombre), icono_dir = VALUES(icono_dir), updated_at = NOW();
+
+-- Rutas de prueba.
+INSERT INTO ruta (id_ruta, id_comunidad, nombre, descripcion, duracion, distancia, dificultad, tipo_experiencia, portada_dir, visibilidad, fecha_registro, created_at, updated_at)
+VALUES
+  ('a1d2e3f4-0000-4000-8000-000000000001', (SELECT id_comunidad FROM comunidad WHERE nombre = 'El Ahumao 2'), 'Ruta de la Sal', 'Recorrido por los salares y la cultura ancestral Wayuu.', '3 horas', '5 km', 'Media', 'Cultural', '/uploads/rutas/ruta-sal.jpg', 1, CURRENT_DATE, NOW(), NOW()),
+  ('b2d3f4a5-0000-4000-8000-000000000002', (SELECT id_comunidad FROM comunidad WHERE nombre = 'Tocoromana'), 'Camino de la Playa', 'Tour entre manglares y costas cercanas a la comunidad.', '2 horas', '4 km', 'Baja', 'Naturaleza', '/uploads/rutas/ruta-playa.jpg', 1, CURRENT_DATE, NOW(), NOW()),
+  ('c3f4a5b6-0000-4000-8000-000000000003', (SELECT id_comunidad FROM comunidad WHERE nombre = 'Santa Rita de la Sierra'), 'Sendero del Horizonte', 'Ruta de montaña con miradores sobre el valle.', '4 horas', '7 km', 'Alta', 'Aventura', '/uploads/rutas/ruta-horizonte.jpg', 1, CURRENT_DATE, NOW(), NOW())
+ON DUPLICATE KEY UPDATE nombre = VALUES(nombre), descripcion = VALUES(descripcion), duracion = VALUES(duracion), distancia = VALUES(distancia), dificultad = VALUES(dificultad), tipo_experiencia = VALUES(tipo_experiencia), portada_dir = VALUES(portada_dir), visibilidad = VALUES(visibilidad), fecha_registro = VALUES(fecha_registro), updated_at = NOW();
 
 -- Posts de prueba.
 INSERT INTO post (id_post, id_miembro, descripcion, visibilidad, likes, fecha_registro, created_at, updated_at)
