@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS municipio (
 CREATE TABLE IF NOT EXISTS comunidad (
   id_comunidad INT AUTO_INCREMENT PRIMARY KEY,
   id_municipio INT NOT NULL,
-  nombre TEXT NOT NULL,
+  nombre VARCHAR(120) NOT NULL,
   logo_dir TEXT NULL,
   portada_dir TEXT NULL,
   descripcion TEXT NULL,
@@ -60,7 +60,8 @@ CREATE TABLE IF NOT EXISTS comunidad (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   CONSTRAINT fk_comunidad_municipio
     FOREIGN KEY (id_municipio) REFERENCES municipio(id_municipio)
-    ON UPDATE CASCADE ON DELETE RESTRICT
+    ON UPDATE CASCADE ON DELETE RESTRICT,
+  UNIQUE KEY uq_comunidad_municipio (id_municipio, nombre)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS red_comunidad (

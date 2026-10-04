@@ -96,7 +96,7 @@ ON DUPLICATE KEY UPDATE nombre = VALUES(nombre), descripcion = VALUES(descripcio
 -- Posts de prueba.
 INSERT INTO post (id_post, id_miembro, descripcion, visibilidad, likes, fecha_registro, created_at, updated_at)
 VALUES
-  ('9a9d6e94-6a4b-4c18-9a42-7cbf3b740b3f', (SELECT id_miembro FROM miembro WHERE cedula = 1001234568), 'Lanzamos nuevo producto artesanal en la comunidad.', 1, 12, CURRENT_DATE, NOW(), NOW()),
-  ('d4fbc838-2a35-4e02-93ea-3d60c3a574c2', (SELECT id_miembro FROM miembro WHERE cedula = 1001234569), 'Historias de la artesania wayuu compartidas hoy.', 1, 8, CURRENT_DATE, NOW(), NOW()),
-  ('f2a61b30-379c-45c7-8529-8a3f2f0a1b9e', (SELECT id_miembro FROM miembro WHERE cedula = 1001234571), 'Disponible servicio de pesca tradicional este fin de semana.', 1, 5, CURRENT_DATE, NOW(), NOW())
+  ('9a9d6e94-6a4b-4c18-9a42-7cbf3b740b3f', (SELECT id_miembro FROM miembro WHERE cedula = 1004287582), 'Lanzamos nuevo producto artesanal en la comunidad.', 1, 12, CURRENT_DATE, NOW(), NOW()),
+  ('d4fbc838-2a35-4e02-93ea-3d60c3a574c2', (SELECT id_miembro FROM miembro WHERE cedula = 1006575016), 'Historias de la artesania wayuu compartidas hoy.', 1, 8, CURRENT_DATE, NOW(), NOW()),
+  ('f2a61b30-379c-45c7-8529-8a3f2f0a1b9e', (SELECT id_miembro FROM miembro WHERE cedula = 1006579561), 'Disponible servicio de pesca tradicional este fin de semana.', 1, 5, CURRENT_DATE, NOW(), NOW())
 ON DUPLICATE KEY UPDATE descripcion = VALUES(descripcion), visibilidad = VALUES(visibilidad), likes = VALUES(likes), updated_at = NOW();
