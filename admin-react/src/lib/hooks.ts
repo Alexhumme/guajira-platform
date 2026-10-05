@@ -24,6 +24,7 @@ export function useAuthState() {
 export function useSectionData(endpoint: string, sectionKey: SectionKey, authState: 'loading' | 'authenticated' | 'guest') {
   const [rowsBySection, setRowsBySection] = useState<Record<SectionKey, Record<string, unknown>[]>>({} as Record<SectionKey, Record<string, unknown>[]>)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (authState !== 'authenticated') return
@@ -31,10 +32,12 @@ export function useSectionData(endpoint: string, sectionKey: SectionKey, authSta
     async function loadSection() {
       try {
         setLoading(true)
+        setError(null)
         const data = await readJson<Record<string, unknown>[]>(endpoint)
         setRowsBySection((current) => ({ ...current, [sectionKey]: Array.isArray(data) ? data : [] }))
-      } catch (error) {
-        console.error(error)
+      } catch (err) {
+        console.error(err)
+        setError(err instanceof Error ? err.message : 'No se pudo cargar la información')
         setRowsBySection((current) => ({ ...current, [sectionKey]: [] }))
       } finally {
         setLoading(false)
@@ -44,5 +47,5 @@ export function useSectionData(endpoint: string, sectionKey: SectionKey, authSta
     void loadSection()
   }, [endpoint, sectionKey, authState])
 
-  return { rowsBySection, setRowsBySection, loading }
+  return { rowsBySection, setRowsBySection, loading, error }
 }

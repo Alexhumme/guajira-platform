@@ -31,6 +31,7 @@ export const sections: SectionDefinition[] = [
       { key: 'maturity_score', label: 'Madurez' },
     ],
     formFields: [],
+    canMutate: false,
     emptyMessage: 'No hay comunidades para monitorear.',
   },
   {

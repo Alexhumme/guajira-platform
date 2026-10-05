@@ -33,6 +33,7 @@ router.get('/comunidades', async (req, res, next) => {
         c.id_comunidad,
         c.nombre,
         c.logo_dir,
+        c.portada_dir,
         c.descripcion,
         c.numero_contacto,
         m.nombre AS municipio,
@@ -97,6 +98,7 @@ router.get('/comunidades/:id', async (req, res, next) => {
         c.id_comunidad,
         c.nombre,
         c.logo_dir,
+        c.portada_dir,
         c.descripcion,
         c.numero_contacto,
         c.direccion,
@@ -158,6 +160,11 @@ router.get('/comunidades/:id', async (req, res, next) => {
       lider_count: 0,
     };
 
+    const [mediaRows] = await pool.query(
+      `SELECT id_comunidad_media, media_dir, \`index\` FROM comunidad_media WHERE id_comunidad = ? ORDER BY \`index\` ASC`,
+      [req.params.id]
+    );
+
     const context = {
       ...rows[0],
       ...genderRows[0],
@@ -175,6 +182,7 @@ router.get('/comunidades/:id', async (req, res, next) => {
 
     res.json({
       profile: context,
+      media: mediaRows,
       gender: {
         masculino: Number(genderRows[0].masculino_count) || 0,
         femenino: Number(genderRows[0].femenino_count) || 0,

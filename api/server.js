@@ -96,6 +96,8 @@ app.use('', require('./routes/health'));
 
 app.use(express.static(path.join(__dirname, 'public', 'static')));
 
+app.use('/admin', express.static(path.join(__dirname, 'public', 'admin', 'dist')));
+
 app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
 
 // Routes

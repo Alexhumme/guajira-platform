@@ -3,6 +3,7 @@ import { Loader2 } from 'lucide-react'
 import { AuthScreen } from './components/AuthScreen'
 import { EntityModal } from './components/EntityModal'
 import { EntityTable } from './components/EntityTable'
+import { MonitoringView } from './components/MonitoringView'
 import { HeaderPanel } from './components/HeaderPanel'
 import { ListToolbar } from './components/ListToolbar'
 import { Pagination } from './components/Pagination'
@@ -25,7 +26,7 @@ export default function App() {
   const [activeSection, setActiveSection] = useState<SectionKey>('monitoring')
   const [authState, setAuthState] = useAuthState()
   const currentSection = sections.find((section) => section.key === activeSection) ?? sections[0]
-  const { rowsBySection, setRowsBySection, loading } = useSectionData(currentSection.endpoint, activeSection, authState)
+  const { rowsBySection, setRowsBySection, loading, error: sectionError } = useSectionData(currentSection.endpoint, activeSection, authState)
   const [query, setQuery] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -250,10 +251,14 @@ export default function App() {
 
           {loginError ? <p className="auth-error">{loginError}</p> : null}
 
+          {sectionError ? <p className="auth-error">No se pudo conectar con el backend: {sectionError}</p> : null}
+
           {loading ? (
             <div className="empty-state">
               <Loader2 className="spin" size={18} /> Cargando datos del panel...
             </div>
+          ) : currentSection.key === 'monitoring' ? (
+            <MonitoringView rows={visibleRows} emptyMessage={currentSection.emptyMessage ?? 'Sin datos.'} />
           ) : (
             <>
               <EntityTable
