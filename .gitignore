@@ -94,3 +94,5 @@ docker-compose.override.yml
 *.tsbuildinfo
 
 out/
+
+.env.production

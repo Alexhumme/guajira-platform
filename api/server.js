@@ -7,6 +7,7 @@ const rateLimit = require('express-rate-limit');
 const path = require('path');
 const db = require('./config/db');
 const session = require('express-session');
+const MySQLStore = require('connect-mysql2')(session);
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -67,10 +68,21 @@ testDatabaseConnection();
 // Session setup (MySQL store)
 
 app.use(session({
-    key: 'guajira.sid',
+    key: 'comured.sid',
     secret: process.env.SESSION_SECRET || 'dev_secret_change_me',
     resave: false,
     saveUninitialized: false,
+    store: new MySQLStore({
+        table: 'sessions',
+        secret: process.env.SESSION_SECRET || 'dev_secret_change_me',
+        config: {
+            host: process.env.DB_HOST || 'localhost',
+            port: Number(process.env.DB_PORT || 3306),
+            user: process.env.DB_USER || 'root',
+            password: process.env.DB_PASSWORD || '',
+            database: process.env.DB_NAME || 'comured'
+        }
+    }),
     cookie: {
         httpOnly: true,
         sameSite: 'lax',
