@@ -1,6 +1,6 @@
 import type { Municipio } from '@/lib/data'
-import { fetchApi } from './client'
+import { safeFetchApi } from './client'
 
 export async function getMunicipios(): Promise<Municipio[]> {
-  return fetchApi<Municipio[]>('/web-client/municipios')
+  return safeFetchApi<Municipio[]>('/web-client/municipios', [])
 }

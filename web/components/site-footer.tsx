@@ -33,7 +33,7 @@ export function SiteFooter() {
         <div>
           <h4 className="font-serif text-sm font-semibold">Proyecto</h4>
           <ul className="mt-4 space-y-2 text-sm text-sidebar-foreground/70">
-            <li><Link href="/proyecto" className="hover:text-sidebar-foreground">Sobre Comured</Link></li>
+            <li><Link href="/proyecto" className="hover:text-sidebar-foreground">Sobre el IAP</Link></li>
             <li><Link href="/publicaciones" className="hover:text-sidebar-foreground">Publicaciones</Link></li>
           </ul>
         </div>
@@ -49,7 +49,7 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-sidebar-border">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-6 text-xs text-sidebar-foreground/60 sm:flex-row sm:px-6">
-          <p>&copy; {new Date().getFullYear()} Proyecto Comured. Todos los derechos reservados.</p>
+          <p>&copy; {new Date().getFullYear()} Proyecto IAP. Todos los derechos reservados.</p>
           <p>Hecho con respeto por la cultura Wayuu.</p>
         </div>
       </div>

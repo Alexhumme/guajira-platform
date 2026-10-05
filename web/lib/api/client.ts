@@ -20,3 +20,16 @@ export async function fetchApi<T>(path: string): Promise<T> {
 
   return response.json()
 }
+
+/**
+ * Failsafe wrapper around fetchApi: on any network/server error it logs a
+ * warning and returns the provided fallback instead of crashing the page.
+ */
+export async function safeFetchApi<T>(path: string, fallback: T): Promise<T> {
+  try {
+    return await fetchApi<T>(path)
+  } catch (error) {
+    console.warn(`[Comured] No se pudo obtener ${path}:`, error)
+    return fallback
+  }
+}

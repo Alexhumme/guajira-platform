@@ -14,7 +14,7 @@ const nav = [
   { href: '/comunidades', label: 'Comunidades' },
   //{ href: '/turismo', label: 'Turismo' },
   //{ href: '/mapa', label: 'Mapa' },
-  { href: '/proyecto', label: 'proyecto Comured' },
+  { href: '/proyecto', label: 'Proyecto IAP' },
 ]
 
 export function SiteHeader() {

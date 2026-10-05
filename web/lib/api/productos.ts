@@ -1,8 +1,8 @@
 import type { Producto } from '@/lib/data'
-import { fetchApi, resolveApiAssetUrl } from './client'
+import { safeFetchApi, resolveApiAssetUrl } from './client'
 
 export async function getProductos(): Promise<Producto[]> {
-  const productos = await fetchApi<Producto[]>('/web-client/productos')
+  const productos = await safeFetchApi<Producto[]>('/web-client/productos', [])
   return productos.map((producto) => ({
     ...producto,
     imagenes: producto.imagenes.map(resolveApiAssetUrl),

@@ -16,7 +16,7 @@ import { ProyectoMarquee } from "@/components/proyecto/proyecto-animations"
 const lideresProyecto = [
   {
     nombre: "Nombre del líder",
-    cargo: "Líder del proyecto Comured",
+    cargo: "Líder del proyecto IAP",
     imagen: "/placeholder.svg",
   },
   {
@@ -29,6 +29,14 @@ const lideresProyecto = [
     cargo: "Líder territorial",
     imagen: "/placeholder.svg",
   },
+]
+
+const subproyectos = [
+  { nombre: "Producción de harinas", lider: "Robinson Sanabria" },
+  { nombre: "Turismo", lider: "Laura Aponte" },
+  { nombre: "Patios productivos", lider: "Javier Carrillo" },
+  { nombre: "Agua potable", lider: "Elkin Mejia" },
+  { nombre: "Planta Potable para Pozo Profundo", lider: "Jaider Parada" },
 ]
 
 const lideresSistema = [
@@ -82,7 +90,7 @@ export default function ProyectoPage() {
             </h2>
 
             <p className="mt-8 max-w-3xl text-lg leading-relaxed text-muted-foreground">
-              El proyecto Comured busca reconocer las necesidades y oportunidades
+              El proyecto IAP busca reconocer las necesidades y oportunidades
               existentes en los territorios para desarrollar soluciones que
               respondan a sus realidades sociales, productivas, culturales y
               tecnológicas.
@@ -446,7 +454,7 @@ export default function ProyectoPage() {
                 </h3>
 
                 <span className="text-xs text-muted-foreground">
-                  Comured
+                  IAP
                 </span>
 
               </div>
@@ -537,6 +545,48 @@ export default function ProyectoPage() {
                 ))}
 
               </div>
+
+            </div>
+
+          </div>
+
+
+          {/* Subproyectos y sus líderes */}
+
+          <div className="mt-16">
+
+            <div className="mb-7 flex items-center justify-between border-b border-border pb-4">
+
+              <h3 className="font-serif text-2xl">
+                Subproyectos y líderes
+              </h3>
+
+              <span className="text-xs text-muted-foreground">
+                IAP
+              </span>
+
+            </div>
+
+            <div className="grid gap-0 sm:grid-cols-2 lg:grid-cols-3">
+
+              {subproyectos.map((sub, index) => (
+
+                <div
+                  key={index}
+                  className="border-b border-border py-5 pr-6"
+                >
+
+                  <p className="font-medium">
+                    {sub.nombre}
+                  </p>
+
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {sub.lider}
+                  </p>
+
+                </div>
+
+              ))}
 
             </div>
 

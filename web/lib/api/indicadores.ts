@@ -1,6 +1,6 @@
 import type { Indicador } from '@/lib/data'
-import { fetchApi } from './client'
+import { safeFetchApi } from './client'
 
 export async function getIndicadores(): Promise<Indicador[]> {
-  return fetchApi<Indicador[]>('/web-client/indicadores')
+  return safeFetchApi<Indicador[]>('/web-client/indicadores', [])
 }
