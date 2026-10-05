@@ -139,3 +139,14 @@ tbody tr:hover td { background: #f8fafc; }
 .count-chip { background: #f1f5f9; border-radius: 999px; padding: 2px 10px; font-size: .78rem; color: #334155; }
 .monitoring-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 8px; margin-top: 12px; }
 .monitoring-gallery img { width: 100%; height: 72px; object-fit: cover; border-radius: 10px; }
+
+.menu-toggle { display: none; margin-left: auto; border: 1px solid #e2e8f0; border-radius: 10px; background: #fff; padding: 6px; cursor: pointer; align-items: center; }
+@media (max-width: 900px) {
+  .app-shell { grid-template-columns: 1fr; }
+  .sidebar-card { border-right: none; border-bottom: 1px solid #e2e8f0; padding: 14px 16px; }
+  .menu-toggle { display: flex; }
+  .nav-list { display: none; }
+  .nav-list.open { display: grid; }
+  .logout-button { display: none; }
+  .logout-button.open { display: flex; }
+}
