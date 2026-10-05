@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import { PageHero } from "@/components/page-hero";
-import { getPublicaciones, getComunidades, getMiembros } from "@/lib/api";
 import { PublicationsClient } from "@/components/publications/publications-client";
 
 export const metadata: Metadata = {
@@ -9,13 +8,7 @@ export const metadata: Metadata = {
     "Conoce las publicaciones de las comunidades y miembros que hacen parte del proyecto Comured en La Guajira.",
 };
 
-export default async function PublicacionesPage() {
-  const [publicaciones, comunidades, miembros] = await Promise.all([
-    getPublicaciones(),
-    getComunidades(),
-    getMiembros(),
-  ]);
-
+export default function PublicacionesPage() {
   return (
     <>
       <PageHero
@@ -25,11 +18,7 @@ export default async function PublicacionesPage() {
         image="images/sections/publicaciones.jpg"
       />
 
-      <PublicationsClient
-        publicaciones={publicaciones}
-        comunidades={comunidades}
-        miembros={miembros}
-      />
+      <PublicationsClient />
     </>
   );
 }

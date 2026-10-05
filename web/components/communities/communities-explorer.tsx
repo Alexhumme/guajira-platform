@@ -6,12 +6,16 @@ import { useMemo, useState } from 'react'
 import type { Asociacion, Comunidad, Municipio, Producto } from '@/lib/data'
 import { CommunityCard } from '@/components/communities/community-card'
 import { PageHero } from '../page-hero'
+import { useAsociaciones } from '@/hooks/useAsociaciones'
+import { useComunidades } from '@/hooks/useComunidades'
+import { useMunicipios } from '@/hooks/useMunicipios'
+import { useProductos } from '@/hooks/useProductos'
 
 type CommunitiesExplorerProps = {
-  asociaciones: Asociacion[]
-  comunidades: Comunidad[]
-  municipios: Municipio[]
-  productos: Producto[]
+  asociaciones?: Asociacion[]
+  comunidades?: Comunidad[]
+  municipios?: Municipio[]
+  productos?: Producto[]
 }
 
 function AssociationMark({ asociacion }: { asociacion: Asociacion }) {
@@ -22,7 +26,18 @@ function AssociationMark({ asociacion }: { asociacion: Asociacion }) {
   return <span aria-hidden>{(asociacion.acronimo || asociacion.nombre).slice(0, 2).toUpperCase()}</span>
 }
 
-export function CommunitiesExplorer({ asociaciones, comunidades, municipios, productos }: CommunitiesExplorerProps) {
+export function CommunitiesExplorer(props: CommunitiesExplorerProps = {}) {
+  const { asociaciones: asociacionesProp, comunidades: comunidadesProp, municipios: municipiosProp, productos: productosProp } = props
+  const { asociaciones: asociacionesFetched } = useAsociaciones()
+  const { comunidades: comunidadesFetched } = useComunidades()
+  const { municipios: municipiosFetched } = useMunicipios()
+  const { productos: productosFetched } = useProductos()
+
+  const asociaciones = asociacionesProp ?? asociacionesFetched
+  const comunidades = comunidadesProp ?? comunidadesFetched
+  const municipios = municipiosProp ?? municipiosFetched
+  const productos = productosProp ?? productosFetched
+
   const [asociacionId, setAsociacionId] = useState<string | null>(null)
   const asociacionActiva = asociaciones.find((asociacion) => asociacion.id === asociacionId)
   const productosPorComunidad = useMemo(() => {

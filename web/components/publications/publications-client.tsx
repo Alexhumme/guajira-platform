@@ -7,18 +7,26 @@ import { PublicationSort } from "@/components/publications/publication-sort";
 import { PublicationPreviews } from "@/components/publications/publication-previews";
 import { PublicationFeed } from "@/components/publications/publication-feed";
 import { Publicacion, Comunidad, Miembro } from "@/lib/data";
+import { usePublicaciones } from "@/hooks/usePublicaciones";
+import { useComunidades } from "@/hooks/useComunidades";
+import { useMiembros } from "@/hooks/useMiembros";
 
 type SortMode = "recent" | "relevant";
 
-export function PublicationsClient({
-  publicaciones,
-  comunidades,
-  miembros,
-}: {
-  publicaciones: Publicacion[];
-  comunidades: Comunidad[];
-  miembros: Miembro[];
-}) {
+export function PublicationsClient(props: {
+  publicaciones?: Publicacion[];
+  comunidades?: Comunidad[];
+  miembros?: Miembro[];
+} = {}) {
+  const { publicaciones: publicacionesProp, comunidades: comunidadesProp, miembros: miembrosProp } = props
+  const { publicaciones: publicacionesFetched } = usePublicaciones()
+  const { comunidades: comunidadesFetched } = useComunidades()
+  const { miembros: miembrosFetched } = useMiembros()
+
+  const publicaciones = publicacionesProp ?? publicacionesFetched
+  const comunidades = comunidadesProp ?? comunidadesFetched
+  const miembros = miembrosProp ?? miembrosFetched
+
   const [search, setSearch] = useState("");
   const [selectedType, setSelectedType] = useState<
     "comunidad" | "miembro" | null

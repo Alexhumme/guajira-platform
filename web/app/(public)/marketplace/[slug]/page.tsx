@@ -1,7 +1,5 @@
-import { notFound } from "next/navigation"
-import { ProductDetail } from "@/components/products/product-detail"
-import { getProductoBySlug, getProductos } from "@/lib/api/productos"
-import { getComunidades } from "@/lib/api/comunidades"
+import { getProductos } from "@/lib/api/productos"
+import { ProductoPageClient } from "@/components/products/producto-page-client"
 
 export async function generateStaticParams() {
   const productos = await getProductos()
@@ -10,12 +8,5 @@ export async function generateStaticParams() {
 
 export default async function ProductoPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const producto = await getProductoBySlug(slug)
-  if (!producto) notFound()
-  const comunidad = (await getComunidades()).find((item) => item.id === producto.comunidadId)
-  return (
-    <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">
-      <ProductDetail producto={producto} comunidad={comunidad} />
-    </div>
-  )
+  return <ProductoPageClient slug={slug} />
 }

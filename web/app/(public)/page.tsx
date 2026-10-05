@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import {
   ArrowDownRight,
@@ -19,12 +21,12 @@ import { InteractiveMap } from '@/components/interactive-map'
 import { WayuuDivider } from '@/components/wayuu-divider'
 import { Button } from '@/components/ui/button'
 
-import { getIndicadores } from '@/lib/api/indicadores'
-import { getTopComunidades } from '@/lib/api/comunidades'
-import { getProductos } from '@/lib/api/productos'
-import { getPublicacionesRecientes } from '@/lib/api/publicaciones'
-import { getRutas } from '@/lib/api/rutas'
 import { galeria } from '@/lib/data'
+import { useIndicadores } from '@/hooks/useIndicadores'
+import { useTopComunidades } from '@/hooks/useTopComunidades'
+import { useProductos } from '@/hooks/useProductos'
+import { usePublicacionesRecientes } from '@/hooks/usePublicacionesRecientes'
+import { useRutas } from '@/hooks/useRutas'
 
 const pilares = [
   {
@@ -53,12 +55,12 @@ const pilares = [
   },
 ]
 
-export default async function HomePage() {
-  const indicadores = await getIndicadores()
-  const topComunidades = await getTopComunidades()
-  const productos = await getProductos()
-  const publicaciones = await getPublicacionesRecientes()
-  const rutas = await getRutas()
+export default function HomePage() {
+  const { indicadores } = useIndicadores()
+  const { topComunidades } = useTopComunidades()
+  const { productos } = useProductos()
+  const { publicaciones } = usePublicacionesRecientes()
+  const { rutas } = useRutas()
 
   return (
     <>
