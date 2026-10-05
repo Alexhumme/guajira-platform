@@ -1,4 +1,4 @@
-USE guajira_platform;
+USE comured;
 
 -- Departamento
 INSERT INTO departamento (nombre, created_at, updated_at)

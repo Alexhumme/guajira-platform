@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS guajira_platform CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE guajira_platform;
+CREATE DATABASE IF NOT EXISTS comured CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE comured;
 
 CREATE TABLE IF NOT EXISTS admin (
   id_admin INT AUTO_INCREMENT PRIMARY KEY,

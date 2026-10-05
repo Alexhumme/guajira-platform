@@ -1,4 +1,4 @@
-USE guajira_platform;
+USE comured;
 
 -- Productos de prueba. Requiere que miembros y tipos de producto ya existan.
 INSERT INTO producto (id_miembro, id_tipo_producto, nombre, precio, descripcion, visibilidad, fecha_registro, created_at, updated_at)

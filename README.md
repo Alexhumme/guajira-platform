@@ -22,12 +22,12 @@ Plataforma integral para visibilizar y gestionar comunidades rurales de La Guaji
 ### 1. Base de datos
 
 ```sql
-CREATE DATABASE guajira_platform;
+CREATE DATABASE comured;
 ```
 
 ```bash
-mysql -u root -p guajira_platform < api/sql/schema.sql
-mysql -u root -p guajira_platform < api/sql/seed.sql
+mysql -u root -p comured < api/sql/schema.sql
+mysql -u root -p comured < api/sql/seed.sql
 ```
 
 ### 2. API (`api/`)

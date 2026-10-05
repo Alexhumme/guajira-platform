@@ -1,3 +1,3 @@
-CREATE DATABASE guajira_platform
+CREATE DATABASE comured
 
-USE guajira_platform;
+USE comured;
