@@ -12,7 +12,7 @@ export function resolveApiAssetUrl(path: string): string {
 
 export async function fetchApi<T>(path: string): Promise<T> {
   const url = `${API_BASE_URL}${path}`
-  const response = await fetch(url, { cache: 'no-store' })
+  const response = await fetch(url, { cache: 'force-cache' })
 
   if (!response.ok) {
     throw new Error(`Error fetching ${url}: ${response.status} ${response.statusText}`)

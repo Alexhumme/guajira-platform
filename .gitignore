@@ -92,3 +92,5 @@ local/
 docker-compose.override.yml
 # TypeScript build info
 *.tsbuildinfo
+
+out/

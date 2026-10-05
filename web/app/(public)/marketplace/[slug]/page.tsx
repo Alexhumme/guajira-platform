@@ -1,7 +1,12 @@
 import { notFound } from "next/navigation"
 import { ProductDetail } from "@/components/products/product-detail"
-import { getProductoBySlug } from "@/lib/api/productos"
+import { getProductoBySlug, getProductos } from "@/lib/api/productos"
 import { getComunidades } from "@/lib/api/comunidades"
+
+export async function generateStaticParams() {
+  const productos = await getProductos()
+  return productos.map((producto) => ({ slug: producto.slug }))
+}
 
 export default async function ProductoPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
