@@ -98,7 +98,7 @@ export default async function HomePage() {
         <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary">
-              IAP · La Guajira
+              Comured
             </p>
 
             <h2 className="mt-4 max-w-xl font-serif text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl">

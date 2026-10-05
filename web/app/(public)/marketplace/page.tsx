@@ -3,7 +3,7 @@ import { PageHero } from '@/components/page-hero'
 import { MarketplaceClient } from '@/components/marketplace/marketplace-client'
 
 export const metadata: Metadata = {
-  title: 'Marketplace — IAP La Guajira',
+  title: 'Marketplace — Comured',
   description: 'Catálogo de productos artesanales, gastronómicos y del mar de las comunidades de La Guajira.',
 }
 

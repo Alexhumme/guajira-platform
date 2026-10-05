@@ -4,9 +4,9 @@ import { getPublicaciones, getComunidades, getMiembros } from "@/lib/api";
 import { PublicationsClient } from "@/components/publications/publications-client";
 
 export const metadata: Metadata = {
-  title: "Publicaciones | IAP La Guajira",
+  title: "Publicaciones | Comured",
   description:
-    "Conoce las publicaciones de las comunidades y miembros que hacen parte del proyecto IAP en La Guajira.",
+    "Conoce las publicaciones de las comunidades y miembros que hacen parte del proyecto Comured en La Guajira.",
 };
 
 export default async function PublicacionesPage() {

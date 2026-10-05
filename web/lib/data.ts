@@ -1,4 +1,4 @@
-// Mock data for the IAP La Guajira platform.
+// Mock data for the Comured platform.
 // This simulates the future MySQL/Express backend. No real API calls yet.
 
 export type Municipio = {
@@ -216,11 +216,11 @@ export const rutas: RutaTuristica[] = [
 ]
 
 export const miembros: Miembro[] = [
-  { id: 'u1', nombre: 'Andrés Gómez', correo: 'admin@iapguajira.co', rol: 'Administrador', avatar: '/images/artisan-1.png', comunidadId: 'c1', estado: 'Activo' },
-  { id: 'u2', nombre: 'María Epieyu', correo: 'maria@iapguajira.co', rol: 'Artesano', avatar: '/images/artisan-1.png', comunidadId: 'c1', estado: 'Activo' },
-  { id: 'u3', nombre: 'José Ipuana', correo: 'jose@iapguajira.co', rol: 'Líder comunitario', avatar: '/images/gallery-2.png', comunidadId: 'c3', estado: 'Activo' },
-  { id: 'u4', nombre: 'Laura Restrepo', correo: 'laura@iapguajira.co', rol: 'Gestor', avatar: '/images/gallery-3.png', comunidadId: 'c2', estado: 'Inactivo' },
-  { id: 'u5', nombre: 'Rosa Uriana', correo: 'rosa@iapguajira.co', rol: 'Publicador', avatar: '/images/artisan-1.png', comunidadId: 'c1', estado: 'Activo' },
+  { id: 'u1', nombre: 'Andrés Gómez', correo: 'admin@comured.co', rol: 'Administrador', avatar: '/images/artisan-1.png', comunidadId: 'c1', estado: 'Activo' },
+  { id: 'u2', nombre: 'María Epieyu', correo: 'maria@comured.co', rol: 'Artesano', avatar: '/images/artisan-1.png', comunidadId: 'c1', estado: 'Activo' },
+  { id: 'u3', nombre: 'José Ipuana', correo: 'jose@comured.co', rol: 'Líder comunitario', avatar: '/images/gallery-2.png', comunidadId: 'c3', estado: 'Activo' },
+  { id: 'u4', nombre: 'Laura Restrepo', correo: 'laura@comured.co', rol: 'Gestor', avatar: '/images/gallery-3.png', comunidadId: 'c2', estado: 'Inactivo' },
+  { id: 'u5', nombre: 'Rosa Uriana', correo: 'rosa@comured.co', rol: 'Publicador', avatar: '/images/artisan-1.png', comunidadId: 'c1', estado: 'Activo' },
 ]
 
 export const roles: Rol[] = ['Administrador', 'Gestor', 'Líder comunitario', 'Artesano', 'Publicador']

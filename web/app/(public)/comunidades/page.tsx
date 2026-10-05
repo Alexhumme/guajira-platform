@@ -6,8 +6,8 @@ import { getMunicipios } from '@/lib/api/municipios'
 import { getProductos } from '@/lib/api/productos'
 
 export const metadata: Metadata = {
-  title: 'Comunidades | IAP La Guajira',
-  description: 'Conoce las comunidades Wayuu que hacen parte del proyecto IAP en La Guajira.',
+  title: 'Comunidades | Comured',
+  description: 'Conoce las comunidades Wayuu que hacen parte del proyecto Comured en La Guajira.',
 }
 
 export default async function ComunidadesPage() {

@@ -16,9 +16,9 @@ const fraunces = Fraunces({
 })
 
 export const metadata: Metadata = {
-  title: 'IAP La Guajira — Comunidades, cultura y comercio Wayuu',
+  title: 'Comured — Comunidades, cultura y comercio Wayuu',
   description:
-    'Plataforma del proyecto de Investigación Acción Participativa (IAP) para visibilizar comunidades rurales de La Guajira: artesanías, turismo comunitario, productos y cultura Wayuu.',
+    'Plataforma Comured para visibilizar comunidades rurales de La Guajira: artesanías, turismo comunitario, productos y cultura Wayuu.',
   generator: 'v0.app',
 }
 

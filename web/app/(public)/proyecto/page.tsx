@@ -16,7 +16,7 @@ import { ProyectoMarquee } from "@/components/proyecto/proyecto-animations"
 const lideresProyecto = [
   {
     nombre: "Nombre del líder",
-    cargo: "Líder del proyecto IAP",
+    cargo: "Líder del proyecto Comured",
     imagen: "/placeholder.svg",
   },
   {
@@ -82,7 +82,7 @@ export default function ProyectoPage() {
             </h2>
 
             <p className="mt-8 max-w-3xl text-lg leading-relaxed text-muted-foreground">
-              El proyecto IAP busca reconocer las necesidades y oportunidades
+              El proyecto Comured busca reconocer las necesidades y oportunidades
               existentes en los territorios para desarrollar soluciones que
               respondan a sus realidades sociales, productivas, culturales y
               tecnológicas.
@@ -446,7 +446,7 @@ export default function ProyectoPage() {
                 </h3>
 
                 <span className="text-xs text-muted-foreground">
-                  IAP
+                  Comured
                 </span>
 
               </div>

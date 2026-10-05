@@ -14,7 +14,7 @@ const nav = [
   { href: '/comunidades', label: 'Comunidades' },
   //{ href: '/turismo', label: 'Turismo' },
   //{ href: '/mapa', label: 'Mapa' },
-  { href: '/proyecto', label: 'Proyecto IAP' },
+  { href: '/proyecto', label: 'proyecto Comured' },
 ]
 
 export function SiteHeader() {
@@ -29,10 +29,10 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link href="/" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
           <span className="flex size-9 items-center justify-center rounded-md bg-primary font-serif text-lg font-bold text-primary-foreground">
-            IA
+            IAP
           </span>
           <span className="flex flex-col leading-none">
-            <span className="font-serif text-base font-bold">IAP La Guajira</span>
+            <span className="font-serif text-base font-bold">Comured</span>
             <span className="text-[11px] text-muted-foreground">Comunidades Wayuu</span>
           </span>
         </Link>
