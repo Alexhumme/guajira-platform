@@ -50,7 +50,7 @@ def bullets(items):
 # ---------- portada ----------
 title = doc.add_heading('DOCUMENTO DE ENTREGA TÉCNICA', 0)
 title.alignment = WD_ALIGN_PARAGRAPH.CENTER
-sub = doc.add_paragraph('Plataforma Comured — Guajira Platform')
+sub = doc.add_paragraph('Plataforma Comured')
 sub.alignment = WD_ALIGN_PARAGRAPH.CENTER
 sub.runs[0].italic = True
 doc.add_paragraph()

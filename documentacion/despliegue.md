@@ -47,14 +47,30 @@ MAX_FILE_SIZE=10MB
 
 1. En local, definir `NEXT_PUBLIC_API_URL=https://<dominio-api>` en `web/.env`.
 2. Ejecutar `npm run build` en `web/` → genera `web/out/`.
-3. Subir el contenido de `web/out/` al document root del subdominio (p. ej. `public_html/comured`).
+3. Subir el contenido de `web/out/` al document root del subdominio: `domains/appsennovaguajira.com/public_html/comured/`.
 4. Verificar que `/comunidades`, `/marketplace`, `/publicaciones`, `/proyecto` carguen y que el navegador pueda llamar a la API (CORS).
 
-## 4. Panel de administración (estático, servido por la API)
+### Desplegar vía script (recomendado)
 
-1. En local: `npm run build` en `admin-react/` → genera `api/public/admin/dist`.
-2. Si el deploy de la API es por Git, incluya el `dist` generado (o ejecute el build en el servidor antes de arrancar).
-3. Acceder vía `https://<dominio-api>/admin/`.
+1. Configurar `.env` raíz (ver `.env.example`): `SSH_IP`, `SSH_PORT`, `SSH_USERNAME`, `SSH_PASSWORD`.
+2. Asegurar `web/.env` con `NEXT_PUBLIC_API_URL=https://api-comured.appsennovaguajira.com` (o el dominio real de la API).
+3. Ejecutar desde la raíz del proyecto:
+
+```bash
+npm run upload -- web    # solo web
+npm run upload -- admin  # solo admin
+npm run upload           # ambos
+```
+
+El script construye, crea el directorio remoto si falta y muestra una barra de progreso de la subida SFTP a `domains/appsennovaguajira.com/public_html/{comured,admin_comured}`.
+
+## 4. Panel de administración (estático)
+
+1. `npm run upload -- admin` compila `admin-react` y sube `api/public/admin/dist` a `domains/appsennovaguajira.com/public_html/admin_comured/`.
+2. Debe servirse en un subdominio/ruta propio, e.g. `https://admin_comured.appsennovaguajira.com` (document root `public_html/admin_comured`).
+3. Verificar que carga y permite login contra la API.
+
+> Nota: el panel compila con `VITE_BASE=/`, por lo que debe estar servido desde la raíz de ese subdominio, no bajo `/admin`.
 
 ## 5. Post-despliegue
 
@@ -67,7 +83,8 @@ MAX_FILE_SIZE=10MB
 
 1. Commit y push a `main`.
 2. Redesplegar la app Node desde hPanel.
-3. Regenerar `web/out` con la nueva `NEXT_PUBLIC_API_URL` y re-subirlo.
+3. `npm run upload -- web` y/o `npm run upload -- admin`.
+4. Verificar con `npm run ssh -- "ls domains/appsennovaguajira.com/public_html/comured"`.
 
 Diagrama del flujo (Mermaid):
 

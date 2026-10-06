@@ -1,4 +1,4 @@
-# Guajira Platform — Web
+# Comured — Web
 
 Sitio público construido con Next.js 16, React 19 y Tailwind CSS 4.
 

@@ -1,4 +1,4 @@
-# Guajira Platform
+# Comured
 
 Plataforma integral para visibilizar y gestionar comunidades rurales de La Guajira: marketplace artesanal, rutas turísticas, publicaciones y panel de administración.
 
@@ -82,7 +82,23 @@ npm run android        # o npm run ios
 | `admin-react` | `vite` | `vite build` | `vite preview` |
 | `app` | `react-native start` | — | — |
 
+## Scripts raíz (despliegue)
+
+Desde la raíz del monorepo:
+
+| Script | Descripción |
+|---|---|
+| `npm run upload` | Build y despliegue vía SFTP de `web/` y `admin-react/` a las carpetas del hosting |
+| `npm run upload -- web` | Solo sitio web (`web/out` → `domains/appsennovaguajira.com/public_html/comured`) |
+| `npm run upload -- admin` | Solo panel admin (`api/public/admin/dist` → `domains/appsennovaguajira.com/public_html/admin_comured`) |
+| `npm run ssh` | Shell SSH al servidor de hosting |
+| `npm run ssh -- "comando"` | Ejecuta un comando remoto por SSH |
+
+Requisitos antes de desplegar: configurar `.env` raíz con `SSH_IP`, `SSH_PORT`, `SSH_USERNAME`, `SSH_PASSWORD` (ver `.env.example`) y `web/.env` con `NEXT_PUBLIC_API_URL` apuntando a la API de producción.
+
 ## Notas
 
+- El web es un **export estático** (`web/out`); no requiere servidor Node para servir el sitio.
+- El panel admin se compila con `VITE_BASE=/` en el subdominio de admin.
 - El login del panel se crea vía `/api/auth/bootstrap` con las credenciales `ADMIN_BOOTSTRAP_*`.
 - Las imágenes se almacenan en `api/public/uploads/` organizadas por entidad (`comunidades`, `miembros`, `productos`, `posts`, `asociaciones`).

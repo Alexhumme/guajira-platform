@@ -29,14 +29,14 @@ const TARGETS = {
     cwd: path.join(__dirname, '..', 'web'),
     command: 'npm run build',
     buildDir: path.join(__dirname, '..', 'web', 'out'),
-    remoteDir: 'public_html/comured',
+    remoteDir: 'domains/appsennovaguajira.com/public_html/comured',
     env: {},
   },
   admin: {
     cwd: path.join(__dirname, '..', 'admin-react'),
     command: 'npm run build',
     buildDir: path.join(__dirname, '..', 'api', 'public', 'admin', 'dist'),
-    remoteDir: 'public_html/admin_comured',
+    remoteDir: 'domains/appsennovaguajira.com/public_html/admin_comured',
     // The admin subdomain serves the folder at '/', not '/admin/'.
     env: { VITE_BASE: '/' },
   },
@@ -53,7 +53,7 @@ for (const t of targets) {
 }
 
 function run(command, cwd, env) {
-  console.log(`\n▶ ${command}  (${path.basename(cwd)})`)
+  console.log(col(`  ▶ ${command}  ${path.basename(cwd)}`, '36'))
   const isWin = process.platform === 'win32'
   const res = spawnSync(isWin ? 'cmd.exe' : 'sh', isWin ? ['/c', command] : ['-c', command], {
     cwd,
@@ -61,7 +61,7 @@ function run(command, cwd, env) {
     env: { ...process.env, ...env },
   })
   if (res.status !== 0) {
-    console.error(`Fallo: ${command} en ${cwd}`)
+    console.error(col(`  ✗ Fallo: ${command} en ${cwd}`, '31'))
     process.exit(res.status ?? 1)
   }
 }
@@ -97,10 +97,14 @@ function collectFiles(localDir, remoteDir) {
   return results
 }
 
+function col(text, code) {
+  return `[${code}m${text}[0m`
+}
+
 function progressBar(done, total) {
   const pct = Math.min(100, Math.round((done / total) * 100))
   const filled = Math.round((done / total) * 20)
-  return `[${'#'.repeat(filled)}${'.'.repeat(20 - filled)}] ${pct}%`
+  return col(`[${'▰'.repeat(filled)}${'▱'.repeat(20 - filled)}] ${pct}%`, '32')
 }
 
 async function uploadDir(sftp, localDir, remoteDir) {
@@ -126,7 +130,7 @@ async function main() {
     const target = TARGETS[t]
     run(target.command, target.cwd, target.env)
 
-    console.log(`\n⬆ Subiendo ${target.buildDir} -> ${target.remoteDir}`)
+    console.log(col(`  ↑ Subiendo ${path.basename(target.buildDir)} -> ${target.remoteDir}`, '36'))
     await new Promise((resolve, reject) => {
       const conn = new Client()
       conn
@@ -134,8 +138,10 @@ async function main() {
           conn.sftp(async (err, sftp) => {
             if (err) return reject(err)
             try {
+              const cwd = await new Promise((res, rej) => sftp.realpath('.', (e, p) => (e ? rej(e) : res(p))))
+              console.log(col(`  Remote cwd: ${cwd}`, '33'))
               await uploadDir(sftp, target.buildDir, target.remoteDir)
-              console.log(`✓ ${t} subido correctamente`)
+              console.log(col(`\n✓ ${t} subido correctamente`, '32'))
               conn.end()
               resolve()
             } catch (e) {
@@ -155,7 +161,8 @@ async function main() {
       process.exit(1)
     })
   }
-  console.log('\n✓ Despliegue completado.')
+  console.log(col('\n✓ Despliegue completado.', '32'))
+  console.log(col(`  [${'▰'.repeat(20)}] 100%`, '32'))
 }
 
 main()

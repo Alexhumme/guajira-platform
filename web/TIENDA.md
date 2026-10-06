@@ -1,4 +1,4 @@
-# 🛍️ Tienda Virtual - Guajira Platform
+# 🛍️ Tienda Virtual - Comured
 
 ## Estructura de Páginas
 

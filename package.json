@@ -6,7 +6,8 @@
   "scripts": {
     "upload": "node scripts/upload.js",
     "upload:web": "node scripts/upload.js web",
-    "upload:admin": "node scripts/upload.js admin"
+    "upload:admin": "node scripts/upload.js admin",
+    "ssh": "node scripts/ssh.js"
   },
   "repository": {
     "type": "git",
