@@ -55,6 +55,7 @@ docs/.build/
 # Package managers
 .npm/
 .yarn-integrity
+node_modules/
 
 # Coverage reports
 coverage/

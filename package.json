@@ -1,0 +1,27 @@
+{
+  "name": "guajira-platform",
+  "version": "1.0.0",
+  "description": "Plataforma integral para visibilizar y gestionar comunidades rurales de La Guajira: marketplace artesanal, rutas turísticas, publicaciones y panel de administración.",
+  "main": "index.js",
+  "scripts": {
+    "upload": "node scripts/upload.js",
+    "upload:web": "node scripts/upload.js web",
+    "upload:admin": "node scripts/upload.js admin"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alexhumme/guajira-platform.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Alexhumme/guajira-platform/issues"
+  },
+  "homepage": "https://github.com/Alexhumme/guajira-platform#readme",
+  "dependencies": {
+    "dotenv": "^18.0.5",
+    "ssh2": "^1.17.0"
+  }
+}

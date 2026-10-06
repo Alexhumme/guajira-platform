@@ -16,7 +16,7 @@ export default defineConfig({
       },
     },
   },
-  base: '/admin/',
+  base: process.env.VITE_BASE || '/admin/',
   build: {
     outDir: '../api/public/admin/dist',
     emptyOutDir: true,
