@@ -1,12 +1,12 @@
-import { getProductos } from "@/lib/api/productos"
 import { ProductoPageClient } from "@/components/products/producto-page-client"
 
+// No API dependency at build time: one static page is generated and the real
+// slug is resolved entirely on the client. The hosting server must rewrite
+// /marketplace/<slug> to this page (see public/.htaccess).
 export async function generateStaticParams() {
-  const productos = await getProductos()
-  return productos.map((producto) => ({ slug: producto.slug }))
+  return [{ slug: 'index' }]
 }
 
-export default async function ProductoPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
-  return <ProductoPageClient slug={slug} />
+export default function ProductoPage() {
+  return <ProductoPageClient />
 }

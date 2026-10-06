@@ -1,11 +1,13 @@
 'use client'
 
-import { notFound } from 'next/navigation'
+import { notFound, useParams } from 'next/navigation'
 import { CommunityDetail } from '@/components/communities/community-detail'
 import { useComunidades } from '@/hooks/useComunidades'
 import { useMunicipios } from '@/hooks/useMunicipios'
 
-export function ComunidadPageClient({ slug }: { slug: string }) {
+export function ComunidadPageClient() {
+  const params = useParams<{ slug: string }>()
+  const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug
   const { comunidades, isLoading } = useComunidades()
   const { municipios } = useMunicipios()
 

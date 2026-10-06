@@ -1,11 +1,13 @@
 'use client'
 
-import { notFound } from 'next/navigation'
+import { notFound, useParams } from 'next/navigation'
 import { ProductDetail } from '@/components/products/product-detail'
 import { useProductos } from '@/hooks/useProductos'
 import { useComunidades } from '@/hooks/useComunidades'
 
-export function ProductoPageClient({ slug }: { slug: string }) {
+export function ProductoPageClient() {
+  const params = useParams<{ slug: string }>()
+  const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug
   const { productos, isLoading } = useProductos()
   const { comunidades } = useComunidades()
 

@@ -1,0 +1,9 @@
+# Serve the placeholder export for dynamic [slug] routes that are resolved
+# client-side (Hostinger/Apache doesn't know about them at runtime).
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(comunidades|marketplace)/([^/]+)/?$ /$1/index.html [L,QSA]
+
+ErrorDocument 404 /404.html

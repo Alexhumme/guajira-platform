@@ -66,19 +66,58 @@ function run(command, cwd, env) {
   }
 }
 
-async function uploadDir(sftp, localDir, remoteDir) {
-  const entries = fs.readdirSync(localDir, { withFileTypes: true })
-  for (const entry of entries) {
-    const localPath = path.join(localDir, entry.name)
-    const remotePath = `${remoteDir}/${entry.name}`
-    if (entry.isDirectory()) {
-      await new Promise((res, rej) => sftp.mkdir(remotePath, (err) => (err && err.code !== 4 ? rej(err) : res())))
-      await uploadDir(sftp, localPath, remotePath)
-    } else {
-      await new Promise((res, rej) => sftp.fastPut(localPath, remotePath, (err) => (err ? rej(err) : res())))
-      console.log(`  ↑ ${path.relative(path.join(__dirname, '..'), localPath)} -> ${remotePath}`)
+function ensureDir(sftp, dir) {
+  return new Promise((resolve, reject) => {
+    sftp.mkdir(dir, () => resolve())
+  })
+}
+
+async function ensurePath(sftp, remotePath) {
+  const parts = remotePath.replace(/\/+$/, '').split('/')
+  let current = ''
+  for (const part of parts) {
+    current = current ? `${current}/${part}` : part
+    if (!current) continue
+    await ensureDir(sftp, current)
+  }
+}
+
+function collectFiles(localDir, remoteDir) {
+  const results = []
+  const stack = [{ local: localDir, remote: remoteDir }]
+  while (stack.length) {
+    const { local, remote } = stack.pop()
+    for (const entry of fs.readdirSync(local, { withFileTypes: true })) {
+      const localPath = path.join(local, entry.name)
+      const remotePath = `${remote}/${entry.name}`
+      if (entry.isDirectory()) stack.push({ local: localPath, remote: remotePath })
+      else results.push({ local: localPath, remote: remotePath, size: fs.statSync(localPath).size })
     }
   }
+  return results
+}
+
+function progressBar(done, total) {
+  const pct = Math.min(100, Math.round((done / total) * 100))
+  const filled = Math.round((done / total) * 20)
+  return `[${'#'.repeat(filled)}${'.'.repeat(20 - filled)}] ${pct}%`
+}
+
+async function uploadDir(sftp, localDir, remoteDir) {
+  await ensurePath(sftp, remoteDir)
+  const files = collectFiles(localDir, remoteDir)
+  const totalBytes = files.reduce((sum, f) => sum + f.size, 0)
+  let doneBytes = 0
+  let doneFiles = 0
+  for (const file of files) {
+    const remoteDirName = path.posix.dirname(file.remote)
+    await ensureDir(sftp, remoteDirName)
+    await new Promise((res, rej) => sftp.fastPut(file.local, file.remote, (err) => (err ? rej(err) : res())))
+    doneBytes += file.size
+    doneFiles += 1
+    process.stdout.write(`\r  ${progressBar(doneBytes, totalBytes)}  ${doneFiles}/${files.length} archivos`)
+  }
+  process.stdout.write('\n')
 }
 
 async function main() {
