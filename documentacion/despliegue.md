@@ -8,6 +8,69 @@ Guía paso a paso para desplegar la plataforma en Hostinger (plan Cloud Startup)
 - Acceso a hPanel, phpMyAdmin y el terminal SSH del plan.
 - Repositorio `https://github.com/Alexhumme/guajira-platform` actualizado (rama `main`).
 
+## 0.5 Scripts de la raíz del proyecto
+
+Todos los comandos se ejecutan desde la raíz del monorepo (carpeta que contiene `package.json` raíz):
+
+| Comando | Descripción |
+|---|---|
+| `npm run upload` | Compila e sube `web/` y `admin-react/` por SFTP a Hostinger |
+| `npm run upload -- web` | Solo frontend: `npm run build` en `web/` + subida de `web/out/` |
+| `npm run upload -- admin` | Solo panel: `npm run build` en `admin-react/` + subida de `api/public/admin/dist/` |
+| `npm run ssh` | Abre una shell SSH interactiva en el servidor |
+| `npm run ssh -- "<comando>"` | Ejecuta un comando remoto puntual y devuelve su salida |
+
+Variables de entorno necesarias para estos scripts (en el `.env` raíz, ver `.env.example`):
+
+| Variable | Descripción | Ejemplo |
+|---|---|---|
+| `SSH_IP` | IP del servidor donde está el hosting | `123.45.67.89` |
+| `SSH_PORT` | Puerto SSH | `65002` |
+| `SSH_USERNAME` | Usuario SSH del hosting | `u610022487` |
+| `SSH_PASSWORD` | Contraseña SSH | `********` |
+
+## 0.6 Variables de entorno por archivo
+
+Completa las siguientes tablas con los valores reales de tu entorno de producción antes del primer despliegue.
+
+### `.env` raíz (scripts de upload/ssh)
+
+| Variable | Valor de producción |
+|---|---|
+| `SSH_IP` |  |
+| `SSH_PORT` |  |
+| `SSH_USERNAME` |  |
+| `SSH_PASSWORD` |  |
+
+### `api/.env`
+
+| Variable | Valor de producción |
+|---|---|
+| `DB_HOST` |  |
+| `DB_USER` |  |
+| `DB_PASSWORD` |  |
+| `DB_NAME` | `comured` |
+| `DB_PORT` | `3306` |
+| `PORT` | `5000` |
+| `NODE_ENV` | `production` |
+| `SESSION_SECRET` |  |
+| `ADMIN_BOOTSTRAP_USER` | `admin` |
+| `ADMIN_BOOTSTRAP_PASSWORD` |  |
+| `CORS_ORIGINS` | `https://comured.appsennovaguajira.com` |
+| `MAX_FILE_SIZE` | `10MB` |
+
+### `web/.env`
+
+| Variable | Valor de producción |
+|---|---|
+| `NEXT_PUBLIC_API_URL` |  |
+
+### `admin-react/.env`
+
+| Variable | Valor de producción |
+|---|---|
+| `VITE_API_BASE` | `` (vacío: el admin se sirve desde el mismo dominio/subdominio configurado como base) |
+
 ## 1. Base de datos
 
 1. En hPanel → Bases de datos MySQL, crear la base `comured` (charset `utf8mb4`).

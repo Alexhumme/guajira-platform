@@ -41,6 +41,8 @@ npm run dev            # http://localhost:5000
 
 Variables clave en `api/.env`: `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`, `PORT`, `SESSION_SECRET`, `ADMIN_BOOTSTRAP_USER`, `ADMIN_BOOTSTRAP_PASSWORD`.
 
+Ver `documentacion/despliegue.md` (sección 0.5 y 0.6) para la tabla completa de variables de entorno por archivo `.env` y el uso de los scripts raíz.
+
 ### 3. Sitio web (`web/`)
 
 ```bash

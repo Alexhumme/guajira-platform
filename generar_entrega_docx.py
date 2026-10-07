@@ -113,10 +113,11 @@ bullets([
 # ---------- 6 ----------
 h('6. Despliegue y entrega en Hostinger', 1)
 bullets([
-    'Frontend: con NEXT_PUBLIC_API_URL=<URL pública de la API> en web/.env, ejecutar npm run build en web/ y subir el contenido de web/out/ al document root del subdominio.',
+    'Frontend: con NEXT_PUBLIC_API_URL=<URL pública de la API> en web/.env, ejecutar `npm run upload -- web` (compila web/ y sube `web/out/`).',
     'API: desplegar la app Node api/ en Hostinger Cloud Startup (Node 20.x), configurar las variables de entorno equivalentes a api/.env y arrancar con node server.js (o el gestor de apps del hosting).',
     'Base de datos: subir el script api/sql/schema.sql y seed.sql a phpMyAdmin del hosting (misma cuenta Cloud Startup).',
-    'Panel admin: npm run build en admin-react/ y servir el dist como sitio estático (o integrar en el mismo dominio).',
+    'Panel admin: ejecutar `npm run upload -- admin` (compila admin-react/ y sube api/public/admin/dist/) para servirlo en su subdominio.',
+    'Verificar archivos en el servidor con `npm run ssh -- "ls domains/appsennovaguajira.com/public_html/comured"`.',
 ])
 
 # ---------- 7 ----------
