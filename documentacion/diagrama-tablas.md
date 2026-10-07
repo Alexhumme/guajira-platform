@@ -1,6 +1,7 @@
 # Diagrama de Tablas (Entidad-Relación)
 
 ```mermaid
+%%{init: {'theme':'neutral', 'themeVariables': { 'fontSize': '14px' }}}%%
 erDiagram
   departamento ||--o{ municipio : contiene
   municipio ||--o{ comunidad : agrupa
