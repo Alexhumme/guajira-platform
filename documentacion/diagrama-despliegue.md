@@ -33,11 +33,20 @@ graph TD
   AdminStatic -.->|fetch desde navegador| ApiNode
 
   subgraph Dev["💻 Desarrollo Local"]
-    Repo["Git repo /Alexhumme/guajira-platform"]
-    BuildWeb["web/out"]
-    BuildAdmin["admin-react dist"]
-    Repo -->|npm run upload -- web| ComuredStatic
+    Repo[/"Git repo /Alexhumme/guajira-platform"/] -->|npm run upload -- web| ComuredStatic
     Repo -->|npm run upload -- admin| AdminStatic
     Repo -->|npm run build en api/| ApiNode
   end
+
+  classDef device fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
+  classDef node fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+  classDef artifact fill:#FFF3E0,stroke:#EF6C00,stroke-width:2px,color:#E65100
+  classDef spec fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+  classDef actor fill:#FFEBEE,stroke:#C62828,stroke-width:2px,color:#B71C1C
+
+  class Browser,DNS device
+  class Apache,ApiNode,MySQL node
+  class ComuredStatic,AdminStatic,Uploads artifact
+  class Hostinger,Domains,Dev spec
+  class Usuario actor
 ```
