@@ -1,5 +1,12 @@
 # Diagrama de Despliegue
 
+> **Leyenda de colores:**
+> - 🔵 Azul — dispositivos / navegador y DNS
+> - 🟢 Verde — nodos de ejecución (Apache, Node API, MySQL)
+> - 🟠 Naranja — artefactos (carpetas estáticas, uploads)
+> - 🟣 Morado — entornos / especificaciones (Hostinger, domains, dev local)
+> - 🔴 Rojo — actor (usuario)
+
 ```mermaid
 graph TD
   Usuario(["👤 Usuario"]) --> Browser["🌐 Navegador Web"]
