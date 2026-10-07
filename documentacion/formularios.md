@@ -74,6 +74,9 @@ Lista de filas con sus propios `nestedFields` (que pueden ser `text`, `select`, 
 
 ```mermaid
 flowchart TD
+  classDef default fill:#E3F2FD,stroke:#1565C0,color:#0D47A1,stroke-width:2px,font-family:monospace
+  classDef actor fill:#FFEBEE,stroke:#C62828,color:#B71C1C
+  classDef card fill:#FFF3E0,stroke:#EF6C00,color:#E65100
   A[Usuario abre EntityModal] --> B[normalizeFieldValue por campo]
   B --> C[Validar required y checkbox]
   C -- Faltan requeridos --> D[Error en el formulario]

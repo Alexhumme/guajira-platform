@@ -4,6 +4,9 @@
 
 ```mermaid
 graph TD
+  classDef default fill:#E3F2FD,stroke:#1565C0,color:#0D47A1,stroke-width:2px,font-family:monospace
+  classDef actor fill:#FFEBEE,stroke:#C62828,color:#B71C1C
+  classDef card fill:#FFF3E0,stroke:#EF6C00,color:#E65100
   Inicio["/ (Home)"] --> Com["/comunidades"]
   Inicio --> Mkt["/marketplace"]
   Inicio --> Pub["/publicaciones"]
@@ -17,6 +20,9 @@ graph TD
 
 ```mermaid
 graph TD
+  classDef default fill:#E3F2FD,stroke:#1565C0,color:#0D47A1,stroke-width:2px,font-family:monospace
+  classDef actor fill:#FFEBEE,stroke:#C62828,color:#B71C1C
+  classDef card fill:#FFF3E0,stroke:#EF6C00,color:#E65100
   Login["AuthScreen — login"] --> Panel["Panel principal"]
   Panel --> Mon["Monitoreo — madurez de comunidades"]
   Panel --> Roles["Roles"]
@@ -34,6 +40,9 @@ graph TD
 
 ```mermaid
 graph LR
+  classDef default fill:#E3F2FD,stroke:#1565C0,color:#0D47A1,stroke-width:2px,font-family:monospace
+  classDef actor fill:#FFEBEE,stroke:#C62828,color:#B71C1C
+  classDef card fill:#FFF3E0,stroke:#EF6C00,color:#E65100
   subgraph WebClient["/web-client (público)"]
     W1["/comunidades"]
     W2["/productos"]

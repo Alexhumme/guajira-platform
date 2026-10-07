@@ -2,6 +2,9 @@
 
 ```mermaid
 graph LR
+  classDef default fill:#E3F2FD,stroke:#1565C0,color:#0D47A1,stroke-width:2px,font-family:monospace
+  classDef actor fill:#FFEBEE,stroke:#C62828,color:#B71C1C
+  classDef card fill:#FFF3E0,stroke:#EF6C00,color:#E65100
   Visitante(["👤 Visitante"])
   Miembro(["👤 Miembro / Líder"])
   Admin(["👤 Administrador"])
@@ -46,4 +49,5 @@ graph LR
   Admin --> UC12
   Admin --> UC13
   Admin --> UC14
+  class Visitante,Miembro,Admin actor
 ```

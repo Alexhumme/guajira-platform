@@ -4,6 +4,9 @@
 
 ```mermaid
 flowchart TD
+  classDef default fill:#E3F2FD,stroke:#1565C0,color:#0D47A1,stroke-width:2px,font-family:monospace
+  classDef actor fill:#FFEBEE,stroke:#C62828,color:#B71C1C
+  classDef card fill:#FFF3E0,stroke:#EF6C00,color:#E65100
   A[Admin abre admin-react] --> B{¿Tiene sesión?}
   B -- No --> C[Pantalla de login AuthScreen]
   C --> D[POST /api/auth/login]
@@ -18,6 +21,9 @@ flowchart TD
 
 ```mermaid
 flowchart TD
+  classDef default fill:#E3F2FD,stroke:#1565C0,color:#0D47A1,stroke-width:2px,font-family:monospace
+  classDef actor fill:#FFEBEE,stroke:#C62828,color:#B71C1C
+  classDef card fill:#FFF3E0,stroke:#EF6C00,color:#E65100
   A[Abrir formulario de producto] --> B[Llenar nombre, precio, tipo, descripción]
   B --> C{¿Imágenes adjuntas?}
   C -- Sí --> D[Subir a /uploads/productos]
@@ -31,6 +37,9 @@ flowchart TD
 
 ```mermaid
 flowchart LR
+  classDef default fill:#E3F2FD,stroke:#1565C0,color:#0D47A1,stroke-width:2px,font-family:monospace
+  classDef actor fill:#FFEBEE,stroke:#C62828,color:#B71C1C
+  classDef card fill:#FFF3E0,stroke:#EF6C00,color:#E65100
   A[Página Next.js] --> B[lib/api/client fetchApi]
   B --> C[GET /web-client para cada entidad]
   C --> D[Express API]
@@ -44,6 +53,9 @@ flowchart LR
 
 ```mermaid
 flowchart TD
+  classDef default fill:#E3F2FD,stroke:#1565C0,color:#0D47A1,stroke-width:2px,font-family:monospace
+  classDef actor fill:#FFEBEE,stroke:#C62828,color:#B71C1C
+  classDef card fill:#FFF3E0,stroke:#EF6C00,color:#E65100
   A[Formulario de comunidad] --> B[Seleccionar municipio y departamento]
   B --> C[Validar nombre único por municipio]
   C -- Existe --> D[Error de duplicado]
